@@ -1,5 +1,6 @@
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -25,30 +26,32 @@ public class Main extends Application {
 
 
         // Creating menu buttons
-        testButton = new Buttons("Test", true);
-        testButton.setOnAction(e -> System.out.println("hej"));
+        testButton = new Buttons("Start Game", true);
+        testButton.setOnAction(e -> System.out.println("Timer started."));
 
-        testButton2 = new Buttons("hey", false);
-        testButton2.setOnAction(e -> System.out.println("hhjad"));
+        testButton2 = new Buttons("Set Difficulty", false);
+        testButton2.setOnAction(e -> System.out.println("Setting Difficulty"));
 
-        testButton3 = new Buttons("hey", false);
-        testButton3.setOnAction(e -> System.out.println("hhjad"));
+        testButton3 = new Buttons("Options", false);
+        testButton3.setOnAction(e -> System.out.println("Entering Options."));
 
-        testButton4 = new Buttons("hey", false);
-        testButton4.setOnAction(e -> System.out.println("hhjad"));
+        testButton4 = new Buttons("Generate Sudoku", false);
+        testButton4.setOnAction(e -> System.out.println("Generating Sudoku."));
 
-        testButton5 = new Buttons("hey", false);
-        testButton5.setOnAction(e -> System.out.println("hhjad"));
+        testButton5 = new Buttons("Sudoku Solver", false);
+        testButton5.setOnAction(e -> System.out.println("Solving current Sudoku puzzle."));
 
-        testButton6 = new Buttons("hey", false);
-        testButton6.setOnAction(e -> System.out.println("hhjad"));
+        testButton6 = new Buttons("Statistics", false);
+        testButton6.setOnAction(e -> System.out.println("Solver statitics."));
 
 
 
         // Set the vertical layout
         VBox menuLayout = new VBox();
         menuLayout.setSpacing(30);
+        menuLayout.setPadding(new Insets(20, 20, 10, 20));
         menuLayout.getChildren().addAll(testButton, testButton2, testButton3, testButton4, testButton5, testButton6);
+
 
 
         // A scrollbar where the vertical layout resides.
@@ -61,7 +64,7 @@ public class Main extends Application {
         // when I have something for the center  layout.setCenter(here);
 
         // Set the scene.
-        Scene scene = new Scene(layout, 1500, 950);
+        Scene scene = new Scene(layout, 800, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
