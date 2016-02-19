@@ -22,7 +22,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        // Set the stage.
+        // Sgit push -u origin masteret the stage.
         primaryStage.setTitle("Sudoku");
 
 
