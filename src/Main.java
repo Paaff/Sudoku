@@ -6,7 +6,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-// This is only a test - Mathias - 1 - 2 - 3 - Check!
+// This is only a test - Mathias - 1 - 2 - 3 - Check!!
 
 public class Main extends Application {
 
@@ -22,7 +22,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        // Sgit push -u origin masteret the stage.
+        // Set the stage.
         primaryStage.setTitle("Sudoku");
 
 
