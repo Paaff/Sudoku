@@ -4,18 +4,18 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="791.0" prefWidth="1111.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="791.0" prefWidth="1111.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <left>
       <ScrollPane prefHeight="766.0" prefWidth="162.0" BorderPane.alignment="CENTER">
          <content>
             <VBox alignment="CENTER" prefHeight="465.0" prefWidth="161.0" spacing="20.0">
                <children>
-                  <Button lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Start Game" />
-                  <Button lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Generate Puzzle" />
-                  <Button lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Solve Puzzle" />
-                  <Button lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Analyze Solver" />
-                  <Button lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Options" />
-                  <Button lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Exit" />
+                  <Button fx:id="startGameButton" lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Start Game" />
+                  <Button fx:id="generatePuzzleButton" lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Generate Puzzle" />
+                  <Button fx:id="solvePuzzleButton" lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Solve Puzzle" />
+                  <Button fx:id="analyzeSolverButton" lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Analyze Solver" />
+                  <Button fx:id="optionsButton" lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Options" />
+                  <Button fx:id="exitButton" lineSpacing="3.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="125.0" text="Exit" />
                </children>
             </VBox>
          </content>
@@ -57,10 +57,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Hint" GridPane.halignment="CENTER" />
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Go Back One Step" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Start Timer" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Pause Timer" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Button fx:id="hintButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Hint" GridPane.halignment="CENTER" />
+                  <Button fx:id="backOneStepButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Go Back One Step" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Button fx:id="startTimerButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Start Timer" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Button fx:id="pauseTimerButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" text="Pause Timer" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </children>
