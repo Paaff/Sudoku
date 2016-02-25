@@ -12,8 +12,9 @@ public class PuzzleReader {
 
     int[][] sPuzzle; // Where the loaded puzzle is stored.
     File file;
-    int pSize;
-    String s = "src\\reader\\puzzle3_1.txt";
+    int pSize; // The size of the puzzle. It is the first number read from the file.
+    String s = "src\\reader\\puzzle3_1.txt"; // Source of the file
+
     public void runReader(){
 
         file = new File(s);
@@ -23,8 +24,16 @@ public class PuzzleReader {
             int tmp =0;
             pSize = Integer.parseInt(sc.nextLine());
 
+            /*
+                After it has read the first line, it is able to know the size of the puzzle and
+                can match the array's size.
+             */
             sPuzzle = new int[pSize*pSize][pSize*pSize];
 
+            /*
+                Reading the rest of the file, inserting the numbers in all of the right places of the array
+                and a simple 0 where it reads "."
+             */
             while(sc.hasNextLine()) {
                 String tString = sc.nextLine();
                 String[] tList = tString.split(";");
@@ -49,7 +58,9 @@ public class PuzzleReader {
 
     }
 
-
+    /*
+        Method for printing the puzzle in the console.
+     */
     private void pPuzzle(int[][] tPuzzle){
 
         System.out.println(pSize);
@@ -57,14 +68,14 @@ public class PuzzleReader {
         for(int i = 0; i < pSize*pSize ; i++ ){
             if(i == 3 || i == 6) {
                 for(int y = 0 ; y < 9 ; y++) {
-                    System.out.print("---");
+                    System.out.print("---"); // Line breaks for showing the n*n fields
                 }
                 System.out.println();
             }
 
             for(int j = 0; j < pSize*pSize ; j++){
                 if(j == 2 || j == 5){
-                    System.out.print(tPuzzle[j][i] + " | ");
+                    System.out.print(tPuzzle[j][i] + " | "); // Line breaks for showing the n*n fields
                 }else {
                     System.out.print(tPuzzle[j][i] + "  ");
                 }
