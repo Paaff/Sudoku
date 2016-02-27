@@ -10,9 +10,9 @@ import java.util.Scanner;
 
 public class PuzzleReader {
 
-    int[][] sPuzzle; // Where the loaded puzzle is stored.
+    public int[][] sPuzzle; // Where the loaded puzzle is stored.
     File file;
-    int pSize; // The size of the puzzle. It is the first number read from the file.
+    public int pSize; // The size of the puzzle. It is the first number read from the file.
     String s = "src\\reader\\puzzle3_1.txt"; // Source of the file
 
     public void runReader(){
@@ -61,9 +61,13 @@ public class PuzzleReader {
     /*
         Method for printing the puzzle in the console.
      */
+
+
     private void pPuzzle(int[][] tPuzzle){
 
+
         System.out.println(pSize);
+
 
         for(int i = 0; i < pSize*pSize ; i++ ){
             if(i == 3 || i == 6) {
