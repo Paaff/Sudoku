@@ -1,5 +1,8 @@
 package reader;
 
+import solver.Field;
+import solver.Tile;
+
 import java.io.File;
 import java.util.Scanner;
 
@@ -10,12 +13,13 @@ import java.util.Scanner;
 
 public class PuzzleReader {
 
-    int[][] sPuzzle; // Where the loaded puzzle is stored.
+    Tile[][] sPuzzle; // Where the loaded puzzle is stored.
+    Field[][] sFields;
     File file;
     int pSize; // The size of the puzzle. It is the first number read from the file.
-    String s = "src\\reader\\puzzle3_1.txt"; // Source of the file
+    String s = "src\\reader\\puzzle2_1.txt"; // Source of the file
 
-    public void runReader(){
+    public Tile[][] runReader(){
 
         file = new File(s);
 
@@ -28,7 +32,7 @@ public class PuzzleReader {
                 After it has read the first line, it is able to know the size of the puzzle and
                 can match the array's size.
              */
-            sPuzzle = new int[pSize*pSize][pSize*pSize];
+            sPuzzle = new Tile[pSize*pSize][pSize*pSize];
 
             /*
                 Reading the rest of the file, inserting the numbers in all of the right places of the array
@@ -38,12 +42,13 @@ public class PuzzleReader {
                 String tString = sc.nextLine();
                 String[] tList = tString.split(";");
 
-                for(int i = 0 ; i < 9 ; i++){
+                for(int i = 0 ; i < sPuzzle.length ; i++){
 
                     try{
-                        sPuzzle[i][tmp] = Integer.parseInt(tList[i]);
+                        int j = Integer.parseInt(tList[i]);
+                        sPuzzle[i][tmp] = new Tile(j, sPuzzle.length);
                     }catch(NumberFormatException e){
-                        sPuzzle[i][tmp] = 0;
+                        sPuzzle[i][tmp] = new Tile(0, sPuzzle.length);
                     }
                 }
                 tmp++;
@@ -55,29 +60,48 @@ public class PuzzleReader {
         }
 
         pPuzzle(sPuzzle);
+        return sPuzzle;
+    }
 
+    // Creating the individual fields.
+    public Field[][] setUpFields(){
+        sFields = new Field[pSize*pSize][pSize*pSize];
+
+        for(int i = 0 ; i < sFields.length ; i++){
+            for(int j = 0 ; j < sFields.length ; j++) {
+                sFields[i][j] = new Field(pSize * pSize);
+            }
+        }
+
+        for(int i = 0 ; i < pSize*pSize ; i++){
+            for(int j = 0 ; j < pSize*pSize ; j++){
+                sFields[i/pSize][j/pSize].giveTile(sPuzzle[i][j]);
+            }
+        }
+
+        return sFields;
     }
 
     /*
         Method for printing the puzzle in the console.
      */
-    private void pPuzzle(int[][] tPuzzle){
+    public void pPuzzle(Tile[][] cPuzzle){
 
-        System.out.println(pSize);
+        System.out.println("The size of the puzzle: " + pSize);
 
         for(int i = 0; i < pSize*pSize ; i++ ){
-            if(i == 3 || i == 6) {
-                for(int y = 0 ; y < 9 ; y++) {
+            if((i) % pSize == 0 && i != 0) {
+                for(int y = 0 ; y < pSize*pSize ; y++) {
                     System.out.print("---"); // Line breaks for showing the n*n fields
                 }
                 System.out.println();
             }
 
             for(int j = 0; j < pSize*pSize ; j++){
-                if(j == 2 || j == 5){
-                    System.out.print(tPuzzle[j][i] + " | "); // Line breaks for showing the n*n fields
+                if((1 + j) % pSize == 0 && j != pSize*pSize-1){
+                    System.out.print(cPuzzle[j][i].getDigit() + " | "); // Line breaks for showing the n*n fields
                 }else {
-                    System.out.print(tPuzzle[j][i] + "  ");
+                    System.out.print(cPuzzle[j][i].getDigit() + "  ");
                 }
 
 
