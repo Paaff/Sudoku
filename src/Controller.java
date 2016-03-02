@@ -76,11 +76,7 @@ public class Controller {
     private void sudokuGridFill() {
         int col = 0, row = 0;
 
-        for(Field f: cFields){
-            for(Tile t: f.getTiles()){
 
-            }
-        }
 
         sudokuGridTile.setAlignment(Pos.CENTER);
         sudokuGridTile.setMaxHeight(50.0);
