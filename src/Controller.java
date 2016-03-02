@@ -1,10 +1,10 @@
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import reader.PuzzleReader;
+import solver.Field;
 import solver.Tile;
 
 /**
@@ -16,8 +16,10 @@ public class Controller {
    @FXML GridPane sudokuGrid;
     TextField sudokuGridTile = new TextField();
     PuzzleReader reader = new PuzzleReader();
+    Field[][] cFields;
+
     int hintCounter = 0;
-    boolean firstTimeGenerate = true;
+
 
 
 
@@ -30,8 +32,9 @@ public class Controller {
         System.out.println("Clicked Generate Puzzle.");
         textAreaConsole.appendText("Generating Puzzle from this format:\n");
         reader.runReader(); // Reading the file where the puzzle is contained.
+        cFields = reader.setUpFields();
         guiConsolPuzzlePrint(reader.sPuzzle, reader.pSize); // Method for printing the puzzle in the GUI Console.
-
+        sudokuGridFill();
     }
 
     public void solveButtonClicked() {
@@ -69,7 +72,6 @@ public class Controller {
     }
 
 
-    // SudokuGrid
     // SudokuGrid
     private void sudokuGridFill() {
         int col = 0, row = 0;
