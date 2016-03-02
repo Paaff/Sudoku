@@ -1,8 +1,12 @@
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import reader.PuzzleReader;
+import solver.Tile;
+
 /**
  * Created by Paf on 24-02-2016.
  */
@@ -10,8 +14,10 @@ public class Controller {
 
    @FXML TextArea textAreaConsole;
    @FXML GridPane sudokuGrid;
+    TextField sudokuGridTile = new TextField();
     PuzzleReader reader = new PuzzleReader();
     int hintCounter = 0;
+    boolean firstTimeGenerate = true;
 
 
 
@@ -66,41 +72,56 @@ public class Controller {
     // SudokuGrid
     private void sudokuGridFill() {
         int col = 0, row = 0;
-        for (Node node : sudokuGrid.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
 
+
+        for (int i = 0; i < reader.sPuzzle.length; i++) {
+            for (int j = 0; j < reader.sPuzzle.length; j++) {
+
+                sudokuGridTile.setAlignment(Pos.CENTER);
+                sudokuGridTile.setMaxHeight(50.0);
+                sudokuGridTile.setId("gridTile_" + row + col);
+
+                sudokuGridTile.setText("" + reader.sPuzzle[row][col]);
+
+
+                row++;
             }
+            col++;
+
+
         }
-
-
     }
 
     // TextArea
-    private void guiConsolPuzzlePrint(int[][] tPuzzle, int pSize){
+    private void guiConsolPuzzlePrint(Tile[][] tPuzzle, int pSize){
 
-
-        textAreaConsole.appendText("Cell size chosen: " + pSize+"\n");
-
+        textAreaConsole.appendText("The size of the puzzle: " + pSize +"\n");
 
         for(int i = 0; i < pSize*pSize ; i++ ){
-            if(i == 3 || i == 6) {
-                for(int y = 0 ; y < 9 ; y++) {
-                    textAreaConsole.appendText("----"); // Line breaks for showing the n*n fields
+            if((i) % pSize == 0 && i != 0) {
+
+                for(int y = 0 ; y < pSize*pSize ; y++) {
+                    textAreaConsole.appendText("---"); // Line breaks for showing the n*n fields
                 }
                 textAreaConsole.appendText("\n");
             }
 
             for(int j = 0; j < pSize*pSize ; j++){
-                if(j == 2 || j == 5){
-                    textAreaConsole.appendText(tPuzzle[j][i] + "   |   "); // Line breaks for showing the n*n fields
+                if((1 + j) % pSize == 0 && j != pSize*pSize-1){
+                    textAreaConsole.appendText(tPuzzle[j][i].getDigit() + "  |  "); // Line breaks for showing the n*n fields
                 }else {
-                    textAreaConsole.appendText(tPuzzle[j][i] + "   ");
+                    textAreaConsole.appendText(tPuzzle[j][i].getDigit() + "   ");
                 }
 
 
             }
+
             textAreaConsole.appendText("\n");
+
         }
+
+
+
     }
 }
 

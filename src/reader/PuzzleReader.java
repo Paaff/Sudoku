@@ -13,10 +13,10 @@ import java.util.Scanner;
 
 public class PuzzleReader {
 
-    Tile[][] sPuzzle; // Where the loaded puzzle is stored.
+    public Tile[][] sPuzzle; // Where the loaded puzzle is stored.
     Field[][] sFields;
     File file;
-    int pSize; // The size of the puzzle. It is the first number read from the file.
+    public int pSize; // The size of the puzzle. It is the first number read from the file.
     String s = "src\\reader\\puzzle2_1.txt"; // Source of the file
 
     public Tile[][] runReader(){
