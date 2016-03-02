@@ -11,7 +11,7 @@ import solver.Tile;
  * Created by minit on 25-02-2016.
  */
 public class TMain {
-
+    // Hej
     static Tile[][] cPuzzle;
     static Field[][] cFields;
     static Tile[][] sPuzzle;
