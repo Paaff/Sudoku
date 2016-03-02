@@ -32,5 +32,8 @@ public class Tile {
     public int getDigit(){
         return digit;
     }
+    public void setDigit(int i){
+        digit = i;
+    }
 
 }
