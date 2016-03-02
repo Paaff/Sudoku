@@ -70,26 +70,23 @@ public class Controller {
 
 
     // SudokuGrid
+    // SudokuGrid
     private void sudokuGridFill() {
         int col = 0, row = 0;
 
+        for(Field f: cFields){
+            for(Tile t: f.getTiles()){
 
-        for (int i = 0; i < reader.sPuzzle.length; i++) {
-            for (int j = 0; j < reader.sPuzzle.length; j++) {
-
-                sudokuGridTile.setAlignment(Pos.CENTER);
-                sudokuGridTile.setMaxHeight(50.0);
-                sudokuGridTile.setId("gridTile_" + row + col);
-
-                sudokuGridTile.setText("" + reader.sPuzzle[row][col]);
-
-
-                row++;
             }
-            col++;
-
-
         }
+
+        sudokuGridTile.setAlignment(Pos.CENTER);
+        sudokuGridTile.setMaxHeight(50.0);
+        sudokuGridTile.setMaxWidth(50.0);
+        sudokuGridTile.setId("gridTile_" + row + col);
+        sudokuGrid.add(sudokuGridTile, col, row);
+        sudokuGridTile.setText("hejee");
+
     }
 
     // TextArea
