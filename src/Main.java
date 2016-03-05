@@ -2,27 +2,23 @@
  * Created by Paf on 23-02-2016.
  */
 
+import View.GUI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+import java.io.IOException;
 
-    public static void main(String[] args) {
-        launch(args);
+public class Main   {
+
+    static GUI gui;
+    public static void main(String[] args) throws IOException {
+        gui = new GUI();
+        gui.launch(GUI.class);
 
 
     }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
-        primaryStage.setTitle("Sudoku");
-        primaryStage.setScene(new Scene(root, 1200, 800));
-        primaryStage.show();
-    }
-
 
 }
