@@ -1,27 +1,29 @@
 package Controller;
 
+import View.SudokuButton;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.TextAlignment;
 import reader.PuzzleReader;
 import solver.Field;
 import solver.Tile;
+import View.SudokuButton;
+
 
 /**
  * Created by Paf on 24-02-2016.
  */
 public class Controller {
 
-   @FXML TextArea textAreaConsole;
-   @FXML GridPane sudokuGrid;
-    TextField sudokuGridTile = new TextField();
+    @FXML TextArea textAreaConsole;
+    @FXML GridPane sudokuGrid;
     PuzzleReader reader = new PuzzleReader();
     Field[][] cFields;
-
     int hintCounter = 0;
-
+    SudokuButton sudokuButton;
 
 
 
@@ -36,7 +38,9 @@ public class Controller {
         reader.runReader(); // Reading the file where the puzzle is contained.
         cFields = reader.setUpFields();
         guiConsolPuzzlePrint(reader.sPuzzle, reader.pSize); // Method for printing the puzzle in the GUI Console.
-        sudokuGridFill();
+        sudokuGridButton();
+
+
     }
 
     public void solveButtonClicked() {
@@ -74,18 +78,14 @@ public class Controller {
     }
 
 
-    // SudokuGrid
-    private void sudokuGridFill() {
-        int col = 0, row = 0;
+    private void sudokuGridButton() {
 
-
-
-        sudokuGridTile.setAlignment(Pos.CENTER);
-        sudokuGridTile.setMaxHeight(50.0);
-        sudokuGridTile.setMaxWidth(50.0);
-        sudokuGridTile.setId("gridTile_" + row + col);
-        sudokuGrid.add(sudokuGridTile, col, row);
-        sudokuGridTile.setText("hejee");
+            for(int i = 0; i < 9; i++) {
+                for(int j = 0; j <9; j++) {
+                    sudokuButton = new SudokuButton("ij", i+","+j);
+                    sudokuGrid.add(sudokuButton, i, j);
+                }
+            }
 
     }
 
