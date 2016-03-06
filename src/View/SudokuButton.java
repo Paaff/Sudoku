@@ -25,7 +25,15 @@ public class SudokuButton extends Button {
         this.setAlignment(Pos.CENTER);
         this.setTextAlignment(TextAlignment.CENTER);
         this.setMaxSize(MAX_WIDTH, MAX_HEIGHT);
-        this.setText(buttonText);
+        if(buttonText.equals("0")) {
+            this.setText(buttonText);
+            this.setStyle("-font: 30 arial");
+        } else {
+            this.setText(buttonText);
+            this.setStyle("-font: 16 arial");
+        }
+
+
 
     }
 }

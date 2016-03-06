@@ -21,7 +21,7 @@ public class Controller {
     @FXML TextArea textAreaConsole;
     @FXML GridPane sudokuGrid;
     PuzzleReader reader = new PuzzleReader();
-    Field[][] cFields;
+   // Field[][] cFields;
     int hintCounter = 0;
     SudokuButton sudokuButton;
 
@@ -36,9 +36,9 @@ public class Controller {
         System.out.println("Clicked Generate Puzzle.");
         textAreaConsole.appendText("Generating Puzzle from this format:\n");
         reader.runReader(); // Reading the file where the puzzle is contained.
-        cFields = reader.setUpFields();
+      //  cFields = reader.setUpFields(); Jeg kan ikke huske hvorfor jeg skrev dette, tror måske ikke vi needer det.
         guiConsolPuzzlePrint(reader.sPuzzle, reader.pSize); // Method for printing the puzzle in the GUI Console.
-        sudokuGridButton();
+        sudokuGridButton(); // Using reader.sPuzzle to get all the loaded sudoku numbers onto indidivual buttons.
 
 
     }
@@ -77,13 +77,19 @@ public class Controller {
         System.out.println("Clicked Pause Timer.");
     }
 
+    public void sudokuGridButtonClicked() {
+
+    }
 
     private void sudokuGridButton() {
-
+        int digit;
             for(int i = 0; i < 9; i++) {
                 for(int j = 0; j <9; j++) {
-                    sudokuButton = new SudokuButton("ij", i+","+j);
+                    digit = reader.sPuzzle[i][j].getDigit();
+                    sudokuButton = new SudokuButton("ij", ""+digit );
+                    sudokuButton.setOnAction(event -> sudokuGridButtonClicked());
                     sudokuGrid.add(sudokuButton, i, j);
+
                 }
             }
 
