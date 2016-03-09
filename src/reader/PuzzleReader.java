@@ -65,7 +65,7 @@ public class PuzzleReader {
 
     // Creating the individual fields.
     public Field[][] setUpFields(){
-        sFields = new Field[pSize*pSize][pSize*pSize];
+        sFields = new Field[pSize][pSize];
 
         for(int i = 0 ; i < sFields.length ; i++){
             for(int j = 0 ; j < sFields.length ; j++) {
