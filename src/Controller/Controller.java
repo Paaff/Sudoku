@@ -1,10 +1,14 @@
 package Controller;
 
 import View.SudokuButton;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
 import reader.PuzzleReader;
@@ -21,8 +25,8 @@ public class Controller {
     @FXML TextArea textAreaConsole;
     @FXML GridPane sudokuGrid;
     PuzzleReader reader = new PuzzleReader();
-   // Field[][] cFields;
-    int hintCounter = 0;
+   // Field[][] cFields; Not sure its used anymore.
+    private int hintCounter = 0;
     SudokuButton sudokuButton;
 
 
@@ -77,23 +81,64 @@ public class Controller {
         System.out.println("Clicked Pause Timer.");
     }
 
-    public void sudokuGridButtonClicked() {
+
+    private void chooseASudokuNumber(KeyEvent keyEvent) {
+        
+        //System.out.print(keyEvent.getTarget().toString());
+        switch (keyEvent.getCode()) {
+            case DIGIT1:
+                ((Button)keyEvent.getTarget()).setText("1");
+                break;
+            case DIGIT2:
+                ((Button)keyEvent.getTarget()).setText("2");
+                break;
+            case DIGIT3:
+                ((Button)keyEvent.getTarget()).setText("3");
+                break;
+            case DIGIT4:
+                ((Button)keyEvent.getTarget()).setText("4");
+                break;
+            case DIGIT5:
+                ((Button)keyEvent.getTarget()).setText("5");
+                break;
+            case DIGIT6:
+                ((Button)keyEvent.getTarget()).setText("6");
+                break;
+            case DIGIT7:
+                ((Button)keyEvent.getTarget()).setText("7");
+                break;
+            case DIGIT8:
+                ((Button)keyEvent.getTarget()).setText("8");
+                break;
+            case DIGIT9:
+                ((Button)keyEvent.getTarget()).setText("9");
+                break;
+
+        }
+
+
+
 
     }
 
+
     private void sudokuGridButton() {
         int digit;
-            for(int i = 0; i < 9; i++) {
-                for(int j = 0; j <9; j++) {
-                    digit = reader.sPuzzle[i][j].getDigit();
-                    sudokuButton = new SudokuButton("ij", ""+digit );
-                    sudokuButton.setOnAction(event -> sudokuGridButtonClicked());
-                    sudokuGrid.add(sudokuButton, i, j);
+            for(int i = 0; i < reader.pSize*reader.pSize; i++) {
+                for(int j = 0; j < reader.pSize*reader.pSize; j++) {
+                    digit = reader.sPuzzle[j][i].getDigit();
+                    sudokuButton = new SudokuButton(""+j+i, ""+digit );
+                    sudokuButton.setOnKeyPressed(this::chooseASudokuNumber);
+
+
+                    sudokuGrid.add(sudokuButton, j, i);
 
                 }
             }
 
     }
+
+
 
     // TextArea
     private void guiConsolPuzzlePrint(Tile[][] tPuzzle, int pSize){
