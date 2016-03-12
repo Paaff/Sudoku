@@ -25,7 +25,6 @@ public class Controller {
     @FXML TextArea textAreaConsole;
     @FXML GridPane sudokuGrid;
     PuzzleReader reader = new PuzzleReader();
-   // Field[][] cFields; Not sure its used anymore.
     private int hintCounter = 0;
     SudokuButton sudokuButton;
 
@@ -39,8 +38,8 @@ public class Controller {
     public void generateButtonClicked() {
         System.out.println("Clicked Generate Puzzle.");
         textAreaConsole.appendText("Generating Puzzle from this format:\n");
-        reader.runReader(); // Reading the file where the puzzle is contained.
-      //  cFields = reader.setUpFields(); Jeg kan ikke huske hvorfor jeg skrev dette, tror måske ikke vi needer det.
+        reader.runReader(); // Reading the file where the puzzle is contained and loading it.
+
         guiConsolPuzzlePrint(reader.sPuzzle, reader.pSize); // Method for printing the puzzle in the GUI Console.
         sudokuGridButton(); // Using reader.sPuzzle to get all the loaded sudoku numbers onto indidivual buttons.
 
@@ -87,31 +86,40 @@ public class Controller {
         //System.out.print(keyEvent.getTarget().toString());
         switch (keyEvent.getCode()) {
             case DIGIT1:
-                ((Button)keyEvent.getTarget()).setText("1");
+                ((SudokuButton)keyEvent.getTarget()).setButtonText("1");
+                validNumberChecker((SudokuButton) keyEvent.getTarget());
                 break;
             case DIGIT2:
-                ((Button)keyEvent.getTarget()).setText("2");
+                ((SudokuButton)keyEvent.getTarget()).setText("2");
+                validNumberChecker((SudokuButton) keyEvent.getTarget());
                 break;
             case DIGIT3:
-                ((Button)keyEvent.getTarget()).setText("3");
+                ((SudokuButton)keyEvent.getTarget()).setText("3");
+                validNumberChecker((SudokuButton) keyEvent.getTarget());
                 break;
             case DIGIT4:
-                ((Button)keyEvent.getTarget()).setText("4");
+                ((SudokuButton)keyEvent.getTarget()).setText("4");
+                validNumberChecker((SudokuButton) keyEvent.getTarget());
                 break;
             case DIGIT5:
-                ((Button)keyEvent.getTarget()).setText("5");
+                ((SudokuButton)keyEvent.getTarget()).setText("5");
+                validNumberChecker((SudokuButton) keyEvent.getTarget());
                 break;
             case DIGIT6:
-                ((Button)keyEvent.getTarget()).setText("6");
+                ((SudokuButton)keyEvent.getTarget()).setText("6");
+                validNumberChecker((SudokuButton) keyEvent.getTarget());
                 break;
             case DIGIT7:
-                ((Button)keyEvent.getTarget()).setText("7");
+                ((SudokuButton)keyEvent.getTarget()).setText("7");
+                validNumberChecker((SudokuButton) keyEvent.getTarget());
                 break;
             case DIGIT8:
-                ((Button)keyEvent.getTarget()).setText("8");
+                ((SudokuButton)keyEvent.getTarget()).setText("8");
+                validNumberChecker((SudokuButton) keyEvent.getTarget());
                 break;
             case DIGIT9:
-                ((Button)keyEvent.getTarget()).setText("9");
+                ((SudokuButton)keyEvent.getTarget()).setText("9");
+                validNumberChecker((SudokuButton) keyEvent.getTarget());
                 break;
 
         }
@@ -121,13 +129,22 @@ public class Controller {
 
     }
 
+    private void validNumberChecker(SudokuButton button) {
+
+
+        int userDigit = Integer.parseInt(button.getButtonText());
+        reader.sPuzzle[button.getButtonXPos()][button.getButtonYPos()].setDigit(userDigit);
+        System.out.println(reader.sPuzzle[button.getButtonXPos()][button.getButtonYPos()].getDigit() + ": New value set in the reader.sPuzzle");
+
+    }
+
 
     private void sudokuGridButton() {
         int digit;
             for(int i = 0; i < reader.pSize*reader.pSize; i++) {
                 for(int j = 0; j < reader.pSize*reader.pSize; j++) {
                     digit = reader.sPuzzle[j][i].getDigit();
-                    sudokuButton = new SudokuButton(""+j+i, ""+digit );
+                    sudokuButton = new SudokuButton("", ""+digit, j,i);
                     sudokuButton.setOnKeyPressed(this::chooseASudokuNumber);
 
 
