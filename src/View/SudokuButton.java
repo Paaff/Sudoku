@@ -32,11 +32,11 @@ public class SudokuButton extends Button {
 
 
         if(buttonText.equals("0")) {
-            this.setText("NULL");
+            this.setText("");
             this.setStyle("-fx-background-color: red; -fx-text-fill: white;");
         } else {
             this.setText(buttonText);
-          //  this.setStyle("-font: 48 arial");
+            this.setStyle("-fx-background-color: forestgreen; -fx-text-fill: white;");
 
         }
 
@@ -57,5 +57,13 @@ public class SudokuButton extends Button {
     }
     public int getButtonYPos() {
         return this.yPos;
+    }
+
+    public void setValidStyle() {
+        this.setStyle("-fx-background-color: forestgreen; -fx-text-fill: white;");
+    }
+
+    public void setNotValidStyle() {
+        this.setStyle("-fx-background-color: red; -fx-text-fill: white;");
     }
 }
