@@ -31,12 +31,13 @@ public class SudokuButton extends Button {
         this.setMaxSize(MAX_WIDTH, MAX_HEIGHT);
 
 
+
         if(buttonText.equals("0")) {
             this.setText("");
-            this.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+
         } else {
             this.setText(buttonText);
-            this.setStyle("-fx-background-color: forestgreen; -fx-text-fill: white;");
+            this.setStyle("-fx-text-fill: forestgreen;");
 
         }
 
@@ -52,18 +53,16 @@ public class SudokuButton extends Button {
         return this.getText();
     }
 
-    public int getButtonXPos() {
-        return this.xPos;
-    }
+    public int getButtonXPos() { return this.xPos; }
     public int getButtonYPos() {
         return this.yPos;
     }
 
     public void setValidStyle() {
-        this.setStyle("-fx-background-color: forestgreen; -fx-text-fill: white;");
+        this.setStyle("-fx-text-fill: forestgreen;");
     }
 
     public void setNotValidStyle() {
-        this.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+        this.setStyle("-fx-text-fill: darkred;");
     }
 }

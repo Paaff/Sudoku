@@ -1,6 +1,7 @@
 package Controller;
 
 import View.SudokuButton;
+import View.SudokuChooserDialog;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -18,6 +19,8 @@ import solver.PuzzleChecker;
 import solver.Tile;
 import View.SudokuButton;
 
+import java.util.Optional;
+
 
 /**
  * Created by Paf on 24-02-2016.
@@ -30,12 +33,18 @@ public class Controller {
     PuzzleChecker puzzleChecker = new PuzzleChecker();
     private int hintCounter = 0;
     SudokuButton sudokuButton;
+    SudokuChooserDialog sudokuChooserDialog;
 
 
 
     // Methods for button presses
     public void startButtonClicked() {
         System.out.println("Clicked start.");
+
+        // Create a new dialog
+        sudokuChooserDialog = new SudokuChooserDialog();
+        puzzleChooserDialog();
+
     }
 
     public void generateButtonClicked() {
@@ -89,7 +98,7 @@ public class Controller {
         System.out.println("Clicked Pause Timer.");
     }
 
-
+    // Different scenarios depending on the user input on the button.
     private void chooseASudokuNumber(KeyEvent keyEvent) {
         
         //System.out.print(keyEvent.getTarget().toString());
@@ -123,6 +132,9 @@ public class Controller {
                 case DIGIT9:
                     ((SudokuButton) keyEvent.getTarget()).setText("9");
                     break;
+                case BACK_SPACE:
+                    ((SudokuButton) keyEvent.getTarget()).setText("");
+                    break;
 
             }
 
@@ -134,25 +146,40 @@ public class Controller {
         }
     }
 
+    // Uses the PuzzleChecker to check if the number chosen on a button is valid / not valid.
     private void validNumberChecker(SudokuButton button) {
 
-        // Take the button text, convert it to integer and insert it in the sPuzzle using the coordinates from the button.
-        // These coords matches with how the sPuzzle is set up.
-        int userDigit = Integer.parseInt(button.getButtonText());
-        reader.sPuzzle[button.getButtonXPos()][button.getButtonYPos()].setDigit(userDigit);
-        System.out.println(reader.sPuzzle[button.getButtonXPos()][button.getButtonYPos()].getDigit() + ": New value set in the reader.sPuzzle");
+       if(!button.getButtonText().equals("")) {
+           // Take the button text, convert it to integer and insert it in the sPuzzle using the coordinates from the button.
+           // These coords matches with how the sPuzzle is set up.
+           int userDigit = Integer.parseInt(button.getButtonText());
+           reader.sPuzzle[button.getButtonXPos()][button.getButtonYPos()].setDigit(userDigit);
+           System.out.println(reader.sPuzzle[button.getButtonXPos()][button.getButtonYPos()].getDigit() + ": New value set in the reader.sPuzzle");
 
-        if(puzzleChecker.runChecker(reader.sPuzzle)) {
-            button.setValidStyle();
-            System.out.println("valid");
-        } else {
-            button.setNotValidStyle();
-            System.out.println("not valid");
-        }
+
+           if(puzzleChecker.runChecker(reader.sPuzzle)) {
+               button.setValidStyle();
+               System.out.println("valid");
+           } else {
+               button.setNotValidStyle();
+               System.out.println("not valid");
+           }
+       } else {
+           button.setNotValidStyle();
+           System.out.println("Backspaced used, deleting text and setting notValidStyle");
+
+           // Ensure that when we use the backspace to delete a number, that it also gets updated in the sPuzzle to a NULL , in our case a 0 is the NULL
+           reader.sPuzzle[button.getButtonXPos()][button.getButtonYPos()].setDigit(0);
+       }
+
+
+
+
+
 
     }
 
-
+    // Creating sudokuGridButtons.
     private void sudokuGridButtons() {
         int digit;
             for(int i = 0; i < reader.pSize*reader.pSize; i++) {
@@ -169,9 +196,7 @@ public class Controller {
 
     }
 
-
-
-    // TextArea
+    // TextArea (Prints to the GUI console
     private void guiConsolPuzzlePrint(Tile[][] tPuzzle, int pSize){
 
         textAreaConsole.appendText("The size of the puzzle: " + pSize +"\n");
@@ -199,6 +224,24 @@ public class Controller {
 
         }
 
+
+
+    }
+
+    // Activates a popup dialog for choosing a puzzle.
+
+    private void puzzleChooserDialog() {
+
+        Optional<String> result = sudokuChooserDialog.showAndWait();
+        String answerSelected = "";
+
+        if(result.isPresent()) {
+            answerSelected = result.get();
+        } else {
+            // If no result is present.
+        }
+
+        System.out.println("We selected: " + answerSelected);
 
 
     }
