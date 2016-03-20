@@ -136,6 +136,7 @@ public class Controller {
                     ((SudokuButton) keyEvent.getTarget()).setText("");
                     break;
 
+
             }
 
             // Load this specific number into reader.sPuzzle by taking the text from the button and placing it in the stored puzzle.
