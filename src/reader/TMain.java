@@ -1,17 +1,14 @@
 package reader;
 
 //import solver.BruteForce;
-import solver.BruteForce;
-import solver.Field;
-import solver.PuzzleChecker;
-import solver.Tile;
+import solver.*;
 
 
 /**
  * Created by minit on 25-02-2016.
  */
 public class TMain {
-    // Hej
+
     static Tile[][] cPuzzle;
     static Field[][] cFields;
     static Tile[][] sPuzzle;
@@ -26,10 +23,12 @@ public class TMain {
         PuzzleChecker checker = new PuzzleChecker();
         System.out.println(checker.runChecker(cPuzzle));
 
+        CandidateFinder.runFinder(cPuzzle);
         BruteForce bForce = new BruteForce();
         sPuzzle = bForce.solver(cPuzzle);
 
         reader.pPuzzle(sPuzzle);
+
     }
 
 

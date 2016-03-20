@@ -1,24 +1,26 @@
 package solver;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by minit on 02-03-2016.
  */
 public class Tile {
     Field cField;
-    int digit;
-    int[] candidates;
+    private int digit;
+    private List<Integer> candidates;
 
 
     public Tile(int digit, int max){
         this.digit = digit;
-        candidates = new int[max];
+        candidates = new ArrayList<>();
 
         if(digit == 0){
-            for(int i = 0; i < max ; i++){
-                candidates[i] = i + 1;
+            for(int i = 1; i <=9 ; i++){
+                candidates.add(i);
             }
-        }else{
-            candidates = null;
         }
     }
 
@@ -35,5 +37,8 @@ public class Tile {
     public void setDigit(int i){
         digit = i;
     }
-
+    public List<Integer> getCandidates(){return candidates; }
+    public void setCandidates(List<Integer> list){
+        candidates = list;
+    }
 }

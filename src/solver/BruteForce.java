@@ -1,5 +1,10 @@
 package solver;
 
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by minit on 02-03-2016.
  */
@@ -14,32 +19,65 @@ public class BruteForce {
         this.cPuzzle = cPuzzle;
 
         puzzleCords = new int[2][cPuzzle.length * cPuzzle.length];
+        /*
+            2 double lists managing the coordinates of the empty cells.
+            One for the ones yet to be evaluated and on for the ones that has been evaluated.
+         */
+        List<List<Integer>> coords = GenericMethods.findEmptyCells(cPuzzle);
+        List<List<Integer>> checkedCoords = new ArrayList<List<Integer>>();
+        checkedCoords.add(new ArrayList<>());
+        checkedCoords.add(new ArrayList<>());
 
-        findEmptyCells();
+        // Variable for remembering the number of empty cells in the beginning.
+        int oldSize = coords.get(0).size();
 
-        boolean solverDone= false;
-        int cPos = 0;
+        boolean solverDone = false;
         PuzzleChecker pChecker = new PuzzleChecker();
-        int empty = pos;
 
-        while(!solverDone && cPos <= pos && empty != 0){
-            int xPos = puzzleCords[0][cPos];
-            int yPos = puzzleCords[1][cPos];
-            int i = cPuzzle[xPos][yPos].getDigit() + 1;
+        while(!solverDone && !coords.get(0).isEmpty() && checkedCoords.get(0).size() <= oldSize){
+            int xPos = coords.get(0).get(0); // the current x coordinate
+            int yPos = coords.get(1).get(0); // the current y coordinate
+
+            int i = cPuzzle[xPos][yPos].getDigit()+1;   // incrementing the current digit.
             cPuzzle[xPos][yPos].setDigit(i);
 
+            /*
+                Checking if the digit has crossed the maximum.
+             */
             if(cPuzzle[xPos][yPos].getDigit() > cPuzzle.length){
-                if(cPos == 0){
+                /*
+                    If the cell is the first empty cell and has crossed the maximum,
+                    there cant be any solution for the puzzle.
+                 */
+                if(checkedCoords.get(0).size() == 0){
                     solverDone = true;
                     cPuzzle[xPos][yPos].setDigit(0);
+                    /*
+                        otherwise, look back one one cell to an already checked empty cell,
+                        and reevaluate with incrementing the number.
+                        "Popping" from the 'checked' stack and pushing back to the 'pending' stack.
+                     */
                 }else{
-                    cPos--;
                     cPuzzle[xPos][yPos].setDigit(0);
-                    empty++;
+                    xPos=checkedCoords.get(0).get(0);
+                    yPos=checkedCoords.get(1).get(0);
+
+                    coords.get(0).add(0,xPos);
+                    coords.get(1).add(0,yPos);
+
+                    checkedCoords.get(0).remove(0);
+                    checkedCoords.get(1).remove(0);
                 }
+                /*
+                    If the proposed digit is valid, pop coordinates from 'pending' stack to 'checked' stack.
+                 */
             }else if(pChecker.checkCord(cPuzzle,xPos,yPos)){
-                cPos++;
-                empty--;
+                checkedCoords.get(0).add(0,xPos);
+                checkedCoords.get(1).add(0,yPos);
+
+                coords.get(0).remove(0);
+                coords.get(1).remove(0);
+
             }
 
 
@@ -49,21 +87,4 @@ public class BruteForce {
 
     }
 
-    /*
-        Defining all of the empty cells in the puzzle
-     */
-    public void findEmptyCells(){
-        pos = 0;
-        for(int i = 0 ; i < cPuzzle.length ; i++){
-            for(int j = 0 ; j < cPuzzle[i].length ; j++){
-                if(cPuzzle[i][j].getDigit() == 0){
-                    puzzleCords[0][pos] = i;
-                    puzzleCords[1][pos] = j;
-                    pos++;
-                }
-            }
-        }
-
-
-    }
 }
