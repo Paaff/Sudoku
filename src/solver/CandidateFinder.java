@@ -16,8 +16,13 @@ public class CandidateFinder {
             for(int j = 0 ; j < cPuzzle.length ; j++){
                 eliminateCandidates(cPuzzle,i,j);
 
+                System.out.println(i+ " "+ j + " " + cPuzzle[i][j].getCandidates());
+
+
             }
         }
+        System.out.println(cPuzzle[5][8].getCandidates().containsAll(cPuzzle[5][7].getCandidates()));
+        System.out.println(cPuzzle[6][2].getCandidates().equals(cPuzzle[4][5].getCandidates()));
     }
 
     public static void eliminateCandidates(Tile[][] cPuzzle, int x, int y){

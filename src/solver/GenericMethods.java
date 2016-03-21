@@ -16,7 +16,7 @@ public class GenericMethods {
         coords[0] = new LinkedList<Integer>();
         coords[1] = new LinkedList<Integer>();
 */
-        List<List<Integer>> coords = new ArrayList<List<Integer>>();
+        List<List<Integer>> coords = new ArrayList<>();
         coords.add(new ArrayList<>());
         coords.add(new ArrayList<>());
 
@@ -31,6 +31,30 @@ public class GenericMethods {
         System.out.println(coords.get(0));
         System.out.println(coords.get(1));
         return coords;
+
+    }
+
+    public static void updateXAxis(int y, Tile[][] cPuzzle, List candidates, Tile t){
+        for(int i = 0; i < cPuzzle.length ; i++){
+            if(cPuzzle[i][y] != t)
+                cPuzzle[i][y].getCandidates().removeAll(candidates);
+        }
+
+    }
+
+    public static void updateYAxis(int x, Tile[][] cPuzzle, List candidates, Tile t){
+
+        for(int i = 0 ; i < cPuzzle.length ; i++){
+            if(cPuzzle[x][i] != t)
+                cPuzzle[x][i].getCandidates().removeAll(candidates);
+        }
+    }
+
+    public static void updateField(Field field, List candidates, Tile s){
+        for(Tile t: field.getTiles()){
+            if(s!=t)
+                t.getCandidates().removeAll(candidates);
+        }
 
     }
 }
