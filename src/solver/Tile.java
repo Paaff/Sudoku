@@ -9,11 +9,11 @@ import java.util.List;
  */
 public class Tile {
     Field cField;
-    private int digit;
+    private int digit,X,Y;
     private List<Integer> candidates;
 
 
-    public Tile(int digit, int max){
+    public Tile(int digit, int max, int X, int Y){
         this.digit = digit;
         candidates = new ArrayList<>();
 
@@ -22,12 +22,15 @@ public class Tile {
                 candidates.add(i);
             }
         }
+
+        this.X = X; this.Y = Y;
     }
 
     public void giveField(Field f){
         cField = f;
     }
-
+    public int getX(){return X;}
+    public int getY(){return Y;}
     public Field getField(){
         return cField;
     }

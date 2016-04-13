@@ -17,7 +17,7 @@ public class PuzzleReader {
     Field[][] sFields;
     File file;
     public int pSize; // The size of the puzzle. It is the first number read from the file.
-    String s = "src\\reader\\puzzle4_1.txt"; // Source of the file
+    String s = "src\\reader\\puzzle3_6.txt"; // Source of the file
 
     public Tile[][] runReader(){
 
@@ -46,9 +46,9 @@ public class PuzzleReader {
 
                     try{
                         int j = Integer.parseInt(tList[i]);
-                        sPuzzle[i][tmp] = new Tile(j, sPuzzle.length);
+                        sPuzzle[i][tmp] = new Tile(j, sPuzzle.length,i,tmp);
                     }catch(NumberFormatException e){
-                        sPuzzle[i][tmp] = new Tile(0, sPuzzle.length);
+                        sPuzzle[i][tmp] = new Tile(0, sPuzzle.length,i,tmp);
                     }
                 }
                 tmp++;

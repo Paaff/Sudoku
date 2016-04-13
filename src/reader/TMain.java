@@ -26,7 +26,7 @@ public class TMain {
         CandidateFinder.runFinder(cPuzzle);
 
         // Algorithm2
-        Algorithm2.runAlgorithm2(cPuzzle);
+        Algorithm2.runAlgorithm2(cPuzzle,cFields);
         reader.pPuzzle(cPuzzle);
 
 

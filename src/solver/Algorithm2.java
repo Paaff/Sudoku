@@ -10,7 +10,7 @@ package solver;
 public class Algorithm2 {
 
 
-    public static void runAlgorithm2(Tile[][] cPuzzle) {
+    public static void runAlgorithm2(Tile[][] cPuzzle, Field[][] cField) {
 
 
         boolean proceed = true;
@@ -29,6 +29,16 @@ public class Algorithm2 {
             else if(Singles.hiddenSingle(cPuzzle)) {
                 proceed=true;
             }
+
+            else if(Locked.lockedPointing(cPuzzle,cField)){
+                proceed=true;
+
+            }
+
+            else if(Locked.lockedClaiming(cPuzzle)){
+                proceed = true;
+            }
+
 
             if(!proceed){
                 // algorithm is proceed, solved the possible or couldnt solve it

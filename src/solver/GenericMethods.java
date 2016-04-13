@@ -57,23 +57,58 @@ public class GenericMethods {
         }
 
     }
-
+    // removes candidate from x-axis when dealing with singles.
     public static void removeCandidateXAxis(int y, Tile[][] cPuzzle, int digit){
         for(int i = 0 ; i<cPuzzle.length ; i++){
             cPuzzle[i][y].getCandidates().remove(new Integer(digit));
         }
     }
-
+    // removes candidates from y-axis when dealing with singles.
     public static void removeCandidateYAxis(int x, Tile[][] cPuzzle, int digit){
         for(int i = 0 ; i<cPuzzle.length ;i++){
             cPuzzle[x][i].getCandidates().remove(new Integer((digit)));
         }
     }
-
+    //removes candidates from field when dealing with singles.
     public static void removeCandidateField(Field field, int digit){
         for(Tile t:field.getTiles()){
             t.getCandidates().remove(new Integer(digit));
         }
+    }
+    //removes candidates from x-axis when dealing with pointing pairs, and acts as a change-checker.
+    public static boolean removeLockedCandidatesXAxis(int y, Tile[][] cPuzzle, Field f, int digit){
+        boolean result = false;
+
+        for(int i = 0; i<cPuzzle.length;i++){
+            if(cPuzzle[i][y].getField()!=f && cPuzzle[i][y].getCandidates().contains(digit)){
+                cPuzzle[i][y].getCandidates().remove(new Integer(digit));
+                result = true;
+            }
+        }
+        return result;
+    }
+    //removes candidates from y-axis when dealing with pointing pairs, and acts as a change-checker.
+    public static boolean removeLockedCandidatesYAxis(int x, Tile[][] cPuzzle, Field f, int digit){
+        boolean result = false;
+
+        for(int i = 0; i<cPuzzle.length;i++){
+            if(cPuzzle[x][i].getField()!=f && cPuzzle[x][i].getCandidates().contains(digit)){
+                cPuzzle[x][i].getCandidates().remove(new Integer(digit));
+                result = true;
+            }
+        }
+        return result;
+    }
+    //removes candidates from field when dealing with claiming pairs, and acts as change-checker.
+    public static boolean removeClaimedCandidates(List<Tile> tiles,Field f, int digit){
+        boolean result = false;
+        for(Tile t:f.getTiles()){
+            if(!tiles.contains(t) && t.getCandidates().contains(digit)){
+                t.getCandidates().remove(new Integer(digit));
+                result = true;
+            }
+        }
+        return  result;
     }
 
     public static void findPreemptives(Tile[][] cPuzzle, int x, int y){
