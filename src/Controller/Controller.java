@@ -185,12 +185,12 @@ public class Controller {
         int digit;
             for(int i = 0; i < reader.pSize*reader.pSize; i++) {
                 for(int j = 0; j < reader.pSize*reader.pSize; j++) {
-                    digit = reader.sPuzzle[j][i].getDigit();
-                    sudokuButton = new SudokuButton("", ""+digit, j,i);
+                    digit = reader.sPuzzle[i][j].getDigit();
+                    sudokuButton = new SudokuButton("", ""+digit, i,j);
                     sudokuButton.setOnKeyPressed(this::chooseASudokuNumber);
 
 
-                    sudokuGrid.add(sudokuButton, j, i);
+                    sudokuGrid.add(sudokuButton, i, j);
 
                 }
             }
