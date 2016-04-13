@@ -58,6 +58,24 @@ public class GenericMethods {
 
     }
 
+    public static void removeCandidateXAxis(int y, Tile[][] cPuzzle, int digit){
+        for(int i = 0 ; i<cPuzzle.length ; i++){
+            cPuzzle[i][y].getCandidates().remove(new Integer(digit));
+        }
+    }
+
+    public static void removeCandidateYAxis(int x, Tile[][] cPuzzle, int digit){
+        for(int i = 0 ; i<cPuzzle.length ;i++){
+            cPuzzle[x][i].getCandidates().remove(new Integer((digit)));
+        }
+    }
+
+    public static void removeCandidateField(Field field, int digit){
+        for(Tile t:field.getTiles()){
+            t.getCandidates().remove(new Integer(digit));
+        }
+    }
+
     public static void findPreemptives(Tile[][] cPuzzle, int x, int y){
         int size = cPuzzle[x][y].getCandidates().size();
         int xAxis = 1;

@@ -24,14 +24,24 @@ public class TMain {
         System.out.println(checker.runChecker(cPuzzle));
 
         CandidateFinder.runFinder(cPuzzle);
+
+        // Algorithm2
+        Algorithm2.runAlgorithm2(cPuzzle);
+        reader.pPuzzle(cPuzzle);
+
+
+
+
+
+
        /*
         BruteForce bForce = new BruteForce();
         sPuzzle = bForce.solver(cPuzzle);
-*/
+
         Algorithm1.runAlgorihm(cPuzzle);
         reader.pPuzzle(cPuzzle);
         CandidateFinder.runFinder(cPuzzle);
-
+        */
     }
 
 

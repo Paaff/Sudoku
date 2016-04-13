@@ -18,7 +18,7 @@ public class Tile {
         candidates = new ArrayList<>();
 
         if(digit == 0){
-            for(int i = 1; i <=9 ; i++){
+            for(int i = 1; i <= max ; i++){
                 candidates.add(i);
             }
         }
