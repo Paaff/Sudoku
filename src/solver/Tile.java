@@ -40,6 +40,10 @@ public class Tile {
     public void setDigit(int i){
         digit = i;
     }
+    public void setAndClear(int i){
+        digit = i;
+        candidates.clear();
+    }
     public List<Integer> getCandidates(){return candidates; }
     public void setCandidates(List<Integer> list){
         candidates = list;

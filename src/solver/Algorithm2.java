@@ -37,6 +37,8 @@ public class Algorithm2 {
 
             else if(Locked.lockedClaiming(cPuzzle)){
                 proceed = true;
+            }else{
+                CandidateFinder.runFinder(cPuzzle);
             }
 
 
