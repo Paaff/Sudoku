@@ -22,7 +22,6 @@ public class Algorithm2 {
 
             // Checking if any progress on the solution can be made by finding a Naked Single.
             if(Singles.nakedSingle(cPuzzle)) {
-                // Shit son
                 proceed=true;
             }
             // Checking if any progress on the solution can be made by finding a Hidden Single.
@@ -37,7 +36,17 @@ public class Algorithm2 {
 
             else if(Locked.lockedClaiming(cPuzzle)){
                 proceed = true;
-            }else{
+            }
+
+            else if(NakedSubsets.NakedPairs(cPuzzle)){
+                proceed = true;
+            }
+
+            else if(NakedSubsets.NakedTriples(cPuzzle)){
+                proceed = true;
+            }
+
+            else{
                 CandidateFinder.runFinder(cPuzzle);
             }
 

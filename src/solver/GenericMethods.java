@@ -1,9 +1,6 @@
 package solver;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by minit on 20-03-2016.
@@ -109,6 +106,85 @@ public class GenericMethods {
             }
         }
         return  result;
+    }
+
+    public static boolean removeNakedPairField(Tile[][] cPuzzle, Tile[] pair){
+        boolean result = false;
+
+        for(Tile t : pair[0].getField().getTiles()){
+            if(pair[0] != t && pair[1] != t && t.getCandidates().removeAll(pair[0].getCandidates())){
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
+    public static boolean removeNakedPairRow(Tile[][] cPuzzle, Tile[] pair){
+        boolean result = false;
+
+        int y = pair[0].getY();
+
+        for(int x = 0; x < cPuzzle.length ; x++){
+            if(pair[0] != cPuzzle[x][y] && pair[1] != cPuzzle[x][y] &&
+                    cPuzzle[x][y].getCandidates().removeAll(pair[0].getCandidates())){
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
+    public static boolean removeNakedPairColumn(Tile[][] cPuzzle, Tile[] pair){
+        boolean result = false;
+
+        int x = pair[0].getX();
+
+        for(int y = 0; y <cPuzzle.length ; y++){
+            if(pair[0] != cPuzzle[x][y] && pair[1] != cPuzzle[x][y]
+                    && cPuzzle[x][y].getCandidates().removeAll(pair[0].getCandidates())){
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
+    public static boolean containsSome(List<Integer> list1, List<Integer> list2){
+        for(Integer i : list2){
+            if(list1.contains(i))
+                return true;
+        }
+        return false;
+    }
+
+    public static boolean sizeOfThree(List<Integer> list1, List<Tile> list2){
+        Set<Integer> temp = new HashSet<>();
+        temp.addAll(list1);
+
+        if(temp.size()== 3 && list2.size() == 3)
+            return true;
+
+        return false;
+    }
+
+    public static boolean removeNakedTripleRow(Tile[][] cPuzzle, List<Tile> tiles, List<Integer> list){
+        boolean result = false;
+        int y = tiles.get(0).getY();
+
+        Set<Integer> temp = new HashSet<>();
+        temp.addAll(list);
+
+        for(int x = 0 ; x <cPuzzle.length ; x++){
+            if(cPuzzle[x][y] != tiles.get(0) && cPuzzle[x][y] != tiles.get(1) && cPuzzle[x][y] != tiles.get(2)
+                    && cPuzzle[x][y].getCandidates().removeAll(temp)){
+                result = true;
+
+            }
+        }
+
+
+        return result;
     }
 
     public static void findPreemptives(Tile[][] cPuzzle, int x, int y){
