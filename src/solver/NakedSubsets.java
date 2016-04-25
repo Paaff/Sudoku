@@ -196,32 +196,173 @@ public class NakedSubsets {
                     }
 
                     // Column
-                    /*
-                    for(int y = j ; y < cPuzzle.length ; y++){
+                    for(int y = i ; y < cPuzzle.length ; y++){
 
-                        List<List<Integer>> candidates = new ArrayList<>();
-                        candidates.add(new ArrayList<>());
-                        candidates.add(new ArrayList<>());
+                        /*
+                         If another tile (x,j) also has 3 or less candidates, we'll check if its part of a possible triple.
+                         We do this by checking if the candidates are already in the list above.
+                          */
+                        if(cPuzzle[i][y].getCandidates().size() <= 3 && cPuzzle[i][y] != cPuzzle[i][j] && cPuzzle[i][y].getDigit() == 0){
+                            boolean newCand = true;
 
-                        List<List<Tile>> tiles = new ArrayList<>();
-                        tiles.add(new ArrayList<>());
-                        tiles.add(new ArrayList<>());
+                            // runs through all of the candidate lists, and checks for two different cases:
+                            for(List l : candidates){
+                                /*
+                                 First case is that every candidate of the tile (x,j) is already in a candidate list,
+                                 if this is the case it means that the tile (x,j) can be added the tile list,
+                                 since it is a possible candidate for the triple.
+                                  */
+                                if(l.containsAll(cPuzzle[i][y].getCandidates())){
+                                    newCand = false;
+                                    tiles.get(candidates.indexOf(l)).add(cPuzzle[i][y]);
+
+                                    /*
+                                    Every time any of the lists are updated, we check to see if both lists lengths are equal
+                                    to 3, if they are it means that we have found a correct triple,
+                                     we then try to update the row, by removing the candidates of the triple from the rest of the row.
+                                     */
+                                    if(GenericMethods.sizeOfThree(l,tiles.get(candidates.indexOf(l)))){
+                                        if(GenericMethods.removeNakedTripleRow(cPuzzle,tiles.get(candidates.indexOf(l)),l)){
+
+                                            result = true;
+                                            System.out.println("Found triples at column " + cPuzzle[i][j].getX() + " "+ l + " " + tiles.get(candidates.indexOf(l)));
+                                        }
+                                    }
+                                /*
+                                Second case is that some of the candidates of the tile (x,j) is already in a candidate list,
+                                if this is the case we'll add all the new candidates to the list. This includes duplicates
+                                but these will be removed when we check for the correctness of triples. We will also add the tile (x,j)
+                                to the tiles list.
+                                 */
+                                }else if(GenericMethods.containsSome(l,cPuzzle[i][y].getCandidates())){
+                                    newCand = false;
+                                    tiles.get(candidates.indexOf(l)).add(cPuzzle[i][y]);
+                                    l.addAll(cPuzzle[i][y].getCandidates());
+
+                                    /*
+                                    Every time any of the lists are updated, we check to see if both lists lengths are equal
+                                    to 3, if they are it means that we have found a correct triple,
+                                     we then try to update the row, by removing the candidates of the triple from the rest of the row.
+                                     */
+                                    if(GenericMethods.sizeOfThree(l,tiles.get(candidates.indexOf(l)))){
+                                        if(GenericMethods.removeNakedTripleRow(cPuzzle,tiles.get(candidates.indexOf(l)),l)){
+
+                                            result = true;
+                                            System.out.println("Found triples at column " + cPuzzle[i][j].getX() +" "+ l + " " + tiles.get(candidates.indexOf(l)));
+                                        }
+                                    }
+                                }
+                            }
+
+                            /*
+                            Last case is that the candidates of tile (x,j) was not found in any of the candidates lists.
+                            In this case we will create a new list for this possible triple. We will do this by adding
+                            the tile (i,j) and the tile (x,j) to the new list, as well as both of their candidates to
+                            the matching list.
+                             */
+                            if(newCand){
+                                List<Integer> newCandList = new ArrayList<>();
+                                newCandList.addAll(cPuzzle[i][y].getCandidates());
+                                newCandList.addAll(cPuzzle[i][j].getCandidates());
+
+                                List<Tile> newTileList = new ArrayList<>();
+                                newTileList.add(cPuzzle[i][j]);
+                                newTileList.add(cPuzzle[i][y]);
+
+                                candidates.add(newCandList);
+                                tiles.add(newTileList);
+                            }
+
+
+
+                        }
 
                     }
 
 
                     // Field
-                    for(Tile t : cPuzzle[i][j].getField().getTiles()){
+                    for(Tile t: cPuzzle[i][j].getField().getTiles()){
 
-                        List<List<Integer>> candidates = new ArrayList<>();
-                        candidates.add(new ArrayList<>());
-                        candidates.add(new ArrayList<>());
+                        /*
+                         If another tile (x,j) also has 3 or less candidates, we'll check if its part of a possible triple.
+                         We do this by checking if the candidates are already in the list above.
+                          */
+                        if(t.getCandidates().size() <= 3 && t != cPuzzle[i][j] && t.getDigit() == 0){
+                            boolean newCand = true;
 
-                        List<List<Tile>> tiles = new ArrayList<>();
-                        tiles.add(new ArrayList<>());
-                        tiles.add(new ArrayList<>());
+                            // runs through all of the candidate lists, and checks for two different cases:
+                            for(List l : candidates){
+                                /*
+                                 First case is that every candidate of the tile (x,j) is already in a candidate list,
+                                 if this is the case it means that the tile (x,j) can be added the tile list,
+                                 since it is a possible candidate for the triple.
+                                  */
+                                if(l.containsAll(t.getCandidates())){
+                                    newCand = false;
+                                    tiles.get(candidates.indexOf(l)).add(t);
 
-                    }*/
+                                    /*
+                                    Every time any of the lists are updated, we check to see if both lists lengths are equal
+                                    to 3, if they are it means that we have found a correct triple,
+                                     we then try to update the row, by removing the candidates of the triple from the rest of the row.
+                                     */
+                                    if(GenericMethods.sizeOfThree(l,tiles.get(candidates.indexOf(l)))){
+                                        if(GenericMethods.removeNakedTripleRow(cPuzzle,tiles.get(candidates.indexOf(l)),l)){
+
+                                            result = true;
+                                            System.out.println("Found triples at Field " + cPuzzle[i][j].getX()/3 + "," + cPuzzle[i][j].getY()/3 + " "+ l + " " + tiles.get(candidates.indexOf(l)));
+                                        }
+                                    }
+                                /*
+                                Second case is that some of the candidates of the tile (x,j) is already in a candidate list,
+                                if this is the case we'll add all the new candidates to the list. This includes duplicates
+                                but these will be removed when we check for the correctness of triples. We will also add the tile (x,j)
+                                to the tiles list.
+                                 */
+                                }else if(GenericMethods.containsSome(l,t.getCandidates())){
+                                    newCand = false;
+                                    tiles.get(candidates.indexOf(l)).add(t);
+                                    l.addAll(t.getCandidates());
+
+                                    /*
+                                    Every time any of the lists are updated, we check to see if both lists lengths are equal
+                                    to 3, if they are it means that we have found a correct triple,
+                                     we then try to update the row, by removing the candidates of the triple from the rest of the row.
+                                     */
+                                    if(GenericMethods.sizeOfThree(l,tiles.get(candidates.indexOf(l)))){
+                                        if(GenericMethods.removeNakedTripleRow(cPuzzle,tiles.get(candidates.indexOf(l)),l)){
+
+                                            result = true;
+                                            System.out.println("Found triples at field " + cPuzzle[i][j].getX() + "," + cPuzzle[i][j].getY() +" "+ l + " " + tiles.get(candidates.indexOf(l)));
+                                        }
+                                    }
+                                }
+                            }
+
+                            /*
+                            Last case is that the candidates of tile (x,j) was not found in any of the candidates lists.
+                            In this case we will create a new list for this possible triple. We will do this by adding
+                            the tile (i,j) and the tile (x,j) to the new list, as well as both of their candidates to
+                            the matching list.
+                             */
+                            if(newCand){
+                                List<Integer> newCandList = new ArrayList<>();
+                                newCandList.addAll(t.getCandidates());
+                                newCandList.addAll(cPuzzle[i][j].getCandidates());
+
+                                List<Tile> newTileList = new ArrayList<>();
+                                newTileList.add(cPuzzle[i][j]);
+                                newTileList.add(t);
+
+                                candidates.add(newCandList);
+                                tiles.add(newTileList);
+                            }
+
+
+
+                        }
+
+                    }
 
 
                 }
