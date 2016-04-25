@@ -17,7 +17,7 @@ public class PuzzleReader {
     Field[][] sFields;
     File file;
     public int pSize; // The size of the puzzle. It is the first number read from the file.
-    String s = "src\\reader\\puzzle3_4.txt"; // Source of the file
+    String s = "src\\reader\\puzzle3_16.txt"; // Source of the file
 
     public Tile[][] runReader(){
 

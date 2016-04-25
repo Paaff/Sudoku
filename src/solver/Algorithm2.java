@@ -24,7 +24,7 @@ public class Algorithm2 {
             if(Singles.nakedSingle(cPuzzle)) {
                 proceed=true;
             }
-            // Checking if any progress on the solution can be made by finding a Hidden Single.
+          // Checking if any progress on the solution can be made by finding a Hidden Single.
             else if(Singles.hiddenSingle(cPuzzle)) {
                 proceed=true;
             }
@@ -42,7 +42,14 @@ public class Algorithm2 {
                 proceed = true;
             }
 
-            else if(NakedSubsets.NakedTriples(cPuzzle)){
+            else if(NakedSubsets.nakedLargeSubsets(cPuzzle, 3)){
+                proceed = true;
+            }
+
+            else if(NakedSubsets.nakedLargeSubsets(cPuzzle, 4)){
+                proceed = true;
+            }
+            else if(BasicFish.xWing(cPuzzle)){
                 proceed = true;
             }
 

@@ -158,17 +158,21 @@ public class GenericMethods {
         return false;
     }
 
-    public static boolean sizeOfThree(List<Integer> list1, List<Tile> list2){
+    public static boolean listSizeCheck(List<Integer> list1, List<Tile> list2, int size){
         Set<Integer> temp = new HashSet<>();
         temp.addAll(list1);
 
-        if(temp.size()== 3 && list2.size() == 3)
+        if(size == 4 && list2.size() == 4 && temp.size() == 4){
+             int index = 0;
+        }
+
+        if(temp.size()== size && list2.size() == size)
             return true;
 
         return false;
     }
 
-    public static boolean removeNakedTripleRow(Tile[][] cPuzzle, List<Tile> tiles, List<Integer> list){
+    public static boolean removeNakedSubsetRow(Tile[][] cPuzzle, List<Tile> tiles, List<Integer> list){
         boolean result = false;
         int y = tiles.get(0).getY();
 
@@ -176,15 +180,84 @@ public class GenericMethods {
         temp.addAll(list);
 
         for(int x = 0 ; x <cPuzzle.length ; x++){
-            if(cPuzzle[x][y] != tiles.get(0) && cPuzzle[x][y] != tiles.get(1) && cPuzzle[x][y] != tiles.get(2)
-                    && cPuzzle[x][y].getCandidates().removeAll(temp)){
+            if(!tiles.contains(cPuzzle[x][y]) && cPuzzle[x][y].getCandidates().removeAll(temp)){
                 result = true;
 
             }
         }
+        return result;
+    }
 
+    public static boolean removeNakedSubsetColumn(Tile[][] cPuzzle, List<Tile> tiles, List<Integer> list){
+        boolean result = false;
+        int x = tiles.get(0).getX();
+
+        Set<Integer> temp = new HashSet<>();
+        temp.addAll(list);
+
+        for(int y = 0 ; y <cPuzzle.length ; y++){
+            if(!tiles.contains(cPuzzle[x][y]) && cPuzzle[x][y].getCandidates().removeAll(temp)){
+                result = true;
+
+            }
+        }
+        return result;
+    }
+    public static boolean removeNakedSubsetField(Tile[][] cPuzzle, List<Tile> tiles, List<Integer> list){
+        boolean result = false;
+
+        Set<Integer> temp = new HashSet<>();
+        temp.addAll(list);
+
+        for(Tile t: tiles.get(0).getField().getTiles()){
+            if(!tiles.contains(t) && t.getCandidates().removeAll(temp)){
+                result = true;
+
+            }
+        }
+        return result;
+    }
+
+    public static boolean removeXWingColumn(Tile[][] cPuzzle, List<Tile> columnTiles, int digit){
+        boolean result = false;
+        int y1 = columnTiles.get(0).getY();
+        int y2 = columnTiles.get(1).getY();
+        for(int x = 0 ; x < cPuzzle.length ; x++){
+            if(!columnTiles.contains(cPuzzle[x][y1])){
+                if(cPuzzle[x][y1].getCandidates().remove(new Integer(digit))){
+                    result = true;
+                }
+            }
+
+            if(!columnTiles.contains(cPuzzle[x][y2])){
+                if(cPuzzle[x][y2].getCandidates().remove(new Integer(digit))){
+                    result = true;
+                }
+            }
+
+        }
 
         return result;
+    }
+
+    public static boolean removeXWingRows(Tile[][] cPuzzle, List<Tile> rowTiles, int digit){
+        boolean result = false;
+        int x1 = rowTiles.get(0).getX();
+        int x2 = rowTiles.get(1).getX();
+        for(int y = 0 ; y <cPuzzle.length ; y++){
+            if(!rowTiles.contains(cPuzzle[x1][y])){
+                result = cPuzzle[x1][y].getCandidates().remove(new Integer(digit));
+
+            }
+
+            if(!rowTiles.contains(cPuzzle[x2][y])){
+
+                result = cPuzzle[x2][y].getCandidates().remove(new Integer(digit));
+
+            }
+        }
+        return result;
+
     }
 
     public static void findPreemptives(Tile[][] cPuzzle, int x, int y){

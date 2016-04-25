@@ -1,7 +1,9 @@
 package solver;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by minit on 20-04-2016.
@@ -87,84 +89,95 @@ public class NakedSubsets {
         return result;
     }
 
-    public static boolean NakedTriples(Tile[][] cPuzzle) {
+    /*
+    Subsets, for instance triples or quadruple, are when a set of candidates exists across an equal amount of tiles,
+    on the same row, column or field.
+
+    We use the parameter *size* for the size of the subset. 3 for triples and so on.
+     */
+
+    public static boolean nakedLargeSubsets(Tile[][] cPuzzle, int size) {
         boolean result = false;
         // running through all tiles
         for(int i = 0 ; i < cPuzzle.length ; i++){
             for(int j = 0 ; j <cPuzzle.length ; j++){
 
                 /*
-                Check to see if the empty tile has 3 or less candidates, but not 0.
+                Check to see if the empty tile has *size* or less candidates, but not 0.
                  */
-                if(cPuzzle[i][j].getCandidates().size() <= 3 && cPuzzle[i][j].getDigit() == 0){
+                if(cPuzzle[i][j].getCandidates().size() <= size && cPuzzle[i][j].getDigit() == 0){
 
                     /*
-                    Two lists are added. One is a list of all possible triple candidates.
-                    This means that looking at tile with coordinate (i,j), we will make a list of all possible triple sets
+                    Two lists are added. One is a list of all possible subsets candidates.
+                    This means that looking at tile with coordinate (i,j), we will make a list of all possible subsets sets
 
 
                     The list candidates consists of all possible candidate matches for the tile with coordinate (i,j).
-                    The list tiles consists of the different tiles being a part of this triple.
+                    The list tiles consists of the different tiles being a part of this subset.
                     Pairing lists has the same indexing in the different lists.
                      */
-                    List<List<Integer>> candidates = new ArrayList<>();
-                    List<List<Tile>> tiles = new ArrayList<>();
+                    List<List<Integer>> candidatesRow = new ArrayList<>();
+                    List<List<Tile>> tilesRow = new ArrayList<>();
+                    List<List<Integer>> candidatesColumn = new ArrayList<>();
+                    List<List<Tile>> tilesColumn = new ArrayList<>();
+                    List<List<Integer>> candidatesField = new ArrayList<>();
+                    List<List<Tile>> tilesField = new ArrayList<>();
 
                     // Row
-                    // Checking for triples on the row where the tile(i,j) is located.
+                    // Checking for subsets on the row where the tile(i,j) is located.
                     for(int x = i ; x < cPuzzle.length ; x++){
 
                         /*
-                         If another tile (x,j) also has 3 or less candidates, we'll check if its part of a possible triple.
+                         If another tile (x,j) also has *size* or less candidates, we'll check if its part of a possible subset.
                          We do this by checking if the candidates are already in the list above.
                           */
-                        if(cPuzzle[x][j].getCandidates().size() <= 3 && cPuzzle[x][j] != cPuzzle[i][j] && cPuzzle[x][j].getDigit() == 0){
+                        if(cPuzzle[x][j].getCandidates().size() <= size && cPuzzle[x][j] != cPuzzle[i][j] && cPuzzle[x][j].getDigit() == 0){
                             boolean newCand = true;
 
                             // runs through all of the candidate lists, and checks for two different cases:
-                            for(List l : candidates){
+                            for(List l : candidatesRow){
                                 /*
                                  First case is that every candidate of the tile (x,j) is already in a candidate list,
                                  if this is the case it means that the tile (x,j) can be added the tile list,
-                                 since it is a possible candidate for the triple.
+                                 since it is a possible candidate for the subset.
                                   */
                                 if(l.containsAll(cPuzzle[x][j].getCandidates())){
                                     newCand = false;
-                                    tiles.get(candidates.indexOf(l)).add(cPuzzle[x][j]);
+                                    tilesRow.get(candidatesRow.indexOf(l)).add(cPuzzle[x][j]);
 
                                     /*
                                     Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to 3, if they are it means that we have found a correct triple,
-                                     we then try to update the row, by removing the candidates of the triple from the rest of the row.
+                                    to 3, if they are it means that we have found a correct subset,
+                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.sizeOfThree(l,tiles.get(candidates.indexOf(l)))){
-                                        if(GenericMethods.removeNakedTripleRow(cPuzzle,tiles.get(candidates.indexOf(l)),l)){
+                                    if(GenericMethods.listSizeCheck(l,tilesRow.get(candidatesRow.indexOf(l)), size)){
+                                        if(GenericMethods.removeNakedSubsetRow(cPuzzle,tilesRow.get(candidatesRow.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found triples at row " + cPuzzle[i][j].getY() + " "+ l + " " + tiles.get(candidates.indexOf(l)));
+                                            System.out.println("Found subset at row " + cPuzzle[i][j].getY() + " "+ l + " " + tilesRow.get(candidatesRow.indexOf(l)));
                                         }
                                     }
                                 /*
                                 Second case is that some of the candidates of the tile (x,j) is already in a candidate list,
                                 if this is the case we'll add all the new candidates to the list. This includes duplicates
-                                but these will be removed when we check for the correctness of triples. We will also add the tile (x,j)
+                                but these will be removed when we check for the correctness of subsets. We will also add the tile (x,j)
                                 to the tiles list.
                                  */
                                 }else if(GenericMethods.containsSome(l,cPuzzle[x][j].getCandidates())){
                                     newCand = false;
-                                    tiles.get(candidates.indexOf(l)).add(cPuzzle[x][j]);
+                                    tilesRow.get(candidatesRow.indexOf(l)).add(cPuzzle[x][j]);
                                     l.addAll(cPuzzle[x][j].getCandidates());
 
                                     /*
                                     Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to 3, if they are it means that we have found a correct triple,
-                                     we then try to update the row, by removing the candidates of the triple from the rest of the row.
+                                    to 3, if they are it means that we have found a correct subset,
+                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.sizeOfThree(l,tiles.get(candidates.indexOf(l)))){
-                                        if(GenericMethods.removeNakedTripleRow(cPuzzle,tiles.get(candidates.indexOf(l)),l)){
+                                    if(GenericMethods.listSizeCheck(l,tilesRow.get(candidatesRow.indexOf(l)), size)){
+                                        if(GenericMethods.removeNakedSubsetRow(cPuzzle,tilesRow.get(candidatesRow.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found triples at row " + cPuzzle[i][j].getY() +" "+ l + " " + tiles.get(candidates.indexOf(l)));
+                                            System.out.println("Found subset at row " + cPuzzle[i][j].getY() +" "+ l + " " + tilesRow.get(candidatesRow.indexOf(l)));
                                         }
                                     }
                                 }
@@ -172,7 +185,7 @@ public class NakedSubsets {
 
                             /*
                             Last case is that the candidates of tile (x,j) was not found in any of the candidates lists.
-                            In this case we will create a new list for this possible triple. We will do this by adding
+                            In this case we will create a new list for this possible subset. We will do this by adding
                             the tile (i,j) and the tile (x,j) to the new list, as well as both of their candidates to
                             the matching list.
                              */
@@ -185,8 +198,14 @@ public class NakedSubsets {
                                 newTileList.add(cPuzzle[i][j]);
                                 newTileList.add(cPuzzle[x][j]);
 
-                                candidates.add(newCandList);
-                                tiles.add(newTileList);
+                                Set<Integer> temp = new HashSet<>();
+                                temp.addAll(newCandList);
+
+                                if(temp.size() <= size){
+                                    candidatesRow.add(newCandList);
+                                    tilesRow.add(newTileList);
+                                }
+
                             }
 
 
@@ -199,56 +218,56 @@ public class NakedSubsets {
                     for(int y = i ; y < cPuzzle.length ; y++){
 
                         /*
-                         If another tile (x,j) also has 3 or less candidates, we'll check if its part of a possible triple.
+                         If another tile (x,j) also has *size* or less candidates, we'll check if its part of a possible subset.
                          We do this by checking if the candidates are already in the list above.
                           */
-                        if(cPuzzle[i][y].getCandidates().size() <= 3 && cPuzzle[i][y] != cPuzzle[i][j] && cPuzzle[i][y].getDigit() == 0){
+                        if(cPuzzle[i][y].getCandidates().size() <= size && cPuzzle[i][y] != cPuzzle[i][j] && cPuzzle[i][y].getDigit() == 0){
                             boolean newCand = true;
 
                             // runs through all of the candidate lists, and checks for two different cases:
-                            for(List l : candidates){
+                            for(List l : candidatesColumn){
                                 /*
                                  First case is that every candidate of the tile (x,j) is already in a candidate list,
                                  if this is the case it means that the tile (x,j) can be added the tile list,
-                                 since it is a possible candidate for the triple.
+                                 since it is a possible candidate for the subset.
                                   */
                                 if(l.containsAll(cPuzzle[i][y].getCandidates())){
                                     newCand = false;
-                                    tiles.get(candidates.indexOf(l)).add(cPuzzle[i][y]);
+                                    tilesColumn.get(candidatesColumn.indexOf(l)).add(cPuzzle[i][y]);
 
                                     /*
                                     Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to 3, if they are it means that we have found a correct triple,
-                                     we then try to update the row, by removing the candidates of the triple from the rest of the row.
+                                    to *size*, if they are it means that we have found a correct subset,
+                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.sizeOfThree(l,tiles.get(candidates.indexOf(l)))){
-                                        if(GenericMethods.removeNakedTripleRow(cPuzzle,tiles.get(candidates.indexOf(l)),l)){
+                                    if(GenericMethods.listSizeCheck(l,tilesColumn.get(candidatesColumn.indexOf(l)),size)){
+                                        if(GenericMethods.removeNakedSubsetColumn(cPuzzle,tilesColumn.get(candidatesColumn.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found triples at column " + cPuzzle[i][j].getX() + " "+ l + " " + tiles.get(candidates.indexOf(l)));
+                                            System.out.println("Found subset at column " + cPuzzle[i][j].getX() + " "+ l + " " + tilesColumn.get(candidatesColumn.indexOf(l)));
                                         }
                                     }
                                 /*
                                 Second case is that some of the candidates of the tile (x,j) is already in a candidate list,
                                 if this is the case we'll add all the new candidates to the list. This includes duplicates
-                                but these will be removed when we check for the correctness of triples. We will also add the tile (x,j)
+                                but these will be removed when we check for the correctness of subsets. We will also add the tile (x,j)
                                 to the tiles list.
                                  */
                                 }else if(GenericMethods.containsSome(l,cPuzzle[i][y].getCandidates())){
                                     newCand = false;
-                                    tiles.get(candidates.indexOf(l)).add(cPuzzle[i][y]);
+                                    tilesColumn.get(candidatesColumn.indexOf(l)).add(cPuzzle[i][y]);
                                     l.addAll(cPuzzle[i][y].getCandidates());
 
                                     /*
                                     Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to 3, if they are it means that we have found a correct triple,
-                                     we then try to update the row, by removing the candidates of the triple from the rest of the row.
+                                    to *size*, if they are it means that we have found a correct subset,
+                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.sizeOfThree(l,tiles.get(candidates.indexOf(l)))){
-                                        if(GenericMethods.removeNakedTripleRow(cPuzzle,tiles.get(candidates.indexOf(l)),l)){
+                                    if(GenericMethods.listSizeCheck(l,tilesColumn.get(candidatesColumn.indexOf(l)), size)){
+                                        if(GenericMethods.removeNakedSubsetColumn(cPuzzle,tilesColumn.get(candidatesColumn.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found triples at column " + cPuzzle[i][j].getX() +" "+ l + " " + tiles.get(candidates.indexOf(l)));
+                                            System.out.println("Found subset at column " + cPuzzle[i][j].getX() +" "+ l + " " + tilesColumn.get(candidatesColumn.indexOf(l)));
                                         }
                                     }
                                 }
@@ -256,7 +275,7 @@ public class NakedSubsets {
 
                             /*
                             Last case is that the candidates of tile (x,j) was not found in any of the candidates lists.
-                            In this case we will create a new list for this possible triple. We will do this by adding
+                            In this case we will create a new list for this possible subset. We will do this by adding
                             the tile (i,j) and the tile (x,j) to the new list, as well as both of their candidates to
                             the matching list.
                              */
@@ -269,8 +288,14 @@ public class NakedSubsets {
                                 newTileList.add(cPuzzle[i][j]);
                                 newTileList.add(cPuzzle[i][y]);
 
-                                candidates.add(newCandList);
-                                tiles.add(newTileList);
+                                Set<Integer> temp = new HashSet<>();
+                                temp.addAll(newCandList);
+
+                                if(temp.size() <= 4){
+                                    candidatesColumn.add(newCandList);
+                                    tilesColumn.add(newTileList);
+                                }
+
                             }
 
 
@@ -284,56 +309,56 @@ public class NakedSubsets {
                     for(Tile t: cPuzzle[i][j].getField().getTiles()){
 
                         /*
-                         If another tile (x,j) also has 3 or less candidates, we'll check if its part of a possible triple.
+                         If another tile (x,j) also has *size* or less candidates, we'll check if its part of a possible subset.
                          We do this by checking if the candidates are already in the list above.
                           */
-                        if(t.getCandidates().size() <= 3 && t != cPuzzle[i][j] && t.getDigit() == 0){
+                        if(t.getCandidates().size() <= size && t != cPuzzle[i][j] && t.getDigit() == 0){
                             boolean newCand = true;
 
                             // runs through all of the candidate lists, and checks for two different cases:
-                            for(List l : candidates){
+                            for(List l : candidatesField){
                                 /*
                                  First case is that every candidate of the tile (x,j) is already in a candidate list,
                                  if this is the case it means that the tile (x,j) can be added the tile list,
-                                 since it is a possible candidate for the triple.
+                                 since it is a possible candidate for the subset.
                                   */
                                 if(l.containsAll(t.getCandidates())){
                                     newCand = false;
-                                    tiles.get(candidates.indexOf(l)).add(t);
+                                    tilesField.get(candidatesField.indexOf(l)).add(t);
 
                                     /*
                                     Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to 3, if they are it means that we have found a correct triple,
-                                     we then try to update the row, by removing the candidates of the triple from the rest of the row.
+                                    to *size*, if they are it means that we have found a correct subset,
+                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.sizeOfThree(l,tiles.get(candidates.indexOf(l)))){
-                                        if(GenericMethods.removeNakedTripleRow(cPuzzle,tiles.get(candidates.indexOf(l)),l)){
+                                    if(GenericMethods.listSizeCheck(l,tilesField.get(candidatesField.indexOf(l)), size)){
+                                        if(GenericMethods.removeNakedSubsetField(cPuzzle,tilesField.get(candidatesField.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found triples at Field " + cPuzzle[i][j].getX()/3 + "," + cPuzzle[i][j].getY()/3 + " "+ l + " " + tiles.get(candidates.indexOf(l)));
+                                            System.out.println("Found subset at Field " + cPuzzle[i][j].getX()/3 + "," + cPuzzle[i][j].getY()/3 + " "+ l + " " + tilesField.get(candidatesField.indexOf(l)));
                                         }
                                     }
                                 /*
                                 Second case is that some of the candidates of the tile (x,j) is already in a candidate list,
                                 if this is the case we'll add all the new candidates to the list. This includes duplicates
-                                but these will be removed when we check for the correctness of triples. We will also add the tile (x,j)
+                                but these will be removed when we check for the correctness of subsets. We will also add the tile (x,j)
                                 to the tiles list.
                                  */
                                 }else if(GenericMethods.containsSome(l,t.getCandidates())){
                                     newCand = false;
-                                    tiles.get(candidates.indexOf(l)).add(t);
+                                    tilesField.get(candidatesField.indexOf(l)).add(t);
                                     l.addAll(t.getCandidates());
 
                                     /*
                                     Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to 3, if they are it means that we have found a correct triple,
-                                     we then try to update the row, by removing the candidates of the triple from the rest of the row.
+                                    to *size*, if they are it means that we have found a correct subset,
+                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.sizeOfThree(l,tiles.get(candidates.indexOf(l)))){
-                                        if(GenericMethods.removeNakedTripleRow(cPuzzle,tiles.get(candidates.indexOf(l)),l)){
+                                    if(GenericMethods.listSizeCheck(l,tilesField.get(candidatesField.indexOf(l)), size)){
+                                        if(GenericMethods.removeNakedSubsetField(cPuzzle,tilesField.get(candidatesField.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found triples at field " + cPuzzle[i][j].getX() + "," + cPuzzle[i][j].getY() +" "+ l + " " + tiles.get(candidates.indexOf(l)));
+                                            System.out.println("Found subsets at field " + cPuzzle[i][j].getX()/3 + "," + cPuzzle[i][j].getY()/3 +" "+ l + " " + tilesField.get(candidatesField.indexOf(l)));
                                         }
                                     }
                                 }
@@ -341,7 +366,7 @@ public class NakedSubsets {
 
                             /*
                             Last case is that the candidates of tile (x,j) was not found in any of the candidates lists.
-                            In this case we will create a new list for this possible triple. We will do this by adding
+                            In this case we will create a new list for this possible subset. We will do this by adding
                             the tile (i,j) and the tile (x,j) to the new list, as well as both of their candidates to
                             the matching list.
                              */
@@ -354,8 +379,13 @@ public class NakedSubsets {
                                 newTileList.add(cPuzzle[i][j]);
                                 newTileList.add(t);
 
-                                candidates.add(newCandList);
-                                tiles.add(newTileList);
+                                Set<Integer> temp = new HashSet<>();
+                                temp.addAll(newCandList);
+
+                                if(temp.size() <= 4){
+                                    candidatesField.add(newCandList);
+                                    tilesField.add(newTileList);
+                                }
                             }
 
 
