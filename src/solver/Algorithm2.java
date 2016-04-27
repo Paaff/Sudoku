@@ -53,6 +53,10 @@ public class Algorithm2 {
                 proceed = true;
             }
 
+            else if(BasicFish.swordFish(cPuzzle)){
+                proceed = true;
+            }
+
             else{
                 CandidateFinder.runFinder(cPuzzle);
             }
@@ -60,6 +64,7 @@ public class Algorithm2 {
 
             if(!proceed){
                 // algorithm is proceed, solved the possible or couldnt solve it
+
 
             }
 

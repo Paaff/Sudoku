@@ -167,8 +167,148 @@ public class BasicFish {
 
         }
 
+        return result;
+    }
+
+    public static boolean swordFish(Tile[][] cPuzzle){
+        boolean result = false;
+
+        //Running through all digits
+        for(int digit = 1 ; digit <= cPuzzle.length; digit++){
+            List<Integer> baseRow = new ArrayList<>();
+            List<Integer> baseColumn = new ArrayList<>();
+            List<List<Integer>> coverRow = new ArrayList<>();
+            List<List<Integer>> coverColumn = new ArrayList<>();
+
+
+
+            /*
+            We know that row/column is a part of a base set, if there is a locked pair or locked triple.
+             */
+
+            for(int y = 0 ; y < cPuzzle.length ; y++){
+                List<Integer> baseRowCoverColumn = new ArrayList<>();
+                List<Integer> baseColumnCoverRow = new ArrayList<>();
+                int countRow = 0;
+                int countColumn = 0;
+                /*
+                running through both rows and columns to find locked pairs/triples, and candidates for base and cover sets.
+                 */
+                for(int x = 0 ; x <cPuzzle.length ; x++){
+                    if (cPuzzle[x][y].getCandidates().contains(digit)){
+                        countRow++;
+                        baseRowCoverColumn.add(x);
+                    }
+                    if (cPuzzle[y][x].getCandidates().contains(digit)){
+                        countColumn++;
+                        baseColumnCoverRow.add(x);
+                    }
+
+                }
+                // Is it a locked pair/triple ?
+                if(countRow > 1 && countRow <= 3){
+                    baseRow.add(y);
+                    coverRow.add(baseRowCoverColumn);
+                }
+                if(countColumn > 1 && countColumn <= 3){
+                    baseColumn.add(y);
+                    coverColumn.add(baseColumnCoverRow);
+                }
+            }
+
+            //Rows
+            /*
+            we start by cleaning up in our base and cover set by finding the candidates that does not belong, meaning that
+            one of the columns in the base set does not align with the rest of the base set.
+             */
+            List<Integer> newBaseRow = cleaningCoverAndBase(baseRow,coverRow);
+            for(int i = 0 ; i < baseRow.size() ; i++){
+                if( !newBaseRow.contains(baseRow.get(i)) ){
+                    coverRow.remove(i);
+                }
+            }
+            baseRow = newBaseRow;
+
+            /*
+            Here we check to see if the sizes of the base set and cover set is correct, if it is, we are sure that we've found
+            a swordfish.
+             */
+            if(baseRow.size() == 3 && coverRow.size() == 3){ // found swordfish
+                if(GenericMethods.swordFishRow(cPuzzle, baseRow, coverRow, digit)){ // try to update the puzzle using the found swordfish.
+                    result = true;
+                    System.out.println("Found Sword (with locked rows) fish with digit " + digit + " With baseSet: " + baseRow + " and coverSet: " +coverRow );
+                }
+
+            }
+
+            //Columns
+
+            List<Integer> newBaseColumn = cleaningCoverAndBase(baseColumn,coverColumn);
+            for(int i = 0 ; i < baseColumn.size() ; i++){
+                if( !newBaseColumn.contains(baseColumn.get(i)) ){
+                    coverColumn.remove(i);
+                }
+            }
+            baseColumn = newBaseColumn;
+
+            if(baseColumn.size() == 3 && coverColumn.size() == 3){ // found swordfish
+                if(GenericMethods.swordFishColumn(cPuzzle, baseColumn, coverColumn, digit)){
+                    result = true;
+                    System.out.println("Found Sword (with locked column) fish with digit " + digit + " With baseSet: " + baseColumn + " and coverSet: " +coverColumn );
+                }
+
+            }
+
+
+        }
 
         return result;
+    }
+    private static List<Integer> cleaningCoverAndBase(List<Integer> base, List<List<Integer>> cover){
+        List<Integer> removeBase = new ArrayList<>();
+        List<List<Integer>> removeCover = new ArrayList<>();
+
+        List<List<Integer>> coverCopy = new ArrayList<>();
+        coverCopy.addAll(cover);
+
+        /*
+        We go through each digit of each list in the cover set.
+        For each digit we try to count how often it appears in the cover set over all.
+        If its only found one place (where we originally found it), we have to remove
+        the cover set, and thereby the base set from the lists.
+         */
+        for(List l : cover){
+            for(int i = 0; i < l.size() ; i++){
+                int count = 0;
+
+                for(List l2 : cover){
+                    if(l2.contains( l.get(i))){
+                        count++;
+                    }
+                }
+
+                if(count == 1){
+                    int index = cover.indexOf(l);
+                    removeBase.add( base.get(index) );
+                    removeCover.add( l );
+                }
+
+            }
+
+        }
+        base.removeAll( removeBase );
+        cover.removeAll( removeCover );
+
+        /*
+        To ensure that the sets has been completly cleaned up, we check to see if anything has changed at all.
+        If it hasnt it means that it didnt find any singled digit in the cover set and we'll return the final list.
+        Otherwise we'll call the method recursively again to make sure that we get everything.
+         */
+        if(coverCopy.equals(cover)){
+            return base;
+        }else{
+            return cleaningCoverAndBase(base,cover);
+        }
     }
 
 

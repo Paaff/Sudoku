@@ -299,4 +299,48 @@ public class GenericMethods {
         }
 
     }
+
+    public static boolean swordFishRow(Tile[][] cPuzzle, List<Integer> baseRow, List<List<Integer>> coverRow, int digit) {
+        boolean result = false;
+
+        Set<Integer> coverSet = new HashSet<>();
+        for(List l : coverRow){
+            coverSet.addAll(l);
+        }
+
+        for(int i = 0; i < cPuzzle.length ; i++){
+            if(coverSet.contains(i)){
+                for(int j = 0 ; j <cPuzzle.length ; j++){
+                    if(!baseRow.contains(j) && cPuzzle[i][j].getCandidates().remove(new Integer(digit))){
+                        result = true;
+                    }
+                }
+            }
+        }
+
+
+        return result;
+    }
+
+    public static boolean swordFishColumn(Tile[][] cPuzzle, List<Integer> baseColumn, List<List<Integer>> coverColumn, int digit) {
+        boolean result = false;
+
+        Set<Integer> coverSet = new HashSet<>();
+        for(List l : coverColumn){
+            coverSet.addAll(l);
+        }
+
+        for(int i = 0; i < cPuzzle.length ; i++){
+            if(coverSet.contains(i)){
+                for(int j = 0 ; j <cPuzzle.length ; j++){
+                    if(!baseColumn.contains(j) && cPuzzle[j][i].getCandidates().remove(new Integer(digit))){
+                        result = true;
+                    }
+                }
+            }
+        }
+
+
+        return result;
+    }
 }
