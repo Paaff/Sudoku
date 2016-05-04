@@ -18,53 +18,16 @@ public class Algorithm2 {
 
         while(proceed) {
 
-            proceed = false;
-
-            // Checking if any progress on the solution can be made by finding a Naked Single.
-            if(Singles.nakedSingle(cPuzzle)) {
-                proceed=true;
-            }
-          // Checking if any progress on the solution can be made by finding a Hidden Single.
-            else if(Singles.hiddenSingle(cPuzzle)) {
-                proceed=true;
-            }
-
-            else if(Locked.lockedPointing(cPuzzle,cField)){
-                proceed=true;
-
-            }
-
-            else if(Locked.lockedClaiming(cPuzzle)){
-                proceed = true;
-            }
-
-            else if(NakedSubsets.NakedPairs(cPuzzle)){
-                proceed = true;
-            }
-
-            else if(NakedSubsets.nakedLargeSubsets(cPuzzle, 3)){
-                proceed = true;
-            }
-
-            else if(NakedSubsets.nakedLargeSubsets(cPuzzle, 4)){
-                proceed = true;
-            }
-            else if(BasicFish.xWing(cPuzzle)){
-                proceed = true;
-            }
-
-            else if(BasicFish.swordFish(cPuzzle)){
-                proceed = true;
-            }
-
-            else{
-                CandidateFinder.runFinder(cPuzzle);
-            }
-
+            proceed = Singles.nakedSingle(cPuzzle) || Singles.hiddenSingle(cPuzzle)
+            || Locked.lockedPointing(cPuzzle,cField) || Locked.lockedClaiming(cPuzzle)
+            || NakedSubsets.NakedPairs(cPuzzle) || NakedSubsets.nakedLargeSubsets(cPuzzle, 3)
+            || HiddenSubsets.hiddenPairs(cPuzzle, 2) || HiddenSubsets.hiddenPairs(cPuzzle,3)
+            || NakedSubsets.nakedLargeSubsets(cPuzzle, 4) || BasicFish.xWing(cPuzzle)
+            || BasicFish.swordFish(cPuzzle, 3) || BasicFish.swordFish(cPuzzle, 4);
 
             if(!proceed){
-                // algorithm is proceed, solved the possible or couldnt solve it
-
+                // algorithm is executed, solved the possible or could not solve it
+                CandidateFinder.runFinder(cPuzzle);
 
             }
 

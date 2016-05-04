@@ -1,7 +1,9 @@
 package solver;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by minit on 25-04-2016.
@@ -170,7 +172,7 @@ public class BasicFish {
         return result;
     }
 
-    public static boolean swordFish(Tile[][] cPuzzle){
+    public static boolean swordFish(Tile[][] cPuzzle, int size){
         boolean result = false;
 
         //Running through all digits
@@ -206,11 +208,11 @@ public class BasicFish {
 
                 }
                 // Is it a locked pair/triple ?
-                if(countRow > 1 && countRow <= 3){
+                if(countRow > 1 && countRow <= size){
                     baseRow.add(y);
                     coverRow.add(baseRowCoverColumn);
                 }
-                if(countColumn > 1 && countColumn <= 3){
+                if(countColumn > 1 && countColumn <= size){
                     baseColumn.add(y);
                     coverColumn.add(baseColumnCoverRow);
                 }
@@ -233,8 +235,13 @@ public class BasicFish {
             Here we check to see if the sizes of the base set and cover set is correct, if it is, we are sure that we've found
             a swordfish.
              */
-            if(baseRow.size() == 3 && coverRow.size() == 3){ // found swordfish
-                if(GenericMethods.swordFishRow(cPuzzle, baseRow, coverRow, digit)){ // try to update the puzzle using the found swordfish.
+            Set<Integer> coverSetRows = new HashSet<>();
+            for(List l: coverColumn){
+                coverSetRows.addAll(l);
+            }
+
+            if(baseRow.size() == size && coverSetRows.size() == size){ // found swordfish
+                if(GenericMethods.swordFishRow(cPuzzle, baseRow, coverSetRows, digit)){ // try to update the puzzle using the found swordfish.
                     result = true;
                     System.out.println("Found Sword (with locked rows) fish with digit " + digit + " With baseSet: " + baseRow + " and coverSet: " +coverRow );
                 }
@@ -250,9 +257,17 @@ public class BasicFish {
                 }
             }
             baseColumn = newBaseColumn;
+            /*
+             The cover sets defines the 'houses' that needs to be changed.
+             so they need to be changed to Hashsets
+             */
+            Set<Integer> coverSetColumn = new HashSet<>();
+            for(List l: coverColumn){
+                coverSetColumn.addAll(l);
+            }
 
-            if(baseColumn.size() == 3 && coverColumn.size() == 3){ // found swordfish
-                if(GenericMethods.swordFishColumn(cPuzzle, baseColumn, coverColumn, digit)){
+            if(baseColumn.size() == size && coverSetColumn.size() == size){ // found swordfish
+                if(GenericMethods.swordFishColumn(cPuzzle, baseColumn, coverSetColumn, digit)){
                     result = true;
                     System.out.println("Found Sword (with locked column) fish with digit " + digit + " With baseSet: " + baseColumn + " and coverSet: " +coverColumn );
                 }
