@@ -90,7 +90,7 @@ public class HiddenSubsets {
                     }
                     /*
                     if indexList has a size greater than 1, there is a chance that there might be a hidden subset.
-                    First we will remove the those digits that cannot be a part of the hidden subset.
+                    First we will remove those digits that cannot be a part of the hidden subset.
                     We did this by looking at each potential digit's tiles, if they were the only potential
                     digit that used this tile, it could not be a part of the hidden subset, and we therefore remove it
                     from the list.
@@ -108,7 +108,7 @@ public class HiddenSubsets {
                             if(GenericMethods.updateHiddenSubset(tilesField,indexListFields)){
 
                                 result = true;
-                                System.out.println("Found hidden subset (field), digits= " + indexListFields + "(+1) At field: " + i/3 +"," + j/3);
+                               // System.out.println("Found hidden subset (field), digits= " + indexListFields + "(+1) At field: " + i/3 +"," + j/3);
 
                             }
                         }
@@ -136,7 +136,7 @@ public class HiddenSubsets {
                 if(indexListRows.size() == size && tilesRows.size() == size)
                     if (GenericMethods.updateHiddenSubset(tilesRows, indexListRows)) {
                         result = true;
-                        System.out.println("Found hidden subset (row), digits= " + indexListRows + "(+1) At row: " + i);
+                     //   System.out.println("Found hidden subset (row), digits= " + indexListRows + "(+1) At row: " + i);
                     }
             }
 
@@ -150,10 +150,6 @@ public class HiddenSubsets {
                 }
             }
 
-            if( i == 8){
-                String test = "lmao";
-            }
-
             // same explanation as for fields.
             if(indexListColumns.size() > 1){
                 indexListColumns = findHiddenSubsets(digitTilesColumns, indexListColumns);
@@ -163,7 +159,7 @@ public class HiddenSubsets {
                 if(indexListColumns.size() == size && tilesColumns.size() == size)
                     if (GenericMethods.updateHiddenSubset(tilesColumns, indexListColumns)) {
                         result = true;
-                        System.out.println("Found hidden subset (column), digits= " + indexListColumns + "(+1) At column: " + i);
+                       // System.out.println("Found hidden subset (column), digits= " + indexListColumns + "(+1) At column: " + i);
                     }
             }
 

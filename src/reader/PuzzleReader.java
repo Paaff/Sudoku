@@ -17,11 +17,11 @@ public class PuzzleReader {
     Field[][] sFields;
     File file;
     public int pSize; // The size of the puzzle. It is the first number read from the file.
-    String s = "src\\reader\\puzzle3_20.txt"; // Source of the file
+   // String s = "src\\reader\\puzzle3_20.txt"; // Source of the file
 
-    public Tile[][] runReader(){
+    public Tile[][] runReader(String s){
 
-        file = new File(s);
+        file = new File("src\\reader\\" + s);
 
         try{
             Scanner sc = new Scanner(file);
@@ -59,7 +59,7 @@ public class PuzzleReader {
             ex.printStackTrace();
         }
 
-        pPuzzle(sPuzzle);
+       // pPuzzle(sPuzzle);
         return sPuzzle;
     }
 

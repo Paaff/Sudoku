@@ -1,4 +1,6 @@
-package solver;
+package solver2;
+
+import solver2.PreemtiveState;
 
 /**
  * Created by minit on 21-03-2016.

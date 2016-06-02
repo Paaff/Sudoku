@@ -15,7 +15,7 @@ public class Algorithm2 {
 
         boolean proceed = true;
 
-
+       //  System.out.println("\nOperations used:");
         while(proceed) {
 
             proceed = false;
@@ -52,8 +52,8 @@ public class Algorithm2 {
                    So basically our brute force method acts as method to finish the puzzle and if it's already solved, a checker to see that it actually is completely done.
                 */
 
-                BruteForce bruteForce = new BruteForce();
-                cPuzzle = bruteForce.solver(cPuzzle);
+                new BruteForce().solver(cPuzzle);
+
 
 
 
@@ -65,6 +65,8 @@ public class Algorithm2 {
 
 
         }
+
+        //System.out.println();
 
 
     }

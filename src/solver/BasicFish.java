@@ -97,8 +97,8 @@ public class BasicFish {
                                     if(GenericMethods.removeXWingColumn(cPuzzle, ColumnTiles, digit )){
                                         result = true;
 
-                                        System.out.println("Found x-wing! (column) From (" + ColumnTiles.get(0).getX() +  "," + ColumnTiles.get(0).getY()
-                                                + ") and (" + ColumnTiles.get(3).getX() + "," + ColumnTiles.get(3).getY() + ")");
+                                      /*  System.out.println("Found x-wing! (column) From (" + ColumnTiles.get(0).getX() +  "," + ColumnTiles.get(0).getY()
+                                                + ") and (" + ColumnTiles.get(3).getX() + "," + ColumnTiles.get(3).getY() + ")");*/
                                     }
 
 
@@ -148,8 +148,8 @@ public class BasicFish {
                                     if(GenericMethods.removeXWingRows(cPuzzle, RowTiles, digit )) {
                                         result = true;
 
-                                        System.out.println("Found x-wing! (row) From (" + RowTiles.get(0).getX() + "," + RowTiles.get(0).getY()
-                                                + ") and (" + RowTiles.get(3).getX() + "," + RowTiles.get(3).getY() + ")");
+                                     /*   System.out.println("Found x-wing! (row) From (" + RowTiles.get(0).getX() + "," + RowTiles.get(0).getY()
+                                                + ") and (" + RowTiles.get(3).getX() + "," + RowTiles.get(3).getY() + ")");*/
                                     }
 
                                 }
@@ -243,7 +243,7 @@ public class BasicFish {
             if(baseRow.size() == size && coverSetRows.size() == size){ // found swordfish
                 if(GenericMethods.swordFishRow(cPuzzle, baseRow, coverSetRows, digit)){ // try to update the puzzle using the found swordfish.
                     result = true;
-                    System.out.println("Found Sword (with locked rows) fish with digit " + digit + " With baseSet: " + baseRow + " and coverSet: " +coverRow );
+                   // System.out.println("Found Sword (with locked rows) fish with digit " + digit + " With baseSet: " + baseRow + " and coverSet: " +coverRow );
                 }
 
             }
@@ -269,7 +269,7 @@ public class BasicFish {
             if(baseColumn.size() == size && coverSetColumn.size() == size){ // found swordfish
                 if(GenericMethods.swordFishColumn(cPuzzle, baseColumn, coverSetColumn, digit)){
                     result = true;
-                    System.out.println("Found Sword (with locked column) fish with digit " + digit + " With baseSet: " + baseColumn + " and coverSet: " +coverColumn );
+                  //  System.out.println("Found Sword (with locked column) fish with digit " + digit + " With baseSet: " + baseColumn + " and coverSet: " +coverColumn );
                 }
 
             }

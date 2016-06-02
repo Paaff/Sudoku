@@ -1,4 +1,4 @@
-package solver;
+package solver2;
 
 /**
  * Created by minit on 21-03-2016.

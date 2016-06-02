@@ -34,7 +34,7 @@ public class NakedSubsets {
                             if(GenericMethods.removeNakedPairRow(cPuzzle,pair)){
 
                                 result = true;
-                                System.out.println("Found naked pair at row " + cPuzzle[i][j].getY());
+                              //  System.out.println("Found naked pair at row " + cPuzzle[i][j].getY());
                             }
                         }
                     }
@@ -53,7 +53,7 @@ public class NakedSubsets {
 
                             if(GenericMethods.removeNakedPairColumn(cPuzzle,pair)){
                                 result = true;
-                                System.out.println("Found naked pair at column " + cPuzzle[i][j].getX());
+                             //   System.out.println("Found naked pair at column " + cPuzzle[i][j].getX());
                             }
 
                         }
@@ -74,7 +74,7 @@ public class NakedSubsets {
 
                             if(GenericMethods.removeNakedPairField(cPuzzle,pair)){
                                 result = true;
-                                System.out.println("Found naked pair in field " + t.getX()/3 + ", " + t.getY()/3);
+                             //   System.out.println("Found naked pair in field " + t.getX()/3 + ", " + t.getY()/3);
                             }
                         }
 
@@ -154,8 +154,12 @@ public class NakedSubsets {
                                         if(GenericMethods.removeNakedSubsetRow(cPuzzle,tilesRow.get(candidatesRow.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found subset at row " + cPuzzle[i][j].getY() + " "+ l + " " + tilesRow.get(candidatesRow.indexOf(l)));
-                                        }
+                                        /*    List<Integer> temp = new ArrayList<>();
+                                            for(Tile t: tilesRow.get(candidatesRow.indexOf(l))){
+                                                temp.add(t.getX());
+                                            }
+                                            System.out.println("Found subset at row " + cPuzzle[i][j].getY() + " "+ l + " with tiles on x-coordinates: " + temp);
+                                      */  }
                                     }
                                 /*
                                 Second case is that some of the candidates of the tile (x,j) is already in a candidate list,
@@ -177,8 +181,12 @@ public class NakedSubsets {
                                         if(GenericMethods.removeNakedSubsetRow(cPuzzle,tilesRow.get(candidatesRow.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found subset at row " + cPuzzle[i][j].getY() +" "+ l + " " + tilesRow.get(candidatesRow.indexOf(l)));
-                                        }
+                                          /*  List<Integer> temp = new ArrayList<>();
+                                            for(Tile t: tilesRow.get(candidatesRow.indexOf(l))){
+                                                temp.add(t.getX());
+                                            }
+                                            System.out.println("Found subset at row " + cPuzzle[i][j].getY() + " "+ l + " with tiles on x-coordinates: " + temp);
+                                       */ }
                                     }
                                 }
                             }
@@ -244,8 +252,12 @@ public class NakedSubsets {
                                         if(GenericMethods.removeNakedSubsetColumn(cPuzzle,tilesColumn.get(candidatesColumn.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found subset at column " + cPuzzle[i][j].getX() + " "+ l + " " + tilesColumn.get(candidatesColumn.indexOf(l)));
-                                        }
+                                        /*    List<Integer> temp = new ArrayList<>();
+                                            for(Tile t: tilesColumn.get(candidatesColumn.indexOf(l))){
+                                                temp.add(t.getY());
+                                            }
+                                            System.out.println("Found subset at column " + cPuzzle[i][j].getX() + " "+ l + " with tiles on y-coordinates: " + temp );
+                                       */ }
                                     }
                                 /*
                                 Second case is that some of the candidates of the tile (x,j) is already in a candidate list,
@@ -267,8 +279,12 @@ public class NakedSubsets {
                                         if(GenericMethods.removeNakedSubsetColumn(cPuzzle,tilesColumn.get(candidatesColumn.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found subset at column " + cPuzzle[i][j].getX() +" "+ l + " " + tilesColumn.get(candidatesColumn.indexOf(l)));
-                                        }
+                                         /*   List<Integer> temp = new ArrayList<>();
+                                            for(Tile t: tilesColumn.get(candidatesColumn.indexOf(l))){
+                                                temp.add(t.getY());
+                                            }
+                                            System.out.println("Found subset at column " + cPuzzle[i][j].getX() + " "+ l + " with tiles on y-coordinates: " + temp );
+                                          */   }
                                     }
                                 }
                             }
@@ -335,7 +351,15 @@ public class NakedSubsets {
                                         if(GenericMethods.removeNakedSubsetField(cPuzzle,tilesField.get(candidatesField.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found subset at Field " + cPuzzle[i][j].getX()/3 + "," + cPuzzle[i][j].getY()/3 + " "+ l + " " + tilesField.get(candidatesField.indexOf(l)));
+/*
+                                            List<Integer> tempX = new ArrayList<>();
+                                            List<Integer> tempY = new ArrayList<>();
+                                            for(Tile s:tilesField.get(candidatesField.indexOf(l)) ){
+                                                tempX.add(s.getX());
+                                                tempY.add(s.getY());
+                                            }
+                                            System.out.println("Found subset at Field " + cPuzzle[i][j].getX()/3 + "," + cPuzzle[i][j].getY()/3 + " "
+                                                    + l + " with tiles on x-coordinates: " + tempX + " and Y: "+ tempY);*/
                                         }
                                     }
                                 /*
@@ -358,8 +382,16 @@ public class NakedSubsets {
                                         if(GenericMethods.removeNakedSubsetField(cPuzzle,tilesField.get(candidatesField.indexOf(l)),l)){
 
                                             result = true;
-                                            System.out.println("Found subsets at field " + cPuzzle[i][j].getX()/3 + "," + cPuzzle[i][j].getY()/3 +" "+ l + " " + tilesField.get(candidatesField.indexOf(l)));
-                                        }
+/*
+                                            List<Integer> tempX = new ArrayList<>();
+                                            List<Integer> tempY = new ArrayList<>();
+                                            for(Tile s:tilesField.get(candidatesField.indexOf(l)) ){
+                                                tempX.add(s.getX());
+                                                tempY.add(s.getY());
+                                            }
+                                            System.out.println("Found subset at Field " + cPuzzle[i][j].getX()/3 + "," + cPuzzle[i][j].getY()/3 + " "
+                                                    + l + " with tiles on x-coordinates: " + tempX +" and Y: "+ tempY);*/
+                                            }
                                     }
                                 }
                             }

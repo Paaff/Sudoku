@@ -25,8 +25,6 @@ public class GenericMethods {
                 }
             }
         }
-        System.out.println(coords.get(0));
-        System.out.println(coords.get(1));
         return coords;
 
     }

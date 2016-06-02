@@ -52,8 +52,8 @@ public class Controller {
         textAreaConsole.appendText("Generating Puzzle from this format:\n");
 
         // Reading the file where the puzzle is contained and loading it and setting up the fields of the puzzle.
-        reader.runReader();
-        reader.setUpFields();
+      //  reader.runReader(s);
+        //reader.setUpFields();
 
         // Method for printing the puzzle in the GUI Console.
         guiConsolPuzzlePrint(reader.sPuzzle, reader.pSize);

@@ -61,12 +61,12 @@ public class Locked {
                         if (XPair && GenericMethods.removeLockedCandidatesXAxis(Y,cPuzzle,cField[j][k],i)){
 
                             result = true;
-                            System.out.println("Found pointing pair, for X-axis, for " + i + " at field:" + j +"," +k);
+                        //    System.out.println("Found pointing pair, for X-axis, for " + i + " at field:" + j +"," +k);
                         }
 
                         if(YPair && GenericMethods.removeLockedCandidatesYAxis(X,cPuzzle,cField[j][k],i)){
                             result = true;
-                            System.out.println("Found pointing pair, for Y-axis, for " + i + " at field:" + j +"," +k);
+                          //  System.out.println("Found pointing pair, for Y-axis, for " + i + " at field:" + j +"," +k);
                         }
                     }
 
@@ -124,9 +124,9 @@ public class Locked {
                     if(claim && GenericMethods.removeClaimedCandidates(tiles1,f,i)){
 
                         result = true;
-                        int a =(int)(j/Math.sqrt(cPuzzle.length));
+                      /*  int a =(int)(j/Math.sqrt(cPuzzle.length));
                         int b = (int) (tiles1.get(0).getY()/ Math.sqrt(cPuzzle.length));
-                        System.out.println("Found claiming pair, digit: " + i+ " at field: "+ a + ","+ b);
+                        System.out.println("Found claiming pair, digit: " + i+ " at field: "+ a + ","+ b);*/
                     }
                 }
 
@@ -149,9 +149,9 @@ public class Locked {
                     if(claim && GenericMethods.removeClaimedCandidates(tiles2,f,i)){
 
                         result = true;
-                        int a =(int)(tiles2.get(0).getX()/Math.sqrt(cPuzzle.length));
+                      /*  int a =(int)(tiles2.get(0).getX()/Math.sqrt(cPuzzle.length));
                         int b = (int)((int)j/Math.sqrt(cPuzzle.length));
-                        System.out.println("Found claiming pair, digit: " + i+ " at field: "+ a+ "," +b );
+                        System.out.println("Found claiming pair, digit: " + i+ " at field: "+ a+ "," +b );*/
                     }
                 }
 

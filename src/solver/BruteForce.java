@@ -14,7 +14,7 @@ public class BruteForce {
     int[][] puzzleCords;
     Tile[][] cPuzzle;
 
-    public Tile[][] solver(Tile[][] cPuzzle){
+    public void solver(Tile[][] cPuzzle){
         this.cPuzzle = cPuzzle;
 
         puzzleCords = new int[2][cPuzzle.length * cPuzzle.length];
@@ -82,7 +82,6 @@ public class BruteForce {
 
         }
 
-        return cPuzzle;
 
     }
 

@@ -1,4 +1,8 @@
-package solver;
+package solver2;
+
+import solver.CandidateFinder;
+import solver.GenericMethods;
+import solver.Tile;
 
 import java.util.ArrayList;
 import java.util.List;
