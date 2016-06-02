@@ -13,7 +13,6 @@ public class BruteForce {
 
     int[][] puzzleCords;
     Tile[][] cPuzzle;
-    int pos;
 
     public Tile[][] solver(Tile[][] cPuzzle){
         this.cPuzzle = cPuzzle;
@@ -53,7 +52,7 @@ public class BruteForce {
                     solverDone = true;
                     cPuzzle[xPos][yPos].setDigit(0);
                     /*
-                        otherwise, look back one one cell to an already checked empty cell,
+                        otherwise, look back one cell to an already checked empty cell,
                         and reevaluate with incrementing the number.
                         "Popping" from the 'checked' stack and pushing back to the 'pending' stack.
                      */
