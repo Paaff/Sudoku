@@ -60,10 +60,11 @@ public class SudokuButton extends Button {
     }
 
     public void setValidStyle() {
-        this.setStyle("-fx-text-fill: forestgreen;");
+
+      //  this.setStyle("-fx-text-fill: forestgreen; -fx-background-color: darkgoldenrod;");
     }
 
     public void setNotValidStyle() {
-        this.setStyle("-fx-text-fill: darkred;");
+    //    this.setStyle("-fx-text-fill: darkred; -fx-background-color: cornflowerblue;");
     }
 }

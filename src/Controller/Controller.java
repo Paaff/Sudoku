@@ -10,6 +10,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import reader.PuzzleReader;
 import solver.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -22,10 +25,13 @@ public class Controller {
     TextArea textAreaConsole;
     @FXML
     GridPane sudokuGrid;
+
     PuzzleReader reader = new PuzzleReader();
     PuzzleChecker puzzleChecker = new PuzzleChecker();
+
     static Tile[][] cPuzzle;
     static Field[][] cFields;
+
     SudokuButton sudokuButton;
     SudokuChooserDialog sudokuChooserDialog;
     String selectedPuzzle;
@@ -77,16 +83,21 @@ public class Controller {
             for (int i = 0; i < cPuzzle.length; i++) {
                 for (int j = 0; j < cPuzzle.length; j++) {
 
-                    temp = (SudokuButton) getNodeFromSudokuGrid(sudokuGrid,i,j);
 
-                    if(cPuzzle[i][j].getDigit() == 0){
-                        temp.setNotValidStyle();
-                        temp.setText("ERROR");
+                        temp = (SudokuButton) getNodeFromSudokuGrid(sudokuGrid,i,j);
 
-                    } else {
-                        temp.setValidStyle();
-                        temp.setText(cPuzzle[i][j].getDigit() + "");
-                    }
+
+                        if(cPuzzle[i][j].getDigit() == 0){
+                            temp.setNotValidStyle();
+                            temp.setText("ERROR");
+
+                        } else {
+                            temp.setValidStyle();
+                            temp.setText(cPuzzle[i][j].getDigit() + "");
+                        }
+
+
+
                 }
 
             }
@@ -107,14 +118,6 @@ public class Controller {
         System.exit(0);
     }
 
-
-    public void startTimerButtonClicked() {
-        System.out.println("Clicked Start Timer.");
-    }
-
-    public void pauseTimerButtonClicked() {
-        System.out.println("Clicked Pause Timer.");
-    }
 
     // Different scenarios depending on the user input on the button.
     private void chooseASudokuNumber(KeyEvent keyEvent) {
@@ -200,7 +203,6 @@ public class Controller {
         // If generated more than one time, it means that there will already be old nodes in the gridPane, these are not needed anymore and are cleared.
         sudokuGrid.getChildren().clear();
 
-
         // Insert a sudokuButton for each "place" in the puzzle.
         int digit;
         for (int i = 0; i < cPuzzle.length; i++) {
@@ -208,6 +210,10 @@ public class Controller {
 
                 digit = cPuzzle[i][j].getDigit();
                 sudokuButton = new SudokuButton("", "" + digit, i, j);
+
+
+                coloringButton(sudokuButton,cPuzzle,i,j);
+
                 sudokuButton.setOnKeyPressed(this::chooseASudokuNumber);
 
 
@@ -277,5 +283,19 @@ public class Controller {
             }
         }
         return null;
+    }
+
+    // Method for differenciating between the different "Fields" in the sudoku grid so it's more appealing to the user.
+    private void coloringButton(SudokuButton sudokuButton, Tile[][] cPuzzle, int i, int j) {
+
+        if((cPuzzle[i][j].getX()/3 == 1 && cPuzzle[i][j].getY()/3 == 0) ||
+                (cPuzzle[i][j].getX()/3 == 0 && cPuzzle[i][j].getY()/3 == 1) ||
+                (cPuzzle[i][j].getX()/3 == 2 && cPuzzle[i][j].getY()/3 == 1) ||
+                (cPuzzle[i][j].getX()/3 == 1 && cPuzzle[i][j].getY()/3 == 2)) {
+            sudokuButton.setStyle("-fx-background-color: darkgoldenrod;");
+        } else {
+            sudokuButton.setStyle("-fx-background-color: cornflowerblue;");
+        }
+
     }
 }
