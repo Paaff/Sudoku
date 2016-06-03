@@ -13,37 +13,13 @@
             <VBox alignment="CENTER" prefHeight="465.0" prefWidth="161.0" spacing="20.0">
                <children>
                   <Button fx:id="startGameButton" lineSpacing="3.0" mnemonicParsing="false" onAction="#startButtonClicked" prefHeight="40.0" prefWidth="125.0" text="Start Game" />
-                  <Button fx:id="generatePuzzleButton" lineSpacing="3.0" mnemonicParsing="false" onAction="#generateButtonClicked" prefHeight="40.0" prefWidth="125.0" text="Generate Puzzle" />
                   <Button fx:id="solvePuzzleButton" lineSpacing="3.0" mnemonicParsing="false" onAction="#solveButtonClicked" prefHeight="40.0" prefWidth="125.0" text="Solve Puzzle" />
-                  <Button fx:id="analyzeSolverButton" lineSpacing="3.0" mnemonicParsing="false" onAction="#analyzeButtonClicked" prefHeight="40.0" prefWidth="125.0" text="Analyze Solver" />
-                  <Button fx:id="optionsButton" lineSpacing="3.0" mnemonicParsing="false" onAction="#optionsButtonClicked" prefHeight="40.0" prefWidth="125.0" text="Options" />
                   <Button fx:id="exitButton" lineSpacing="3.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="40.0" prefWidth="125.0" text="Exit" />
                </children>
             </VBox>
          </content>
       </ScrollPane>
    </left>
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
    <right>
       <VBox prefHeight="766.0" prefWidth="371.0" BorderPane.alignment="CENTER">
          <children>
@@ -59,8 +35,6 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="hintButton" mnemonicParsing="false" onAction="#hintButtonClicked" prefHeight="30.0" prefWidth="140.0" text="Hint" GridPane.halignment="CENTER" />
-                  <Button fx:id="backOneStepButton" mnemonicParsing="false" onAction="#goBackOneStepButtonClicked" prefHeight="30.0" prefWidth="140.0" text="Go Back One Step" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                   <Button fx:id="startTimerButton" mnemonicParsing="false" onAction="#startTimerButtonClicked" prefHeight="30.0" prefWidth="140.0" text="Start Timer" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                   <Button fx:id="pauseTimerButton" mnemonicParsing="false" onAction="#pauseTimerButtonClicked" prefHeight="30.0" prefWidth="140.0" text="Pause Timer" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                </children>

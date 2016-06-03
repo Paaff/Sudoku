@@ -35,9 +35,10 @@ public class SudokuButton extends Button {
         if(buttonText.equals("0")) {
             this.setText("");
 
+
         } else {
             this.setText(buttonText);
-            this.setStyle("-fx-text-fill: forestgreen;");
+
 
         }
 

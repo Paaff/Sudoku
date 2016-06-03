@@ -58,7 +58,7 @@ public class Algorithm2 {
 
 
 
-                // This method has no reason to but run here other than using its print method when implementing new methods.
+                // This method has no reason to be run here other than using its print method when implementing new methods.
                 // CandidateFinder.runFinder(cPuzzle);
 
             }
