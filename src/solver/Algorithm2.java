@@ -22,28 +22,40 @@ public class Algorithm2 {
 
             if(Singles.nakedSingle(cPuzzle)){
                 proceed = true;
+                System.out.println("Naked Single");
             } else if(Singles.hiddenSingle(cPuzzle)){
                 proceed = true;
+                System.out.println("Hidden Single");
             } else if(Locked.lockedPointing(cPuzzle,cField)){
                 proceed = true;
+                System.out.println("Lock pointing");
             } else if(Locked.lockedClaiming(cPuzzle)){
                 proceed = true;
+                System.out.println("Locked Claiming");
             } else if(NakedSubsets.NakedPairs(cPuzzle)){
                 proceed = true;
+                System.out.println("Naked Pairs");
             } else if(NakedSubsets.nakedLargeSubsets(cPuzzle, 3)){
                 proceed = true;
+                System.out.println("Naked Subsets");
             } else if(HiddenSubsets.hiddenPairs(cPuzzle, 2)){
                 proceed = true;
+                System.out.println("Hidden Pairs");
             } else if(HiddenSubsets.hiddenPairs(cPuzzle,3)){
                 proceed = true;
+                System.out.println("hidden triple");
             } else if(NakedSubsets.nakedLargeSubsets(cPuzzle, 4)){
                 proceed = true;
+                System.out.println("Naked Subset");
             } else if(BasicFish.xWing(cPuzzle)){
                 proceed = true;
+                System.out.println("x Wing");
             } else if(BasicFish.swordFish(cPuzzle, 3)){
                 proceed = true;
+                System.out.println("sword fish");
             } else if(BasicFish.swordFish(cPuzzle, 4)){
                 proceed = true;
+                System.out.println("sword fish 4");
             }
 
             if(!proceed){

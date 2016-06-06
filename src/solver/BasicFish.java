@@ -241,7 +241,7 @@ public class BasicFish {
             }
 
             if(baseRow.size() == size && coverSetRows.size() == size){ // found swordfish
-                if(GenericMethods.swordFishRow(cPuzzle, baseRow, coverSetRows, digit)){ // try to update the puzzle using the found swordfish.
+                if(GenericMethods.swordFish(cPuzzle, baseRow, coverSetRows, digit, true)){ // try to update the puzzle using the found swordfish.
                     result = true;
                    // System.out.println("Found Sword (with locked rows) fish with digit " + digit + " With baseSet: " + baseRow + " and coverSet: " +coverRow );
                 }
@@ -267,7 +267,7 @@ public class BasicFish {
             }
 
             if(baseColumn.size() == size && coverSetColumn.size() == size){ // found swordfish
-                if(GenericMethods.swordFishColumn(cPuzzle, baseColumn, coverSetColumn, digit)){
+                if(GenericMethods.swordFish(cPuzzle, baseColumn, coverSetColumn, digit, false)){
                     result = true;
                   //  System.out.println("Found Sword (with locked column) fish with digit " + digit + " With baseSet: " + baseColumn + " and coverSet: " +coverColumn );
                 }

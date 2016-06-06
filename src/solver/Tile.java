@@ -45,7 +45,4 @@ public class Tile {
         candidates.clear();
     }
     public List<Integer> getCandidates(){return candidates; }
-    public void setCandidates(List<Integer> list){
-        candidates = list;
-    }
 }

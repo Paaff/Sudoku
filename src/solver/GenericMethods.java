@@ -298,31 +298,21 @@ public class GenericMethods {
 
     }
 
-    public static boolean swordFishRow(Tile[][] cPuzzle, List<Integer> baseRow, Set<Integer> coverRow, int digit) {
-        boolean result = false;
-
-        for(int i = 0; i < cPuzzle.length ; i++){
-            if(coverRow.contains(i)){
-                for(int j = 0 ; j <cPuzzle.length ; j++){
-                    if(!baseRow.contains(j) && cPuzzle[i][j].getCandidates().remove(new Integer(digit))){
-                        result = true;
-                    }
-                }
-            }
-        }
-
-
-        return result;
-    }
-
-    public static boolean swordFishColumn(Tile[][] cPuzzle, List<Integer> baseColumn, Set<Integer> coverSet, int digit) {
+    public static boolean swordFish(Tile[][] cPuzzle, List<Integer> baseSet, Set<Integer> coverSet, int digit, boolean isRow) {
         boolean result = false;
 
         for(int i = 0; i < cPuzzle.length ; i++){
             if(coverSet.contains(i)){
                 for(int j = 0 ; j <cPuzzle.length ; j++){
-                    if(!baseColumn.contains(j) && cPuzzle[j][i].getCandidates().remove(new Integer(digit))){
-                        result = true;
+
+                    if(isRow){
+                        if(!baseSet.contains(j) && cPuzzle[i][j].getCandidates().remove(new Integer(digit))){
+                            result = true;
+                        }
+                    }else {
+                        if (!baseSet.contains(j) && cPuzzle[j][i].getCandidates().remove(new Integer(digit))) {
+                            result = true;
+                        }
                     }
                 }
             }

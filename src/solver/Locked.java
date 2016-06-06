@@ -89,8 +89,8 @@ public class Locked {
             for the rows, the y-coordinate if locked.
              */
             for(int j = 0; j<cPuzzle.length;j++){
-                List<Tile> tiles1 = new ArrayList<>();
-                List<Tile> tiles2 = new ArrayList<>();
+                List<Tile> tilesColumn = new ArrayList<>();
+                List<Tile> tilesRow = new ArrayList<>();
 
                 /*
                 Here we check for both column and row at the same time.
@@ -98,10 +98,10 @@ public class Locked {
                  */
                 for(int k = 0; k<cPuzzle.length;k++){
                     if(cPuzzle[j][k].getCandidates().contains(i)){
-                        tiles1.add(cPuzzle[j][k]);
+                        tilesColumn.add(cPuzzle[j][k]);
                     }
                     if(cPuzzle[k][j].getCandidates().contains(i)){
-                        tiles2.add(cPuzzle[k][j]);
+                        tilesRow.add(cPuzzle[k][j]);
                     }
                 }
 
@@ -110,55 +110,44 @@ public class Locked {
                  continue and check if they're in the same field.
                   */
 
-                if(tiles1.size()>1 && tiles1.size()<=Math.sqrt(cPuzzle.length)){
-                    Field f = tiles1.get(0).getField();
-                    boolean claim = true;
-
-                    for(Tile t: tiles1){
-                        if(t.getField()!=f){
-                            claim = false;
-                        }
-                    }
-
-                    // if they were in same field, and something was updated, return true.
-                    if(claim && GenericMethods.removeClaimedCandidates(tiles1,f,i)){
-
-                        result = true;
-                      /*  int a =(int)(j/Math.sqrt(cPuzzle.length));
-                        int b = (int) (tiles1.get(0).getY()/ Math.sqrt(cPuzzle.length));
-                        System.out.println("Found claiming pair, digit: " + i+ " at field: "+ a + ","+ b);*/
-                    }
+                if(tilesColumn.size()>1 && tilesColumn.size()<=Math.sqrt(cPuzzle.length)){
+                    result = checkForEquivalentField(tilesColumn,i);
                 }
 
                 /*
                  If the row list has more than 1 tile, and fewer than the maximum (field's side length),
                  continue and check if they're in the same field.
                   */
-                if(tiles2.size()>1 && tiles2.size()<=Math.sqrt(cPuzzle.length)){
-                    Field f = tiles2.get(0).getField();
-
-                    boolean claim = true;
-
-                    for(Tile t: tiles2){
-                        if(t.getField()!=f){
-                            claim = false;
-                        }
-                    }
-
-                    // if they were in same field, and something was updated, return true.
-                    if(claim && GenericMethods.removeClaimedCandidates(tiles2,f,i)){
-
-                        result = true;
-                      /*  int a =(int)(tiles2.get(0).getX()/Math.sqrt(cPuzzle.length));
-                        int b = (int)((int)j/Math.sqrt(cPuzzle.length));
-                        System.out.println("Found claiming pair, digit: " + i+ " at field: "+ a+ "," +b );*/
-                    }
+                if(tilesRow.size()>1 && tilesRow.size()<=Math.sqrt(cPuzzle.length)){
+                    result = checkForEquivalentField(tilesRow,i);
                 }
 
             }
 
         }
+        return result;
+    }
 
+    private static boolean checkForEquivalentField(List<Tile> tileList, int digit){
+        boolean result = false;
+        Field f = tileList.get(0).getField();
+
+        boolean claim = true;
+
+        for(Tile t: tileList){
+            if(t.getField()!=f){
+                claim = false;
+            }
+        }
+
+        // if they were in same field, and something was updated, return true.
+        if(claim && GenericMethods.removeClaimedCandidates(tileList,f,digit)){
+
+            result = true;
+                      /*  int a =(int)(tilesRow.get(0).getX()/Math.sqrt(cPuzzle.length));
+                        int b = (int)((int)j/Math.sqrt(cPuzzle.length));
+                        System.out.println("Found claiming pair, digit: " + i+ " at field: "+ a+ "," +b );*/
+        }
 
         return result;
     }

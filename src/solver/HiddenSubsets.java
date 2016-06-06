@@ -96,22 +96,7 @@ public class HiddenSubsets {
                     from the list.
                      */
                     if(indexListFields.size() > 1){
-                        indexListFields = findHiddenSubsets(digitTilesFields,indexListFields);
-                        Set<Tile> tilesField = createTileSet(indexListFields, digitTilesFields); // made for easier access to the tiles of subset.
-
-                        /*
-                        If the number of tiles and digits in the subset is the correct size, we have found a hidden subset.
-                        We then try to remove every digit from these tile's candidates that is not a part of the subset.
-                         */
-                        if(indexListFields.size() == size && tilesField.size() == size){
-                            // Found hidden subset on field
-                            if(GenericMethods.updateHiddenSubset(tilesField,indexListFields)){
-
-                                result = true;
-                               // System.out.println("Found hidden subset (field), digits= " + indexListFields + "(+1) At field: " + i/3 +"," + j/3);
-
-                            }
-                        }
+                        result = clearHiddenSubset(digitTilesFields,indexListFields,size);
 
                     }
 
@@ -128,16 +113,7 @@ public class HiddenSubsets {
 
             // same explanation as for fields.
             if (indexListRows.size() > 1){
-                indexListRows = findHiddenSubsets(digitTilesRows, indexListRows);
-
-                Set<Tile> tilesRows = createTileSet(indexListRows, digitTilesRows);
-
-                // Found hidden subset on row.
-                if(indexListRows.size() == size && tilesRows.size() == size)
-                    if (GenericMethods.updateHiddenSubset(tilesRows, indexListRows)) {
-                        result = true;
-                     //   System.out.println("Found hidden subset (row), digits= " + indexListRows + "(+1) At row: " + i);
-                    }
+                result = clearHiddenSubset(digitTilesRows,indexListRows,size);
             }
 
             // Columns
@@ -152,22 +128,26 @@ public class HiddenSubsets {
 
             // same explanation as for fields.
             if(indexListColumns.size() > 1){
-                indexListColumns = findHiddenSubsets(digitTilesColumns, indexListColumns);
-                Set<Tile> tilesColumns = createTileSet(indexListColumns, digitTilesColumns);
-
-                // found hidden subset on column.
-                if(indexListColumns.size() == size && tilesColumns.size() == size)
-                    if (GenericMethods.updateHiddenSubset(tilesColumns, indexListColumns)) {
-                        result = true;
-                       // System.out.println("Found hidden subset (column), digits= " + indexListColumns + "(+1) At column: " + i);
-                    }
+                result = clearHiddenSubset(digitTilesColumns,indexListColumns,size);
             }
-
-
-
         }
+        return result;
+    }
 
+    private static boolean clearHiddenSubset(List<List<Tile>> digitTiles, List<Integer> indexList, int size){
+        boolean result = false;
+        indexList = findHiddenSubsets(digitTiles, indexList);
+        Set<Tile> tilesColumns = createTileSet(indexList, digitTiles); // made for easier access to the tiles of subset.
 
+        /*
+          If the number of tiles and digits in the subset is the correct size, we have found a hidden subset.
+          We then try to remove every digit from these tile's candidates that is not a part of the subset.
+        */
+        if(indexList.size() == size && tilesColumns.size() == size)
+            if (GenericMethods.updateHiddenSubset(tilesColumns, indexList)) {
+                result = true;
+                // System.out.println("Found hidden subset (column), digits= " + indexListColumns + "(+1) At column: " + i);
+            }
 
         return result;
     }
