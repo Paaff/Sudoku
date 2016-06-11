@@ -144,7 +144,7 @@ public class HiddenSubsets {
           We then try to remove every digit from these tile's candidates that is not a part of the subset.
         */
         if(indexList.size() == size && tilesColumns.size() == size)
-            if (GenericMethods.updateHiddenSubset(tilesColumns, indexList)) {
+            if (updateHiddenSubset(tilesColumns, indexList)) {
                 result = true;
                 // System.out.println("Found hidden subset (column), digits= " + indexListColumns + "(+1) At column: " + i);
             }
@@ -192,6 +192,22 @@ public class HiddenSubsets {
             return findHiddenSubsets(digitTiles,indexList);
         }
 
+    }
+
+    private static boolean updateHiddenSubset(Set<Tile> subsetTiles, List<Integer> indexList){
+        boolean result = false;
+
+        List<Integer> newDigits = new ArrayList<>();
+        for(int i = 0; i <indexList.size() ; i++){
+            newDigits.add(indexList.get(i)+ 1);
+        }
+
+        for(Tile t: subsetTiles){
+            if(t.getCandidates().retainAll(newDigits)){
+                result = true;
+            }
+        }
+        return result;
     }
 
 }

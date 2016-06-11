@@ -31,7 +31,7 @@ public class NakedSubsets {
                             pair[0] = cPuzzle[i][j]; // one half of the pair
                             pair[1] = cPuzzle[k][j]; // the other half of the path
 
-                            if(GenericMethods.removeNakedPairRow(cPuzzle,pair)){
+                            if(removeNakedPair(cPuzzle,pair, House.ROW)){
 
                                 result = true;
                               //  System.out.println("Found naked pair at row " + cPuzzle[i][j].getY());
@@ -51,7 +51,7 @@ public class NakedSubsets {
                             pair[0] = cPuzzle[i][j];
                             pair[1] = cPuzzle[i][k];
 
-                            if(GenericMethods.removeNakedPairColumn(cPuzzle,pair)){
+                            if(removeNakedPair(cPuzzle,pair,House.COLUMN)){
                                 result = true;
                              //   System.out.println("Found naked pair at column " + cPuzzle[i][j].getX());
                             }
@@ -72,7 +72,7 @@ public class NakedSubsets {
                             pair[0] = cPuzzle[i][j];
                             pair[1] = t;
 
-                            if(GenericMethods.removeNakedPairField(cPuzzle,pair)){
+                            if(removeNakedPair(cPuzzle,pair,House.FIELD)){
                                 result = true;
                              //   System.out.println("Found naked pair in field " + t.getX()/3 + ", " + t.getY()/3);
                             }
@@ -85,6 +85,38 @@ public class NakedSubsets {
             }
         }
 
+
+        return result;
+    }
+
+    private static boolean removeNakedPair(Tile[][] cPuzzle, Tile[] pair, House h){
+        boolean result = false;
+
+        if(h == House.FIELD) {
+            for (Tile t : pair[0].getField().getTiles()) {
+                if (pair[0] != t && pair[1] != t && t.getCandidates().removeAll(pair[0].getCandidates())) {
+                    result = true;
+                }
+            }
+        } else if( h == House.COLUMN){
+            int x = pair[0].getX();
+
+            for(int y = 0; y <cPuzzle.length ; y++){
+                if(pair[0] != cPuzzle[x][y] && pair[1] != cPuzzle[x][y]
+                        && cPuzzle[x][y].getCandidates().removeAll(pair[0].getCandidates())){
+                    result = true;
+                }
+            }
+        } else {
+            int y = pair[0].getY();
+
+            for(int x = 0; x < cPuzzle.length ; x++){
+                if(pair[0] != cPuzzle[x][y] && pair[1] != cPuzzle[x][y] &&
+                        cPuzzle[x][y].getCandidates().removeAll(pair[0].getCandidates())){
+                    result = true;
+                }
+            }
+        }
 
         return result;
     }
@@ -150,8 +182,8 @@ public class NakedSubsets {
                                     to 3, if they are it means that we have found a correct subset,
                                      we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.listSizeCheck(l,tilesRow.get(candidatesRow.indexOf(l)), size)){
-                                        if(GenericMethods.removeNakedSubsetRow(cPuzzle,tilesRow.get(candidatesRow.indexOf(l)),l)){
+                                    if(listSizeCheck(l,tilesRow.get(candidatesRow.indexOf(l)), size)){
+                                        if(removeNakedSubset(cPuzzle,tilesRow.get(candidatesRow.indexOf(l)),l, House.ROW)){
 
                                             result = true;
                                         /*    List<Integer> temp = new ArrayList<>();
@@ -167,7 +199,7 @@ public class NakedSubsets {
                                 but these will be removed when we check for the correctness of subsets. We will also add the tile (x,j)
                                 to the tiles list.
                                  */
-                                }else if(GenericMethods.containsSome(l,cPuzzle[x][j].getCandidates())){
+                                }else if(containsSome(l,cPuzzle[x][j].getCandidates())){
                                     newCand = false;
                                     tilesRow.get(candidatesRow.indexOf(l)).add(cPuzzle[x][j]);
                                     l.addAll(cPuzzle[x][j].getCandidates());
@@ -177,8 +209,8 @@ public class NakedSubsets {
                                     to 3, if they are it means that we have found a correct subset,
                                      we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.listSizeCheck(l,tilesRow.get(candidatesRow.indexOf(l)), size)){
-                                        if(GenericMethods.removeNakedSubsetRow(cPuzzle,tilesRow.get(candidatesRow.indexOf(l)),l)){
+                                    if(listSizeCheck(l,tilesRow.get(candidatesRow.indexOf(l)), size)){
+                                        if(removeNakedSubset(cPuzzle,tilesRow.get(candidatesRow.indexOf(l)),l, House.ROW)){
 
                                             result = true;
                                           /*  List<Integer> temp = new ArrayList<>();
@@ -248,8 +280,8 @@ public class NakedSubsets {
                                     to *size*, if they are it means that we have found a correct subset,
                                      we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.listSizeCheck(l,tilesColumn.get(candidatesColumn.indexOf(l)),size)){
-                                        if(GenericMethods.removeNakedSubsetColumn(cPuzzle,tilesColumn.get(candidatesColumn.indexOf(l)),l)){
+                                    if(listSizeCheck(l,tilesColumn.get(candidatesColumn.indexOf(l)),size)){
+                                        if(removeNakedSubset(cPuzzle,tilesColumn.get(candidatesColumn.indexOf(l)),l, House.COLUMN)){
 
                                             result = true;
                                         /*    List<Integer> temp = new ArrayList<>();
@@ -265,7 +297,7 @@ public class NakedSubsets {
                                 but these will be removed when we check for the correctness of subsets. We will also add the tile (x,j)
                                 to the tiles list.
                                  */
-                                }else if(GenericMethods.containsSome(l,cPuzzle[i][y].getCandidates())){
+                                }else if(containsSome(l,cPuzzle[i][y].getCandidates())){
                                     newCand = false;
                                     tilesColumn.get(candidatesColumn.indexOf(l)).add(cPuzzle[i][y]);
                                     l.addAll(cPuzzle[i][y].getCandidates());
@@ -275,8 +307,8 @@ public class NakedSubsets {
                                     to *size*, if they are it means that we have found a correct subset,
                                      we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.listSizeCheck(l,tilesColumn.get(candidatesColumn.indexOf(l)), size)){
-                                        if(GenericMethods.removeNakedSubsetColumn(cPuzzle,tilesColumn.get(candidatesColumn.indexOf(l)),l)){
+                                    if(listSizeCheck(l,tilesColumn.get(candidatesColumn.indexOf(l)), size)){
+                                        if(removeNakedSubset(cPuzzle,tilesColumn.get(candidatesColumn.indexOf(l)),l, House.COLUMN)){
 
                                             result = true;
                                          /*   List<Integer> temp = new ArrayList<>();
@@ -347,8 +379,8 @@ public class NakedSubsets {
                                     to *size*, if they are it means that we have found a correct subset,
                                      we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.listSizeCheck(l,tilesField.get(candidatesField.indexOf(l)), size)){
-                                        if(GenericMethods.removeNakedSubsetField(cPuzzle,tilesField.get(candidatesField.indexOf(l)),l)){
+                                    if(listSizeCheck(l,tilesField.get(candidatesField.indexOf(l)), size)){
+                                        if(removeNakedSubset(cPuzzle,tilesField.get(candidatesField.indexOf(l)),l, House.FIELD)){
 
                                             result = true;
 /*
@@ -368,7 +400,7 @@ public class NakedSubsets {
                                 but these will be removed when we check for the correctness of subsets. We will also add the tile (x,j)
                                 to the tiles list.
                                  */
-                                }else if(GenericMethods.containsSome(l,t.getCandidates())){
+                                }else if(containsSome(l,t.getCandidates())){
                                     newCand = false;
                                     tilesField.get(candidatesField.indexOf(l)).add(t);
                                     l.addAll(t.getCandidates());
@@ -378,8 +410,8 @@ public class NakedSubsets {
                                     to *size*, if they are it means that we have found a correct subset,
                                      we then try to update the row, by removing the candidates of the subset from the rest of the row.
                                      */
-                                    if(GenericMethods.listSizeCheck(l,tilesField.get(candidatesField.indexOf(l)), size)){
-                                        if(GenericMethods.removeNakedSubsetField(cPuzzle,tilesField.get(candidatesField.indexOf(l)),l)){
+                                    if(listSizeCheck(l,tilesField.get(candidatesField.indexOf(l)), size)){
+                                        if(removeNakedSubset(cPuzzle,tilesField.get(candidatesField.indexOf(l)),l, House.FIELD)){
 
                                             result = true;
 /*
@@ -434,5 +466,64 @@ public class NakedSubsets {
 
         return result;
 
+    }
+
+    private static boolean containsSome(List<Integer> list1, List<Integer> list2){
+        for(Integer i : list2){
+            if(list1.contains(i))
+                return true;
+        }
+        return false;
+    }
+
+    private static boolean listSizeCheck(List<Integer> list1, List<Tile> list2, int size){
+        Set<Integer> temp = new HashSet<>();
+        temp.addAll(list1);
+
+        if(temp.size()== size && list2.size() == size)
+            return true;
+
+        return false;
+    }
+
+    public static boolean removeNakedSubset(Tile[][] cPuzzle, List<Tile> tiles, List<Integer> list, House h){
+        boolean result = false;
+
+        if(h == House.ROW) {
+            int y = tiles.get(0).getY();
+
+            Set<Integer> temp = new HashSet<>();
+            temp.addAll(list);
+
+            for (int x = 0; x < cPuzzle.length; x++) {
+                if (!tiles.contains(cPuzzle[x][y]) && cPuzzle[x][y].getCandidates().removeAll(temp)) {
+                    result = true;
+
+                }
+            }
+        } else if( h== House.COLUMN){
+            int x = tiles.get(0).getX();
+
+            Set<Integer> temp = new HashSet<>();
+            temp.addAll(list);
+
+            for(int y = 0 ; y <cPuzzle.length ; y++){
+                if(!tiles.contains(cPuzzle[x][y]) && cPuzzle[x][y].getCandidates().removeAll(temp)){
+                    result = true;
+
+                }
+            }
+        } else if(h == House.FIELD){
+            Set<Integer> temp = new HashSet<>();
+            temp.addAll(list);
+
+            for(Tile t: tiles.get(0).getField().getTiles()){
+                if(!tiles.contains(t) && t.getCandidates().removeAll(temp)){
+                    result = true;
+
+                }
+            }
+        }
+        return result;
     }
 }

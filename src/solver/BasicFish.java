@@ -94,7 +94,7 @@ public class BasicFish {
                                     ColumnTiles.add(cPuzzle[x][y1]);
                                     ColumnTiles.add(cPuzzle[x][y2]);
 
-                                    if(GenericMethods.removeXWingColumn(cPuzzle, ColumnTiles, digit )){
+                                    if(removeXWing(cPuzzle, ColumnTiles, digit, House.COLUMN )){
                                         result = true;
 
                                       /*  System.out.println("Found x-wing! (column) From (" + ColumnTiles.get(0).getX() +  "," + ColumnTiles.get(0).getY()
@@ -145,7 +145,7 @@ public class BasicFish {
                                     RowTiles.add(cPuzzle[x1][y]);
                                     RowTiles.add(cPuzzle[x2][y]);
 
-                                    if(GenericMethods.removeXWingRows(cPuzzle, RowTiles, digit )) {
+                                    if(removeXWing(cPuzzle, RowTiles, digit, House.ROW )) {
                                         result = true;
 
                                      /*   System.out.println("Found x-wing! (row) From (" + RowTiles.get(0).getX() + "," + RowTiles.get(0).getY()
@@ -167,6 +167,46 @@ public class BasicFish {
 
             }
 
+        }
+
+        return result;
+    }
+
+    private static boolean removeXWing(Tile[][] cPuzzle, List<Tile> tiles, int digit, House h){
+        boolean result = false;
+
+        if(h == House.COLUMN){
+            int y1 = tiles.get(0).getY();
+            int y2 = tiles.get(1).getY();
+            for(int x = 0 ; x < cPuzzle.length ; x++){
+                if(!tiles.contains(cPuzzle[x][y1])){
+                    if(cPuzzle[x][y1].getCandidates().remove(new Integer(digit))){
+                        result = true;
+                    }
+                }
+
+                if(!tiles.contains(cPuzzle[x][y2])){
+                    if(cPuzzle[x][y2].getCandidates().remove(new Integer(digit))){
+                        result = true;
+                    }
+                }
+
+            }
+        } else if(h == House.ROW){
+            int x1 = tiles.get(0).getX();
+            int x2 = tiles.get(1).getX();
+            for(int y = 0 ; y <cPuzzle.length ; y++){
+                if(!tiles.contains(cPuzzle[x1][y])){
+                    result = cPuzzle[x1][y].getCandidates().remove(new Integer(digit));
+
+                }
+
+                if(!tiles.contains(cPuzzle[x2][y])){
+
+                    result = cPuzzle[x2][y].getCandidates().remove(new Integer(digit));
+
+                }
+            }
         }
 
         return result;
@@ -241,7 +281,7 @@ public class BasicFish {
             }
 
             if(baseRow.size() == size && coverSetRows.size() == size){ // found swordfish
-                if(GenericMethods.swordFish(cPuzzle, baseRow, coverSetRows, digit, true)){ // try to update the puzzle using the found swordfish.
+                if(removeSwordfish(cPuzzle, baseRow, coverSetRows, digit, House.ROW)){ // try to update the puzzle using the found swordfish.
                     result = true;
                    // System.out.println("Found Sword (with locked rows) fish with digit " + digit + " With baseSet: " + baseRow + " and coverSet: " +coverRow );
                 }
@@ -267,7 +307,7 @@ public class BasicFish {
             }
 
             if(baseColumn.size() == size && coverSetColumn.size() == size){ // found swordfish
-                if(GenericMethods.swordFish(cPuzzle, baseColumn, coverSetColumn, digit, false)){
+                if(removeSwordfish(cPuzzle, baseColumn, coverSetColumn, digit, House.COLUMN)){
                     result = true;
                   //  System.out.println("Found Sword (with locked column) fish with digit " + digit + " With baseSet: " + baseColumn + " and coverSet: " +coverColumn );
                 }
@@ -326,6 +366,29 @@ public class BasicFish {
         }
     }
 
+    private static boolean removeSwordfish(Tile[][] cPuzzle, List<Integer> baseSet, Set<Integer> coverSet, int digit, House h) {
+        boolean result = false;
+
+        for(int i = 0; i < cPuzzle.length ; i++){
+            if(coverSet.contains(i)){
+                for(int j = 0 ; j <cPuzzle.length ; j++){
+
+                    if(h == House.ROW){
+                        if(!baseSet.contains(j) && cPuzzle[i][j].getCandidates().remove(new Integer(digit))){
+                            result = true;
+                        }
+                    }else if(h == House.COLUMN){
+                        if (!baseSet.contains(j) && cPuzzle[j][i].getCandidates().remove(new Integer(digit))) {
+                            result = true;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return result;
+    }
 
 
 

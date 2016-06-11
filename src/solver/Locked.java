@@ -58,13 +58,13 @@ public class Locked {
                         }
 
                         // If pointing pair was found and change was made, return true.
-                        if (XPair && GenericMethods.removeLockedCandidatesXAxis(Y,cPuzzle,cField[j][k],i)){
+                        if (XPair && removePointingCandidate(Y,cPuzzle,cField[j][k],i,House.ROW)){
 
                             result = true;
                         //    System.out.println("Found pointing pair, for X-axis, for " + i + " at field:" + j +"," +k);
                         }
 
-                        if(YPair && GenericMethods.removeLockedCandidatesYAxis(X,cPuzzle,cField[j][k],i)){
+                        if(YPair && removePointingCandidate(X,cPuzzle,cField[j][k],i,House.COLUMN)){
                             result = true;
                           //  System.out.println("Found pointing pair, for Y-axis, for " + i + " at field:" + j +"," +k);
                         }
@@ -141,7 +141,7 @@ public class Locked {
         }
 
         // if they were in same field, and something was updated, return true.
-        if(claim && GenericMethods.removeClaimedCandidates(tileList,f,digit)){
+        if(claim && removeClaimedCandidates(tileList,f,digit)){
 
             result = true;
                       /*  int a =(int)(tilesRow.get(0).getX()/Math.sqrt(cPuzzle.length));
@@ -150,5 +150,38 @@ public class Locked {
         }
 
         return result;
+    }
+
+    private static boolean removePointingCandidate(int pos, Tile[][] cPuzzle, Field f, int digit, House h){
+        boolean result = false;
+
+        if(h == House.ROW) {
+            for (int i = 0; i < cPuzzle.length; i++) {
+                if (cPuzzle[i][pos].getField() != f && cPuzzle[i][pos].getCandidates().contains(digit)) {
+                    cPuzzle[i][pos].getCandidates().remove(new Integer(digit));
+                    result = true;
+                }
+            }
+        }else if(h == House.COLUMN){
+            for(int i = 0; i<cPuzzle.length;i++){
+                if(cPuzzle[pos][i].getField()!=f && cPuzzle[pos][i].getCandidates().contains(digit)){
+                    cPuzzle[pos][i].getCandidates().remove(new Integer(digit));
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
+    //removes candidates from field when dealing with claiming pairs, and acts as change-checker.
+    private static boolean removeClaimedCandidates(List<Tile> tiles,Field f, int digit){
+        boolean result = false;
+        for(Tile t:f.getTiles()){
+            if(!tiles.contains(t) && t.getCandidates().contains(digit)){
+                t.getCandidates().remove(new Integer(digit));
+                result = true;
+            }
+        }
+        return  result;
     }
 }

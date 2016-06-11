@@ -11,8 +11,6 @@ import javafx.scene.layout.GridPane;
 import reader.PuzzleReader;
 import solver.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -77,7 +75,7 @@ public class Controller {
         if(puzzleChecker.runChecker(cPuzzle)){
             textAreaConsole.appendText("\nThe current Sudoku is valid.\nSolving will now commence.");
             CandidateFinder.runFinder(cPuzzle);
-            Algorithm2.runAlgorithm2(cPuzzle, cFields);
+            LogicalSolver.run(cPuzzle, cFields);
 
             SudokuButton temp;
             for (int i = 0; i < cPuzzle.length; i++) {

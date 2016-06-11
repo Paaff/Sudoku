@@ -22,20 +22,20 @@ public class BruteForce {
             2 double lists managing the coordinates of the empty cells.
             One for the ones yet to be evaluated and on for the ones that has been evaluated.
          */
-        List<List<Integer>> coords = GenericMethods.findEmptyCells(cPuzzle);
-        List<List<Integer>> checkedCoords = new ArrayList<List<Integer>>();
-        checkedCoords.add(new ArrayList<>());
-        checkedCoords.add(new ArrayList<>());
+        List<List<Integer>> cords = findEmptyCells(cPuzzle);
+        List<List<Integer>> checkedCords = new ArrayList<List<Integer>>();
+        checkedCords.add(new ArrayList<>());
+        checkedCords.add(new ArrayList<>());
 
         // Variable for remembering the number of empty cells in the beginning.
-        int oldSize = coords.get(0).size();
+        int oldSize = cords.get(0).size();
 
         boolean solverDone = false;
         PuzzleChecker pChecker = new PuzzleChecker();
 
-        while(!solverDone && !coords.get(0).isEmpty() && checkedCoords.get(0).size() <= oldSize){
-            int xPos = coords.get(0).get(0); // the current x coordinate
-            int yPos = coords.get(1).get(0); // the current y coordinate
+        while(!solverDone && !cords.get(0).isEmpty() && checkedCords.get(0).size() <= oldSize){
+            int xPos = cords.get(0).get(0); // the current x coordinate
+            int yPos = cords.get(1).get(0); // the current y coordinate
 
             int i = cPuzzle[xPos][yPos].getDigit()+1;   // incrementing the current digit.
             cPuzzle[xPos][yPos].setDigit(i);
@@ -48,7 +48,7 @@ public class BruteForce {
                     If the cell is the first empty cell and has crossed the maximum,
                     there cant be any solution for the puzzle.
                  */
-                if(checkedCoords.get(0).size() == 0){
+                if(checkedCords.get(0).size() == 0){
                     solverDone = true;
                     cPuzzle[xPos][yPos].setDigit(0);
                     /*
@@ -58,30 +58,52 @@ public class BruteForce {
                      */
                 }else{
                     cPuzzle[xPos][yPos].setDigit(0);
-                    xPos=checkedCoords.get(0).get(0);
-                    yPos=checkedCoords.get(1).get(0);
+                    xPos=checkedCords.get(0).get(0);
+                    yPos=checkedCords.get(1).get(0);
 
-                    coords.get(0).add(0,xPos);
-                    coords.get(1).add(0,yPos);
+                    cords.get(0).add(0,xPos);
+                    cords.get(1).add(0,yPos);
 
-                    checkedCoords.get(0).remove(0);
-                    checkedCoords.get(1).remove(0);
+                    checkedCords.get(0).remove(0);
+                    checkedCords.get(1).remove(0);
                 }
                 /*
                     If the proposed digit is valid, pop coordinates from 'pending' stack to 'checked' stack.
                  */
             }else if(pChecker.checkCord(cPuzzle,xPos,yPos)){
-                checkedCoords.get(0).add(0,xPos);
-                checkedCoords.get(1).add(0,yPos);
+                checkedCords.get(0).add(0,xPos);
+                checkedCords.get(1).add(0,yPos);
 
-                coords.get(0).remove(0);
-                coords.get(1).remove(0);
+                cords.get(0).remove(0);
+                cords.get(1).remove(0);
 
             }
 
 
         }
 
+
+    }
+
+    private List findEmptyCells(Tile[][] cPuzzle){
+        /*
+        Deque[] coords = new Deque[2];
+        coords[0] = new LinkedList<Integer>();
+        coords[1] = new LinkedList<Integer>();
+*/
+        List<List<Integer>> coords = new ArrayList<>();
+        coords.add(new ArrayList<>());
+        coords.add(new ArrayList<>());
+
+        for(int i =0 ; i < cPuzzle.length ; i++){
+            for(int j = 0 ; j <  cPuzzle.length ; j++){
+                if(cPuzzle[i][j].getDigit() == 0){
+                    coords.get(0).add(i);
+                    coords.get(1).add(j);
+                }
+            }
+        }
+        return coords;
 
     }
 

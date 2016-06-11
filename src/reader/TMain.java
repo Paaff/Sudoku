@@ -23,22 +23,21 @@ public class TMain {
       // while(i <= 21) {
             starttime = System.currentTimeMillis();
 
-            cPuzzle = reader.runReader( "puzzle5_1.txt"/*"puzzle3_" + i + ".txt"*/);
+            cPuzzle = reader.runReader( "puzzle3_1.txt"/*"puzzle3_" + i + ".txt"*/);
             cFields = reader.setUpFields();
 
             // Run the puzzle checker
             PuzzleChecker checker = new PuzzleChecker();
             //System.out.println("The puzzle is legit: " + checker.runChecker(cPuzzle));
 
-            CandidateFinder.runFinder(cPuzzle);
 
-            // Algorithm2
-            //new BruteForce().solver(cPuzzle);
-            Algorithm2.runAlgorithm2(cPuzzle, cFields);
+
+            // LogicalSolver
+           // new BruteForce().solver(cPuzzle);
+            LogicalSolver.run(cPuzzle, cFields);
 
             //remove backslash for end result.
-             reader.pPuzzle(cPuzzle);
-            System.out.println(checker.runChecker(cPuzzle));
+            // reader.pPuzzle(cPuzzle);
 
             final long endTime = System.currentTimeMillis();
 

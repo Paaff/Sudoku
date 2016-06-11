@@ -26,11 +26,7 @@ public class Singles {
                        */ cPuzzle[i][j].setAndClear(digit);
                         result = true;
 
-                        GenericMethods.removeCandidateField(cPuzzle[i][j].getField(),digit);
-
-                        GenericMethods.removeCandidateXAxis(j,cPuzzle,digit);
-
-                        GenericMethods.removeCandidateYAxis(i,cPuzzle,digit);
+                        removeCandidate(cPuzzle,digit,cPuzzle[i][j]);
 
                     }
                 }
@@ -93,11 +89,7 @@ public class Singles {
 */
                             cPuzzle[j][k].setAndClear(i);
 
-                            GenericMethods.removeCandidateField(cPuzzle[j][k].getField(),i);
-
-                            GenericMethods.removeCandidateXAxis(k,cPuzzle,i);
-
-                            GenericMethods.removeCandidateYAxis(j,cPuzzle,i);
+                            removeCandidate(cPuzzle,i,cPuzzle[j][k]);
                         }
 
 
@@ -112,14 +104,21 @@ public class Singles {
         }
         return result;
 
+    }
+    // Method that removes the placed candidate from all of the tiles in the same houses as the specific tile.
+    private static void removeCandidate(Tile[][] puzzle, int digit, Tile t) {
+        for (Tile s : t.getField().getTiles()) {
+            s.getCandidates().remove(new Integer(digit));
+        }
 
+        for(int i = 0 ; i< puzzle.length ;i++){
+            puzzle[t.getX()][i].getCandidates().remove(new Integer(digit));
 
-
+            puzzle[i][t.getY()].getCandidates().remove(new Integer(digit));
+        }
 
 
     }
-
-
 
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
 public class Algorithm1 {
 
     public static void runAlgorihm(Tile[][] cPuzzle) {
-
+/*
         CandidateFinder.runFinder(cPuzzle);
         List<List<Integer>> emptyCells = GenericMethods.findEmptyCells(cPuzzle);
         List<List<Integer>> tempEmpty = new ArrayList<>();
@@ -62,7 +62,7 @@ public class Algorithm1 {
 
             tempEmpty.get(0).clear();
             tempEmpty.get(1).clear();
-
+*/
         }
     }
-}
+
