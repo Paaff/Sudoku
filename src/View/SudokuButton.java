@@ -13,10 +13,10 @@ public class SudokuButton extends Button {
     private String buttonID;
     private int xPos;
     private int yPos;
-    private final double MAX_WIDTH = 50.0, MAX_HEIGHT = 50.0;
+    private final double MIN_WIDTH = 40.0, MIN_HEIGHT = 40.0;
 
-    public SudokuButton(String buttonID, String buttonText, int xPos, int yPos) {
-        this.buttonID = buttonID;
+    public SudokuButton(String buttonText, int xPos, int yPos) {
+        this.buttonID = "button("+xPos+","+yPos+")";
         this.buttonText = buttonText;
         this.xPos = xPos;
         this.yPos = yPos;
@@ -25,10 +25,10 @@ public class SudokuButton extends Button {
     }
 
     private void setup() {
-        this.setId("sudokuGridButton:" + buttonID);
+        this.setId(buttonID);
         this.setAlignment(Pos.CENTER);
         this.setTextAlignment(TextAlignment.CENTER);
-        this.setMaxSize(MAX_WIDTH, MAX_HEIGHT);
+        this.setMinSize(MIN_WIDTH, MIN_HEIGHT);
 
 
 
