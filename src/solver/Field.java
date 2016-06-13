@@ -4,8 +4,8 @@ package solver;
  * Created by minit on 02-03-2016.
  */
 public class Field {
-    Tile[] tiles;
-    int index = 0;
+    private Tile[] tiles;
+    private int index = 0;
 
     public Field(int max){
         tiles = new Tile[max];

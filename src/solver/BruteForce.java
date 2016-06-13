@@ -33,6 +33,8 @@ public class BruteForce {
         boolean solverDone = false;
         PuzzleChecker pChecker = new PuzzleChecker();
 
+        System.out.println(oldSize);
+
         while(!solverDone && !cords.get(0).isEmpty() && checkedCords.get(0).size() <= oldSize){
             int xPos = cords.get(0).get(0); // the current x coordinate
             int yPos = cords.get(1).get(0); // the current y coordinate

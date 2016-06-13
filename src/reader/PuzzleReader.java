@@ -21,7 +21,7 @@ public class PuzzleReader {
 
     public Tile[][] runReader(String s){
 
-        file = new File("src\\reader\\" + s);
+        file = new File("src\\puzzles\\" + s);
 
         try{
             Scanner sc = new Scanner(file);

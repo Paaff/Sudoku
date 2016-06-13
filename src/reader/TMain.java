@@ -20,10 +20,10 @@ public class TMain {
         PuzzleReader reader = new PuzzleReader();
 
         int i = 1;
-      // while(i <= 21) {
+     // while(i <= 40) {
             starttime = System.currentTimeMillis();
 
-            cPuzzle = reader.runReader( "puzzle3_1.txt"/*"puzzle3_" + i + ".txt"*/);
+            cPuzzle = reader.runReader("puzzle5_1.txt"/*"puzzle3_" + i + ".txt"*/);
             cFields = reader.setUpFields();
 
             // Run the puzzle checker
@@ -33,18 +33,18 @@ public class TMain {
 
 
             // LogicalSolver
-           // new BruteForce().solver(cPuzzle);
+            //new BruteForce().solver(cPuzzle);
             LogicalSolver.run(cPuzzle, cFields);
 
             //remove backslash for end result.
-            // reader.pPuzzle(cPuzzle);
+            //reader.pPuzzle(cPuzzle);
 
             final long endTime = System.currentTimeMillis();
 
             System.out.println(/*"\nTotal Execution time: " +*/ (endTime - starttime));
            i++;
 
-       //}
+      // }
 
 
 

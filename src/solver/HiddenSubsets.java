@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class HiddenSubsets {
 
-    public static boolean hiddenPairs(Tile[][] cPuzzle, int size){
+    public static boolean findHS(Tile[][] cPuzzle, int size){
         boolean result = false;
 
         //Rows and columns and Fields
@@ -96,7 +96,7 @@ public class HiddenSubsets {
                     from the list.
                      */
                     if(indexListFields.size() > 1){
-                        result = clearHiddenSubset(digitTilesFields,indexListFields,size);
+                        result = clearHS(digitTilesFields,indexListFields,size);
 
                     }
 
@@ -113,7 +113,7 @@ public class HiddenSubsets {
 
             // same explanation as for fields.
             if (indexListRows.size() > 1){
-                result = clearHiddenSubset(digitTilesRows,indexListRows,size);
+                result = clearHS(digitTilesRows,indexListRows,size);
             }
 
             // Columns
@@ -128,23 +128,23 @@ public class HiddenSubsets {
 
             // same explanation as for fields.
             if(indexListColumns.size() > 1){
-                result = clearHiddenSubset(digitTilesColumns,indexListColumns,size);
+                result = clearHS(digitTilesColumns,indexListColumns,size);
             }
         }
         return result;
     }
 
-    private static boolean clearHiddenSubset(List<List<Tile>> digitTiles, List<Integer> indexList, int size){
+    private static boolean clearHS(List<List<Tile>> digitTiles, List<Integer> indexList, int size){
         boolean result = false;
-        indexList = findHiddenSubsets(digitTiles, indexList);
-        Set<Tile> tilesColumns = createTileSet(indexList, digitTiles); // made for easier access to the tiles of subset.
+        indexList = cleanHS(digitTiles, indexList);
+        Set<Tile> tiles = createTileSet(indexList, digitTiles); // made for easier access to the tiles of subset.
 
         /*
           If the number of tiles and digits in the subset is the correct size, we have found a hidden subset.
           We then try to remove every digit from these tile's candidates that is not a part of the subset.
         */
-        if(indexList.size() == size && tilesColumns.size() == size)
-            if (updateHiddenSubset(tilesColumns, indexList)) {
+        if(indexList.size() == size && tiles.size() == size)
+            if (updateHS(tiles, indexList)) {
                 result = true;
                 // System.out.println("Found hidden subset (column), digits= " + indexListColumns + "(+1) At column: " + i);
             }
@@ -161,7 +161,7 @@ public class HiddenSubsets {
         return tileSubset;
     }
 
-    private static List<Integer> findHiddenSubsets(List<List<Tile>> digitTiles, List<Integer> indexList){
+    private static List<Integer> cleanHS(List<List<Tile>> digitTiles, List<Integer> indexList){
 
         List<Integer> indexCopy = new ArrayList<>();
         indexCopy.addAll(indexList);
@@ -189,12 +189,12 @@ public class HiddenSubsets {
         if(indexCopy.equals(indexList)){
             return indexList;
         }else{
-            return findHiddenSubsets(digitTiles,indexList);
+            return cleanHS(digitTiles,indexList);
         }
 
     }
 
-    private static boolean updateHiddenSubset(Set<Tile> subsetTiles, List<Integer> indexList){
+    private static boolean updateHS(Set<Tile> subsetTiles, List<Integer> indexList){
         boolean result = false;
 
         List<Integer> newDigits = new ArrayList<>();

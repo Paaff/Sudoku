@@ -14,7 +14,7 @@ public class BasicFish {
         boolean result = false;
 
         /*
-        The techinques runs through all the possible digits. (candidates)
+        The technique runs through all the possible digits. (candidates)
          */
         for (int digit = 1 ; digit <= cPuzzle.length ; digit++){
             /*
@@ -263,7 +263,7 @@ public class BasicFish {
             we start by cleaning up in our base and cover set by finding the candidates that does not belong, meaning that
             one of the columns in the base set does not align with the rest of the base set.
              */
-            List<Integer> newBaseRow = cleaningCoverAndBase(baseRow,coverRow);
+            List<Integer> newBaseRow = cleanCandB(baseRow,coverRow);
             for(int i = 0 ; i < baseRow.size() ; i++){
                 if( !newBaseRow.contains(baseRow.get(i)) ){
                     coverRow.remove(i);
@@ -290,7 +290,7 @@ public class BasicFish {
 
             //Columns
 
-            List<Integer> newBaseColumn = cleaningCoverAndBase(baseColumn,coverColumn);
+            List<Integer> newBaseColumn = cleanCandB(baseColumn,coverColumn);
             for(int i = 0 ; i < baseColumn.size() ; i++){
                 if( !newBaseColumn.contains(baseColumn.get(i)) ){
                     coverColumn.remove(i);
@@ -319,7 +319,7 @@ public class BasicFish {
 
         return result;
     }
-    private static List<Integer> cleaningCoverAndBase(List<Integer> base, List<List<Integer>> cover){
+    private static List<Integer> cleanCandB(List<Integer> base, List<List<Integer>> cover){
         List<Integer> removeBase = new ArrayList<>();
         List<List<Integer>> removeCover = new ArrayList<>();
 
@@ -362,7 +362,7 @@ public class BasicFish {
         if(coverCopy.equals(cover)){
             return base;
         }else{
-            return cleaningCoverAndBase(base,cover);
+            return cleanCandB(base,cover);
         }
     }
 

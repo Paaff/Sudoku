@@ -1,7 +1,6 @@
 package solver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -141,7 +140,7 @@ public class Locked {
         }
 
         // if they were in same field, and something was updated, return true.
-        if(claim && removeClaimedCandidates(tileList,f,digit)){
+        if(claim && removeCC(tileList,f,digit)){
 
             result = true;
                       /*  int a =(int)(tilesRow.get(0).getX()/Math.sqrt(cPuzzle.length));
@@ -174,7 +173,7 @@ public class Locked {
     }
 
     //removes candidates from field when dealing with claiming pairs, and acts as change-checker.
-    private static boolean removeClaimedCandidates(List<Tile> tiles,Field f, int digit){
+    private static boolean removeCC(List<Tile> tiles, Field f, int digit){
         boolean result = false;
         for(Tile t:f.getTiles()){
             if(!tiles.contains(t) && t.getCandidates().contains(digit)){

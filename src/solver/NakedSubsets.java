@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class NakedSubsets {
 
-    public static boolean NakedPairs(Tile[][]cPuzzle){
+    public static boolean nakedPairs(Tile[][]cPuzzle){
         boolean result = false;
 
         // Runs through all tiles.
@@ -31,7 +31,7 @@ public class NakedSubsets {
                             pair[0] = cPuzzle[i][j]; // one half of the pair
                             pair[1] = cPuzzle[k][j]; // the other half of the path
 
-                            if(removeNakedPair(cPuzzle,pair, House.ROW)){
+                            if(removedNP(cPuzzle,pair, House.ROW)){
 
                                 result = true;
                               //  System.out.println("Found naked pair at row " + cPuzzle[i][j].getY());
@@ -51,7 +51,7 @@ public class NakedSubsets {
                             pair[0] = cPuzzle[i][j];
                             pair[1] = cPuzzle[i][k];
 
-                            if(removeNakedPair(cPuzzle,pair,House.COLUMN)){
+                            if(removedNP(cPuzzle,pair,House.COLUMN)){
                                 result = true;
                              //   System.out.println("Found naked pair at column " + cPuzzle[i][j].getX());
                             }
@@ -72,7 +72,7 @@ public class NakedSubsets {
                             pair[0] = cPuzzle[i][j];
                             pair[1] = t;
 
-                            if(removeNakedPair(cPuzzle,pair,House.FIELD)){
+                            if(removedNP(cPuzzle,pair,House.FIELD)){
                                 result = true;
                              //   System.out.println("Found naked pair in field " + t.getX()/3 + ", " + t.getY()/3);
                             }
@@ -89,7 +89,7 @@ public class NakedSubsets {
         return result;
     }
 
-    private static boolean removeNakedPair(Tile[][] cPuzzle, Tile[] pair, House h){
+    private static boolean removedNP(Tile[][] cPuzzle, Tile[] pair, House h){
         boolean result = false;
 
         if(h == House.FIELD) {

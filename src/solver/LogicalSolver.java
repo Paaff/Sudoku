@@ -1,7 +1,5 @@
 package solver;
 
-import java.util.concurrent.locks.Lock;
-
 /**
  * Created by Pete Laptop on 13-04-2016.
  */
@@ -21,14 +19,40 @@ public class LogicalSolver {
 
        //  System.out.println("\nOperations used:");
         while(proceed) {
-
+/*
             proceed = Singles.nakedSingle(cPuzzle) || Singles.hiddenSingle(cPuzzle)
             || Locked.lockedPointing(cPuzzle,cField) || Locked.lockedClaiming(cPuzzle)
-            || NakedSubsets.NakedPairs(cPuzzle) || NakedSubsets.nakedLargeSubsets(cPuzzle,3)
+            || NakedSubsets.nakedPairs(cPuzzle) || NakedSubsets.nakedLargeSubsets(cPuzzle,3)
             || HiddenSubsets.hiddenPairs(cPuzzle,2) || HiddenSubsets.hiddenPairs(cPuzzle,3)
             || NakedSubsets.nakedLargeSubsets(cPuzzle,4) || BasicFish.xWing(cPuzzle)
             || BasicFish.swordFish(cPuzzle,3) || BasicFish.swordFish(cPuzzle,4);
-
+*/
+           proceed = false;
+            if(Singles.nakedSingle(cPuzzle)){
+                proceed = true;
+            }else if(Singles.hiddenSingle(cPuzzle)){
+                proceed = true;
+            }else if (Locked.lockedPointing(cPuzzle,cField)){
+                proceed = true;
+            }else if(Locked.lockedClaiming(cPuzzle)){
+                proceed = true;
+            }else if (NakedSubsets.nakedPairs(cPuzzle)){
+                proceed = true;
+            }else if (NakedSubsets.nakedLargeSubsets(cPuzzle,3)){
+                proceed = true;
+            }else if (HiddenSubsets.findHS(cPuzzle,2)){
+                proceed = true;
+            }else if (HiddenSubsets.findHS(cPuzzle,3)){
+                proceed = true;
+            }else if (NakedSubsets.nakedLargeSubsets(cPuzzle,4)){
+                proceed = true;
+            }else if (BasicFish.xWing(cPuzzle)){
+                proceed = true;
+            }else if (BasicFish.swordFish(cPuzzle,3)){
+                proceed = true;
+            }else if (BasicFish.swordFish(cPuzzle,4)){
+                proceed = true;
+            }
 
 
             if(!proceed){
