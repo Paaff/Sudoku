@@ -46,7 +46,11 @@ public class PuzzleReader {
 
                     try{
                         int j = Integer.parseInt(tList[i]);
-                        sPuzzle[i][tmp] = new Tile(j, sPuzzle.length,i,tmp);
+                        if(j > pSize*pSize){
+                            sPuzzle[i][tmp] = new Tile(0, sPuzzle.length,i,tmp);
+                        } else {
+                            sPuzzle[i][tmp] = new Tile(j, sPuzzle.length, i, tmp);
+                        }
                     }catch(NumberFormatException e){
                         sPuzzle[i][tmp] = new Tile(0, sPuzzle.length,i,tmp);
                     }

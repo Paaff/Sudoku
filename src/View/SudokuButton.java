@@ -13,7 +13,7 @@ public class SudokuButton extends Button {
     private String buttonID;
     private int xPos;
     private int yPos;
-    private final double MIN_WIDTH = 40.0, MIN_HEIGHT = 40.0;
+    private final double MIN_WIDTH = 35.0, MIN_HEIGHT = 35.0;
 
     public SudokuButton(String buttonText, int xPos, int yPos) {
         this.buttonID = "button("+xPos+","+yPos+")";

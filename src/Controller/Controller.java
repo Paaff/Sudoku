@@ -4,11 +4,15 @@ import View.SudokuButton;
 import View.SudokuChooserDialog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import reader.PuzzleReader;
 import solver.*;
 import java.util.Optional;
@@ -33,8 +37,10 @@ public class Controller {
 
     SudokuButton sudokuButton;
     SudokuChooserDialog sudokuChooserDialog = new SudokuChooserDialog();
-    String selectedPuzzle;
+    private String selectedPuzzle;
     private boolean generatedBefore;
+    private String typedString = "";
+    private String tempString;
 
 
     // Methods for button presses
@@ -61,6 +67,22 @@ public class Controller {
 
         // Method for printing the puzzle in the GUI Console.
         guiConsolPuzzlePrint(cPuzzle, reader.pSize);
+
+        // Setting up the columns and rows in the GridPane
+        ColumnConstraints column = new ColumnConstraints();
+        RowConstraints row = new RowConstraints();
+
+        for(int i = 0; i < cPuzzle.length; i++) {
+            sudokuGrid.addColumn(i);
+            column.setHgrow(Priority.SOMETIMES);
+            column.setMinWidth(10.0);
+            sudokuGrid.addRow(i);
+            row.setMinHeight(10);
+            row.setVgrow(Priority.SOMETIMES);
+
+
+        }
+
 
         // Using cPuzzle to get all the loaded sudoku numbers onto individual buttons.
         sudokuGridButtons();
@@ -117,56 +139,34 @@ public class Controller {
     // Different scenarios depending on the user input on the button.
     private void chooseASudokuNumber(KeyEvent keyEvent) {
 
-        //System.out.print(keyEvent.getTarget().toString());
-        if (keyEvent.getCode() != KeyCode.DIGIT0) {
-
-            switch (keyEvent.getCode()) {
-                case DIGIT1:
-                    // Set the text of the button if 1 is pressed on keyboard.
-                    ((SudokuButton) keyEvent.getTarget()).setButtonText("1");
-                    break;
-                case DIGIT2:
-                    ((SudokuButton) keyEvent.getTarget()).setText("2");
-                    break;
-                case DIGIT3:
-                    ((SudokuButton) keyEvent.getTarget()).setText("3");
-                    break;
-                case DIGIT4:
-                    ((SudokuButton) keyEvent.getTarget()).setText("4");
-                    break;
-                case DIGIT5:
-                    ((SudokuButton) keyEvent.getTarget()).setText("5");
-                    break;
-                case DIGIT6:
-                    ((SudokuButton) keyEvent.getTarget()).setText("6");
-                    break;
-                case DIGIT7:
-                    ((SudokuButton) keyEvent.getTarget()).setText("7");
-                    break;
-                case DIGIT8:
-                    ((SudokuButton) keyEvent.getTarget()).setText("8");
-                    break;
-                case DIGIT9:
-                    ((SudokuButton) keyEvent.getTarget()).setText("9");
-                    break;
-                case BACK_SPACE:
-                    ((SudokuButton) keyEvent.getTarget()).setText("");
-                    break;
+        if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
+            typedString = "";
+            ((SudokuButton) keyEvent.getTarget()).setButtonText(typedString);
+        } else if (keyEvent.getCode() == KeyCode.ENTER) {
+                ((SudokuButton) keyEvent.getTarget()).setButtonText(typedString);
+                typedString = "";
 
 
+            } else if (keyEvent.getText().matches("[0-9]*")) {
+             //   tempString = typedString;
+                typedString += keyEvent.getText();
 
-            }
+                if(!(Integer.parseInt(typedString) > cPuzzle.length)) {
 
-            // Load this specific number into cPuzzle by taking the text from the button and placing it in the stored puzzle.
-            // Also check if this new value is valid or not.
-          validNumberChecker((SudokuButton) keyEvent.getTarget());
+                System.out.println(typedString);
+                validNumberChecker((SudokuButton) keyEvent.getTarget());
+            } else {
+                    typedString = "";
+                }
 
 
         }
+
+        validNumberChecker((SudokuButton) keyEvent.getTarget());
     }
 
     // Uses the PuzzleChecker to check if the number chosen on a button is valid / not valid.
-    // The Valid checking not used anymore, but the feedback to the user is still useful 10-06
+    // The Valid checking not used anymore, but the feedback to the user is still useful // 10-06
     private void validNumberChecker(SudokuButton button) {
 
         if (!button.getButtonText().equals("")) {
@@ -214,7 +214,7 @@ public class Controller {
                     sudokuButton.setOnKeyPressed(this::chooseASudokuNumber);
 
                     sudokuGrid.add(sudokuButton, i, j);
-
+                    sudokuGrid.setMargin(sudokuButton, new Insets(2,2,2,2));
                     generatedBefore = true;
                 }
             }
@@ -269,6 +269,8 @@ public class Controller {
 
         }
 
+        textAreaConsole.appendText("\nHow to play:\nClick on a button. Type in the number you want on it.\nPress ENTER when you are done typing.");
+
 
     }
 
@@ -287,7 +289,12 @@ public class Controller {
 
         }
 
-        selectedPuzzle = "puzzle3_" +answerSelected+".txt";
+        if(answerSelected.equals("puzzle4_1.txt") || answerSelected.equals("puzzle5_1.txt")) {
+            selectedPuzzle = answerSelected;
+        }else {
+            selectedPuzzle = "puzzle3_" + answerSelected + ".txt";
+
+        }
         generateSudoku();
 
     }
@@ -305,10 +312,15 @@ public class Controller {
     // Method for differenciating between the different "Fields" in the sudoku grid so it's more appealing to the user.
     private void coloringButton(SudokuButton sudokuButton, Tile[][] cPuzzle, int i, int j) {
 
-        if((cPuzzle[i][j].getX()/3 == 1 && cPuzzle[i][j].getY()/3 == 0) ||
-                (cPuzzle[i][j].getX()/3 == 0 && cPuzzle[i][j].getY()/3 == 1) ||
-                (cPuzzle[i][j].getX()/3 == 2 && cPuzzle[i][j].getY()/3 == 1) ||
-                (cPuzzle[i][j].getX()/3 == 1 && cPuzzle[i][j].getY()/3 == 2)) {
+        if(
+                (((int)(cPuzzle[i][j].getX()/Math.sqrt(cPuzzle.length))%2 == 0) && ((int)(cPuzzle[i][j].getY()/Math.sqrt(cPuzzle.length))%2 == 0))
+                ||
+                        (((int)(cPuzzle[i][j].getX()/Math.sqrt(cPuzzle.length))%2 != 0) && ((int)(cPuzzle[i][j].getY()/Math.sqrt(cPuzzle.length))%2 != 0))
+
+                )
+
+        {
+
             sudokuButton.setStyle("-fx-background-color: lightskyblue;");
         } else {
             sudokuButton.setStyle("-fx-background-color: bisque;");

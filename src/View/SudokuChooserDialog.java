@@ -13,7 +13,7 @@ import java.util.Optional;
  */
 public class SudokuChooserDialog extends ChoiceDialog {
 
-    private final String[] CHOICES = {"clean", "1", "2", "3", "4", "5", "6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"};
+    private final String[] CHOICES = {"clean", "1", "2", "3", "4", "5", "6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","puzzle4_1.txt","puzzle5_1.txt"};
 
 
    public SudokuChooserDialog() {
@@ -24,7 +24,7 @@ public class SudokuChooserDialog extends ChoiceDialog {
 
     private void setup() {
         this.setTitle("Choose a Puzzle");
-        this.setHeaderText("Please select which Sudoku Puzzle you want (3x3)");
+        this.setHeaderText("Please select which Sudoku Puzzle you want");
         this.getItems().addAll(CHOICES);
 
 
