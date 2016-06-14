@@ -41,6 +41,8 @@ public class Controller {
     private boolean generatedBefore;
     private String typedString = "";
     private String tempString;
+    private boolean sameSizeGrid;
+    private int lastGridSize;
 
 
     // Methods for button presses
@@ -198,8 +200,14 @@ public class Controller {
     // Creating sudokuGridButtons.
     private void sudokuGridButtons() {
 
-        if(!generatedBefore) {
+        if(lastGridSize == cPuzzle.length) {
+            sameSizeGrid = true;
+        } else{
+            sameSizeGrid = false;
+        }
 
+        if(!generatedBefore || !sameSizeGrid) {
+            sudokuGrid.getChildren().clear();
             // Insert a sudokuButton for each "place" in the puzzle.
             int digit;
             for (int i = 0; i < cPuzzle.length; i++) {
@@ -216,6 +224,9 @@ public class Controller {
                     sudokuGrid.add(sudokuButton, i, j);
                     sudokuGrid.setMargin(sudokuButton, new Insets(2,2,2,2));
                     generatedBefore = true;
+
+
+
                 }
             }
 
@@ -230,6 +241,8 @@ public class Controller {
 
                     sudokuButton = (SudokuButton) getNodeFromSudokuGrid(sudokuGrid,i,j);
 
+
+
                     if(digit == 0) {
                         sudokuButton.setText("");
                     } else {
@@ -239,6 +252,7 @@ public class Controller {
                 }
             }
         }
+        lastGridSize = cPuzzle.length;
     }
 
     // TextArea (Prints to the GUI console
