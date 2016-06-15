@@ -60,12 +60,12 @@ public class Locked {
                         if (XPair && removePointingCandidate(Y,cPuzzle,cField[j][k],i,House.ROW)){
 
                             result = true;
-                        //    System.out.println("Found pointing pair, for X-axis, for " + i + " at field:" + j +"," +k);
+                          // System.out.println("Found pointing pair, for X-axis, for " + i + " at field:" + j +"," +k);
                         }
 
                         if(YPair && removePointingCandidate(X,cPuzzle,cField[j][k],i,House.COLUMN)){
                             result = true;
-                          //  System.out.println("Found pointing pair, for Y-axis, for " + i + " at field:" + j +"," +k);
+                            //System.out.println("Found pointing pair, for Y-axis, for " + i + " at field:" + j +"," +k);
                         }
                     }
 
@@ -109,16 +109,16 @@ public class Locked {
                  continue and check if they're in the same field.
                   */
 
-                if(tilesColumn.size()>1 && tilesColumn.size()<=Math.sqrt(cPuzzle.length)){
-                    result = checkForEquivalentField(tilesColumn,i);
+                if(tilesColumn.size()>1 && tilesColumn.size()<=Math.sqrt(cPuzzle.length) && checkForEquivalentField(tilesColumn,i)){
+                    result = true;
                 }
 
                 /*
                  If the row list has more than 1 tile, and fewer than the maximum (field's side length),
                  continue and check if they're in the same field.
                   */
-                if(tilesRow.size()>1 && tilesRow.size()<=Math.sqrt(cPuzzle.length)){
-                    result = checkForEquivalentField(tilesRow,i);
+                if(tilesRow.size()>1 && tilesRow.size()<=Math.sqrt(cPuzzle.length) && checkForEquivalentField(tilesRow,i)){
+                    result = true;
                 }
 
             }

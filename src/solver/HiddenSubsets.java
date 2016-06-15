@@ -95,8 +95,8 @@ public class HiddenSubsets {
                     digit that used this tile, it could not be a part of the hidden subset, and we therefore remove it
                     from the list.
                      */
-                    if(indexListFields.size() > 1){
-                        result = clearHS(digitTilesFields,indexListFields,size);
+                    if(indexListFields.size() > 1 && clearHS(digitTilesFields,indexListFields,size)){
+                        result = true;
 
                     }
 
@@ -112,8 +112,8 @@ public class HiddenSubsets {
             }
 
             // same explanation as for fields.
-            if (indexListRows.size() > 1){
-                result = clearHS(digitTilesRows,indexListRows,size);
+            if (indexListRows.size() > 1 && clearHS(digitTilesRows,indexListRows,size)){
+                result = true;
             }
 
             // Columns
@@ -127,8 +127,8 @@ public class HiddenSubsets {
             }
 
             // same explanation as for fields.
-            if(indexListColumns.size() > 1){
-                result = clearHS(digitTilesColumns,indexListColumns,size);
+            if(indexListColumns.size() > 1 && clearHS(digitTilesColumns,indexListColumns,size)){
+                result = true;
             }
         }
         return result;
@@ -136,7 +136,7 @@ public class HiddenSubsets {
 
     private static boolean clearHS(List<List<Tile>> digitTiles, List<Integer> indexList, int size){
         boolean result = false;
-        indexList = cleanHS(digitTiles, indexList);
+        indexList = cleanHS(digitTiles, indexList, size);
         Set<Tile> tiles = createTileSet(indexList, digitTiles); // made for easier access to the tiles of subset.
 
         /*
@@ -146,7 +146,7 @@ public class HiddenSubsets {
         if(indexList.size() == size && tiles.size() == size)
             if (updateHS(tiles, indexList)) {
                 result = true;
-                // System.out.println("Found hidden subset (column), digits= " + indexListColumns + "(+1) At column: " + i);
+               //  System.out.println("Found hidden subset (field), digits= " + indexList + "(+1) At column: ");
             }
 
         return result;
@@ -161,26 +161,26 @@ public class HiddenSubsets {
         return tileSubset;
     }
 
-    private static List<Integer> cleanHS(List<List<Tile>> digitTiles, List<Integer> indexList){
+    private static List<Integer> cleanHS(List<List<Tile>> digitTiles, List<Integer> indexList, int size){
 
         List<Integer> indexCopy = new ArrayList<>();
         indexCopy.addAll(indexList);
         List<Integer> removeList = new ArrayList<>();
         // see the explanation for fields.
         for(int i = 0 ; i < indexList.size(); i++){
-            for(Tile t: digitTiles.get( indexList.get(i) )){
-                int count = 0;
-                for(int j = 0; j <indexList.size(); j++){
+            int count = 0;
+            List<Tile> l1 = digitTiles.get( indexList.get(i) );
 
-                    if(digitTiles.get( indexList.get(j) ).contains( t )){
-                        count++;
-                    }
+            for(int j = 0 ; j < indexList.size(); j++){
+                List<Tile> l2 = digitTiles.get( indexList.get(j) );
 
+                if(unionSize(l1,l2) <= size){
+                    count++;
                 }
+            }
 
-                if(count == 1){
-                    removeList.add( indexList.get(i) );
-                }
+            if(count < size){
+                removeList.add( indexList.get(i) );
             }
         }
 
@@ -189,9 +189,18 @@ public class HiddenSubsets {
         if(indexCopy.equals(indexList)){
             return indexList;
         }else{
-            return cleanHS(digitTiles,indexList);
+            return cleanHS(digitTiles,indexList, size);
         }
 
+    }
+
+    private static int unionSize(List<Tile> l1, List<Tile> l2){
+        Set<Tile> set = new HashSet<>();
+
+        set.addAll(l1);
+        set.addAll(l2);
+
+        return set.size();
     }
 
     private static boolean updateHS(Set<Tile> subsetTiles, List<Integer> indexList){
