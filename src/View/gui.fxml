@@ -21,11 +21,7 @@
       </ScrollPane>
    </left>
    <right>
-      <VBox prefHeight="766.0" prefWidth="371.0" BorderPane.alignment="CENTER">
-         <children>
-            <TextArea fx:id="textAreaConsole" editable="false" prefHeight="795.0" prefWidth="371.0" />
-         </children>
-      </VBox>
+        <TextArea fx:id="textAreaConsole" editable="false" prefHeight="800" prefWidth="600.0" style="-fx-font-family: monospace;" />
    </right>
    <center>
       <GridPane fx:id="sudokuGrid" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">

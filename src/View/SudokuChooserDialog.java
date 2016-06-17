@@ -13,11 +13,12 @@ import java.util.Optional;
  */
 public class SudokuChooserDialog extends ChoiceDialog {
 
+    // Testing String Array, the names and the choosing process could use some more smart work. A bit more dynamical.
+    // Added the puzzle4_1.txt and 5 for testing purpose.
     private final String[] CHOICES = {"clean", "1", "2", "3", "4", "5", "6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","puzzle4_1.txt","puzzle5_1.txt"};
 
 
    public SudokuChooserDialog() {
-
        setup();
 
    }

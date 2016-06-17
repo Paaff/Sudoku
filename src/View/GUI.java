@@ -23,7 +23,11 @@ public class GUI extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
         primaryStage.setTitle("Sudoku");
-        primaryStage.setScene(new Scene(root, 1600, 800));
+        // Set to maximize on screen
+        primaryStage.setMaximized(true);
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("View/sudokuButton.css");
+        primaryStage.setScene(scene);
         primaryStage.show();
 
 

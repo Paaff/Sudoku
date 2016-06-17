@@ -33,8 +33,7 @@ public class SudokuButton extends Button {
 
 
         if(buttonText.equals("0")) {
-            this.setText("");
-
+           this.setText("");
 
         } else {
             this.setText(buttonText);
@@ -42,29 +41,17 @@ public class SudokuButton extends Button {
 
         }
 
-
-
     }
 
     public void setButtonText(String buttonText) {
         this.setText(buttonText);
     }
-
     public String getButtonText() {
         return this.getText();
     }
-
     public int getButtonXPos() { return this.xPos; }
     public int getButtonYPos() {
         return this.yPos;
     }
 
-    public void setValidStyle() {
-
-      //  this.setStyle("-fx-text-fill: forestgreen; -fx-background-color: darkgoldenrod;");
-    }
-
-    public void setNotValidStyle() {
-    //    this.setStyle("-fx-text-fill: darkred; -fx-background-color: cornflowerblue;");
-    }
 }

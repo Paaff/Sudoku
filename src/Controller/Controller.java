@@ -2,7 +2,6 @@ package Controller;
 
 import View.SudokuButton;
 import View.SudokuChooserDialog;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -23,49 +22,53 @@ import java.util.Optional;
  */
 public class Controller {
 
-
+    // FXML Fields.
     @FXML
     TextArea textAreaConsole;
     @FXML
     GridPane sudokuGrid;
 
+    // Solver Fields.
     PuzzleReader reader = new PuzzleReader();
     PuzzleChecker puzzleChecker = new PuzzleChecker();
-
     static Tile[][] cPuzzle;
     static Field[][] cFields;
 
+    // Controller fields.
     SudokuButton sudokuButton;
     SudokuChooserDialog sudokuChooserDialog = new SudokuChooserDialog();
     private String selectedPuzzle;
     private boolean generatedBefore;
     private String typedString = "";
-    private String tempString;
     private boolean sameSizeGrid;
     private int lastGridSize;
 
 
-    // Methods for button presses
+    // If Start Button is clicked:
     public void startButtonClicked() {
         puzzleChooserDialog();
 
     }
 
+
+    /*
+        Generatas the sudoku the user has chosen. If the user has never chosen one, load a clean puzzle.
+        If the user has chosen one before, tries to choose a new one, but exits out of the chooser, load the latest one the user loaded.
+     */
     public void generateSudoku() {
-        System.out.println("Clicked Generate Puzzle.");
         textAreaConsole.clear();
         textAreaConsole.appendText("Generating Puzzle from this format:\n");
 
-        // Reading the file where the puzzle is contained and loading it and setting up the fields of the puzzle.
-
+        // The selectedPuzzle string is a string that contains the users choice.
         if(selectedPuzzle == null){
             textAreaConsole.appendText("\nSomething went wrong with the selected of the puzzle.\nA clean slate was loaded as a default.");
             cPuzzle = reader.runReader("puzzle3_clean.txt");
         }else {
+            // Read the file that contains the corresponding puzzle.
             cPuzzle = reader.runReader(selectedPuzzle);
         }
-
         cFields = reader.setUpFields();
+
 
         // Method for printing the puzzle in the GUI Console.
         guiConsolPuzzlePrint(cPuzzle, reader.pSize);
@@ -73,7 +76,6 @@ public class Controller {
         // Setting up the columns and rows in the GridPane
         ColumnConstraints column = new ColumnConstraints();
         RowConstraints row = new RowConstraints();
-
         for(int i = 0; i < cPuzzle.length; i++) {
             sudokuGrid.addColumn(i);
             column.setHgrow(Priority.SOMETIMES);
@@ -81,112 +83,104 @@ public class Controller {
             sudokuGrid.addRow(i);
             row.setMinHeight(10);
             row.setVgrow(Priority.SOMETIMES);
-
-
         }
-
 
         // Using cPuzzle to get all the loaded sudoku numbers onto individual buttons.
         sudokuGridButtons();
 
 
     }
+    // Method for when the solve button is  clicked.
 
+    /*
+    When the solver button is checked, we first check that the puzzle the user wants us to solve is even a valid one.
+    If it is, we run the solver and updates all the buttons on the puzzle.
+     */
     public void solveButtonClicked() {
 
-
+        // Check if the sudoku puzzle is valid before trying to solve it.
         if(puzzleChecker.runChecker(cPuzzle)){
-            textAreaConsole.appendText("\nThe current Sudoku is valid.\nSolving will now commence.");
+            textAreaConsole.appendText("\nThe current Sudoku is valid.\nSolving will now commence.\n");
             CandidateFinder.runFinder(cPuzzle);
             LogicalSolver.run(cPuzzle, cFields);
 
-            SudokuButton temp;
+            SudokuButton updatedSudokubutton;
             for (int i = 0; i < cPuzzle.length; i++) {
                 for (int j = 0; j < cPuzzle.length; j++) {
 
-
-                        temp = (SudokuButton) getNodeFromSudokuGrid(sudokuGrid,i,j);
-
+                        updatedSudokubutton = (SudokuButton) getNodeFromSudokuGrid(sudokuGrid,i,j);
 
                         if(cPuzzle[i][j].getDigit() == 0){
-                           // temp.setNotValidStyle();
-                            temp.setText("ERROR");
-
+                            updatedSudokubutton.setText("ERROR");
                         } else {
-                         //   temp.setValidStyle();
-                            temp.setText(cPuzzle[i][j].getDigit() + "");
+                            updatedSudokubutton.setText(cPuzzle[i][j].getDigit() + "");
                         }
-
-
-
                 }
 
             }
+        textAreaConsole.appendText("The solving has finished!\n");
+         // Notify the user that the puzzle is not valid and the solve will not start.
         } else {
             textAreaConsole.appendText("\n\nYou tried to use the solver on a invalid Sudoku.\nThe solver will not run untill you provide a valid starting Sudoku.");
         }
 
-
-
-
-
-
     }
 
+    // Simple method for when the user wants to exit the application.
     public void exitButtonClicked() {
-        System.out.println("Clicked Exit.");
         System.exit(0);
     }
 
-    // Different scenarios depending on the user input on the button.
+    /*
+        Depending on the user input on the sudoku button different cases are handled.
+        We have on purpose restricted the use of many buttons to limit potential bugs when entering gibberish into a button for example.
+     */
     private void chooseASudokuNumber(KeyEvent keyEvent) {
 
-        if (keyEvent.getCode() == KeyCode.BACK_SPACE) {
+        // Backspace will delete the text on the button.
+        if (keyEvent.getCode() == (KeyCode.BACK_SPACE)) {
             typedString = "";
             ((SudokuButton) keyEvent.getTarget()).setButtonText(typedString);
+
+         // If the input on the button was the keyevent equal to the enter button. We enter the text on the button
+            // This text as already been checked by the next logic.
         } else if (keyEvent.getCode() == KeyCode.ENTER) {
                 ((SudokuButton) keyEvent.getTarget()).setButtonText(typedString);
+                numberChecker((SudokuButton) keyEvent.getTarget());
                 typedString = "";
 
-
-            } else if (keyEvent.getText().matches("[0-9]*")) {
-             //   tempString = typedString;
-                typedString += keyEvent.getText();
-
-                if(!(Integer.parseInt(typedString) > cPuzzle.length)) {
-
-                System.out.println(typedString);
-                validNumberChecker((SudokuButton) keyEvent.getTarget());
-            } else {
-                    typedString = "";
-                }
+        // ensure that it's only the numbers buttons you can press to add something to the string thats going on the button.
+        } else try { if(keyEvent.getText().matches("[0-9]*")) {
+                          typedString += keyEvent.getText();
 
 
+                    if(Integer.parseInt(typedString) > cPuzzle.length) {
+                        typedString = "";
+
+                       } else {
+                        // If you want to know what is being pressed and added to the
+                      //  System.out.println(typedString);
+                    }
+                 }
+        }catch (NumberFormatException e) {
+            textAreaConsole.appendText("");
         }
 
-        validNumberChecker((SudokuButton) keyEvent.getTarget());
     }
 
-    // Uses the PuzzleChecker to check if the number chosen on a button is valid / not valid.
-    // The Valid checking not used anymore, but the feedback to the user is still useful // 10-06
-    private void validNumberChecker(SudokuButton button) {
+
+    // Simple method to check what number was added to the button.
+    private void numberChecker(SudokuButton button) {
 
         if (!button.getButtonText().equals("")) {
             // Take the button text, convert it to integer and insert it in the sPuzzle using the coordinates from the button.
             // These coords matches with how the sPuzzle is set up.
             int userDigit = Integer.parseInt(button.getButtonText());
             cPuzzle[button.getButtonXPos()][button.getButtonYPos()].setDigit(userDigit);
-            System.out.println(cPuzzle[button.getButtonXPos()][button.getButtonYPos()].getDigit() + ": New value set in the cPuzzle");
+
             textAreaConsole.appendText("\nYou have placed number: " + userDigit + " on position " + button.getButtonXPos() +", " + button.getButtonYPos());
 
 
-            if (puzzleChecker.runChecker(cPuzzle)) {
-             //   button.setValidStyle();
-                System.out.println("valid");
-            } else {
-              //  button.setNotValidStyle();
-                System.out.println("not valid");
-            }
         } else {
 
             // Ensure that when we use the backspace to delete a number, that it also gets updated in the cPuzzle to a NULL , in our case a 0 is the NULL
@@ -200,12 +194,14 @@ public class Controller {
     // Creating sudokuGridButtons.
     private void sudokuGridButtons() {
 
+        // Logic to ensure that we know when we load a new sudoku puzzle in if its the same size as the lastest one.
         if(lastGridSize == cPuzzle.length) {
             sameSizeGrid = true;
         } else{
             sameSizeGrid = false;
         }
 
+        // If it's a totally new size we must clear the children on the grid and add new buttons.
         if(!generatedBefore || !sameSizeGrid) {
             sudokuGrid.getChildren().clear();
             // Insert a sudokuButton for each "place" in the puzzle.
@@ -215,24 +211,24 @@ public class Controller {
 
                     digit = cPuzzle[i][j].getDigit();
 
+                    // Create button, set color and add a key listener.
                     sudokuButton = new SudokuButton("" + digit, i, j);
-
                     coloringButton(sudokuButton, cPuzzle, i, j);
-
                     sudokuButton.setOnKeyPressed(this::chooseASudokuNumber);
 
+                    // add button to grid.
                     sudokuGrid.add(sudokuButton, i, j);
                     sudokuGrid.setMargin(sudokuButton, new Insets(2,2,2,2));
+
+                    // Now this is the latest generated and its generated before.
                     generatedBefore = true;
 
 
 
                 }
             }
-
-            // If we already have the buttons generated, we just need to alter the text they have written on them instead of creating a whole bunch of new ones.
-        } else
-        {
+            // If we already have the buttons generated in the right size grid, we just need to alter the text they have written on them instead of creating a whole bunch of new ones.
+        } else {
             int digit;
             for (int i = 0; i < cPuzzle.length; i++) {
                 for (int j = 0; j < cPuzzle.length; j++) {
@@ -240,9 +236,6 @@ public class Controller {
                     digit = cPuzzle[i][j].getDigit();
 
                     sudokuButton = (SudokuButton) getNodeFromSudokuGrid(sudokuGrid,i,j);
-
-
-
                     if(digit == 0) {
                         sudokuButton.setText("");
                     } else {
@@ -252,10 +245,11 @@ public class Controller {
                 }
             }
         }
+
         lastGridSize = cPuzzle.length;
     }
 
-    // TextArea (Prints to the GUI console
+    // TextArea (Prints to the GUI console)
     private void guiConsolPuzzlePrint(Tile[][] tPuzzle, int pSize) {
 
         textAreaConsole.appendText("The size of the puzzle: " + pSize + "\n");
@@ -271,9 +265,9 @@ public class Controller {
 
             for (int j = 0; j < pSize * pSize; j++) {
                 if ((1 + j) % pSize == 0 && j != pSize * pSize - 1) {
-                    textAreaConsole.appendText(tPuzzle[j][i].getDigit() + "  |  "); // Line breaks for showing the n*n fields
+                    textAreaConsole.appendText(tPuzzle[j][i].getDigit() + " | "); // Line breaks for showing the n*n fields
                 } else {
-                    textAreaConsole.appendText(tPuzzle[j][i].getDigit() + "   ");
+                    textAreaConsole.appendText(tPuzzle[j][i].getDigit() + " ");
                 }
 
 
@@ -283,16 +277,20 @@ public class Controller {
 
         }
 
-        textAreaConsole.appendText("\nHow to play:\nClick on a button. Type in the number you want on it.\nPress ENTER when you are done typing.");
+        textAreaConsole.appendText("\nHow to play:\nClick on a button. Type in the number you want on it.\nPress ENTER when you are done typing." +
+                "\nIf nothing appears, the number you have pressed is invalid." +
+                "\nThen press BACKSPACE and enter a new number or to delete an existing one.\n");
+
 
 
     }
 
     // Activates a popup dialog for choosing a puzzle.
+    // This method is self-explanatory.
     private void puzzleChooserDialog() {
 
         Optional<String> result = sudokuChooserDialog.showAndWait();
-        String answerSelected = "";
+        String answerSelected;
 
         if (result.isPresent()) {
             answerSelected = result.get();
@@ -303,12 +301,15 @@ public class Controller {
 
         }
 
+        // Hard coded logic to test out the big puzzles. This is only for the purpose of testing large sudoku puzzles.
         if(answerSelected.equals("puzzle4_1.txt") || answerSelected.equals("puzzle5_1.txt")) {
             selectedPuzzle = answerSelected;
         }else {
             selectedPuzzle = "puzzle3_" + answerSelected + ".txt";
 
         }
+
+        // Call this method to start the generating process.
         generateSudoku();
 
     }
@@ -323,9 +324,10 @@ public class Controller {
         return null;
     }
 
-    // Method for differenciating between the different "Fields" in the sudoku grid so it's more appealing to the user.
+    // Method for differentiating between the different "Fields" in the sudoku grid so it's more appealing to the user.
     private void coloringButton(SudokuButton sudokuButton, Tile[][] cPuzzle, int i, int j) {
 
+        // Heavy logic to determine which field we are in. We simply use that the integer will floor the mod 2 and we therefor know if its an even number or not.
         if(
                 (((int)(cPuzzle[i][j].getX()/Math.sqrt(cPuzzle.length))%2 == 0) && ((int)(cPuzzle[i][j].getY()/Math.sqrt(cPuzzle.length))%2 == 0))
                 ||
@@ -334,10 +336,10 @@ public class Controller {
                 )
 
         {
-
-            sudokuButton.setStyle("-fx-background-color: lightskyblue;");
+              sudokuButton.getStyleClass().add("buttonBlue");
         } else {
-            sudokuButton.setStyle("-fx-background-color: bisque;");
+            sudokuButton.getStyleClass().add("buttonBisque");
+
         }
 
     }
