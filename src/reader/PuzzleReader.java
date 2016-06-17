@@ -41,7 +41,9 @@ public class PuzzleReader {
             while(sc.hasNextLine()) {
                 String tString = sc.nextLine();
                 String[] tList = tString.split(";");
-
+                if(tList.length == 0){
+                    break;
+                }
                 for(int i = 0 ; i < sPuzzle.length ; i++){
 
                     try{

@@ -20,9 +20,6 @@ public class Singles {
 
                         int digit = cPuzzle[i][j].getCandidates().get(0);
                         // Update the naked single to be the digit.
-
-                       // System.out.println("Found a naked single "+cPuzzle[i][j].getCandidates().get(0)
-                         //       +  " at: " + i + ","+j);
                         cPuzzle[i][j].setAndClear(digit);
                         result = true;
 
@@ -83,9 +80,6 @@ public class Singles {
 
                             //then hidden single
                             result = true;
-
-//                            System.out.println("Found a hidden single "+i
-  //                                  +  " at: " + j + ","+k);
 
                             cPuzzle[j][k].setAndClear(i);
 

@@ -33,8 +33,6 @@ public class BruteForce {
         boolean solverDone = false;
         PuzzleChecker pChecker = new PuzzleChecker();
 
-        System.out.println(oldSize);
-
         while(!solverDone && !cords.get(0).isEmpty() && checkedCords.get(0).size() <= oldSize){
             int xPos = cords.get(0).get(0); // the current x coordinate
             int yPos = cords.get(1).get(0); // the current y coordinate
@@ -88,11 +86,6 @@ public class BruteForce {
     }
 
     private List findEmptyCells(Tile[][] cPuzzle){
-        /*
-        Deque[] coords = new Deque[2];
-        coords[0] = new LinkedList<Integer>();
-        coords[1] = new LinkedList<Integer>();
-*/
         List<List<Integer>> coords = new ArrayList<>();
         coords.add(new ArrayList<>());
         coords.add(new ArrayList<>());

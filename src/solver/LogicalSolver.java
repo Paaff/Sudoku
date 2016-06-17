@@ -16,8 +16,6 @@ public class LogicalSolver {
         boolean proceed = true;
 
         CandidateFinder.runFinder(cPuzzle);
-
-       //  System.out.println("\nOperations used:");
         while(proceed) {
 
             proceed = Singles.nakedSingle(cPuzzle) || Singles.hiddenSingle(cPuzzle)
@@ -30,28 +28,11 @@ public class LogicalSolver {
 
 
             if(!proceed){
-                /* The Algorithm has exhausted all it's methods and it either could solve it completely or it has come to a stand still.
-                   If it couldn't solve it, use brute force to solve the remaining.
-                   So basically our brute force method acts as method to finish the puzzle and if it's already solved, a checker to see that it actually is completely done.
-                */
+                // When solver cannot continue, tel the brute force method to take over.
 
                 new BruteForce().solver(cPuzzle);
-
-
-
-
-
-                // This method has no reason to be run here other than using its print method when implementing new methods.
-                // CandidateFinder.runFinder(cPuzzle);
-
             }
-
-
         }
-
-        //System.out.println();
-
-
     }
 
 

@@ -58,14 +58,11 @@ public class Locked {
 
                         // If pointing pair was found and change was made, return true.
                         if (XPair && removePointingCandidate(Y,cPuzzle,cField[j][k],i,House.ROW)){
-
                             result = true;
-                          // System.out.println("Found pointing pair, for X-axis, for " + i + " at field:" + j +"," +k);
                         }
 
                         if(YPair && removePointingCandidate(X,cPuzzle,cField[j][k],i,House.COLUMN)){
                             result = true;
-                            //System.out.println("Found pointing pair, for Y-axis, for " + i + " at field:" + j +"," +k);
                         }
                     }
 
@@ -143,9 +140,6 @@ public class Locked {
         if(claim && removeCC(tileList,f,digit)){
 
             result = true;
-                      /*  int a =(int)(tilesRow.get(0).getX()/Math.sqrt(cPuzzle.length));
-                        int b = (int)((int)j/Math.sqrt(cPuzzle.length));
-                        System.out.println("Found claiming pair, digit: " + i+ " at field: "+ a+ "," +b );*/
         }
 
         return result;

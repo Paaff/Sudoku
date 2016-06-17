@@ -34,7 +34,6 @@ public class NakedSubsets {
                             if(removedNP(cPuzzle,pair, House.ROW)){
 
                                 result = true;
-                              //  System.out.println("Found naked pair at row " + cPuzzle[i][j].getY());
                             }
                         }
                     }
@@ -53,7 +52,6 @@ public class NakedSubsets {
 
                             if(removedNP(cPuzzle,pair,House.COLUMN)){
                                 result = true;
-                             //   System.out.println("Found naked pair at column " + cPuzzle[i][j].getX());
                             }
 
                         }
@@ -74,7 +72,6 @@ public class NakedSubsets {
 
                             if(removedNP(cPuzzle,pair,House.FIELD)){
                                 result = true;
-                             //   System.out.println("Found naked pair in field " + t.getX()/3 + ", " + t.getY()/3);
                             }
                         }
 
@@ -139,15 +136,6 @@ public class NakedSubsets {
                  */
                 if(cPuzzle[i][j].getCandidates().size() <= size && cPuzzle[i][j].getDigit() == 0){
 
-                    /*
-                    Two lists are added. One is a list of all possible subsets candidates.
-                    This means that looking at tile with coordinate (i,j), we will make a list of all possible subsets sets
-
-
-                    The list candidates consists of all possible candidate matches for the tile with coordinate (i,j).
-                    The list tiles consists of the different tiles being a part of this subset.
-                    Pairing lists has the same indexing in the different lists.
-                     */
                     List<List<Integer>> candidatesRow = new ArrayList<>();
                     List<List<Tile>> tilesRow = new ArrayList<>();
                     List<List<Integer>> candidatesColumn = new ArrayList<>();
@@ -168,67 +156,34 @@ public class NakedSubsets {
 
                             // runs through all of the candidate lists, and checks for two different cases:
                             for(List l : candidatesRow){
-                                /*
-                                 First case is that every candidate of the tile (x,j) is already in a candidate list,
-                                 if this is the case it means that the tile (x,j) can be added the tile list,
-                                 since it is a possible candidate for the subset.
-                                  */
+                                // Every candidate is in subset. Add tile to subset.
                                 if(l.containsAll(cPuzzle[x][j].getCandidates())){
-                                    newCand = false;
                                     tilesRow.get(candidatesRow.indexOf(l)).add(cPuzzle[x][j]);
-
-                                    /*
-                                    Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to 3, if they are it means that we have found a correct subset,
-                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
-                                     */
+                                    newCand = false;
+                                    // check size for full subset.
                                     if(listSizeCheck(l,tilesRow.get(candidatesRow.indexOf(l)), size)){
                                         if(removeNakedSubset(cPuzzle,tilesRow.get(candidatesRow.indexOf(l)),l, House.ROW)){
 
                                             result = true;
-                                        /*    List<Integer> temp = new ArrayList<>();
-                                            for(Tile t: tilesRow.get(candidatesRow.indexOf(l))){
-                                                temp.add(t.getX());
-                                            }
-                                            System.out.println("Found subset at row " + cPuzzle[i][j].getY() + " "+ l + " with tiles on x-coordinates: " + temp);
-                                      */  }
+                                        }
                                     }
-                                /*
-                                Second case is that some of the candidates of the tile (x,j) is already in a candidate list,
-                                if this is the case we'll add all the new candidates to the list. This includes duplicates
-                                but these will be removed when we check for the correctness of subsets. We will also add the tile (x,j)
-                                to the tiles list.
-                                 */
+                                // some of candidates is in list. Add both candidates and tile to lists.
                                 }else if(containsSome(l,cPuzzle[x][j].getCandidates())){
                                     newCand = false;
                                     tilesRow.get(candidatesRow.indexOf(l)).add(cPuzzle[x][j]);
                                     l.addAll(cPuzzle[x][j].getCandidates());
 
-                                    /*
-                                    Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to 3, if they are it means that we have found a correct subset,
-                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
-                                     */
+                                    // check size for full subset.
                                     if(listSizeCheck(l,tilesRow.get(candidatesRow.indexOf(l)), size)){
                                         if(removeNakedSubset(cPuzzle,tilesRow.get(candidatesRow.indexOf(l)),l, House.ROW)){
 
                                             result = true;
-                                          /*  List<Integer> temp = new ArrayList<>();
-                                            for(Tile t: tilesRow.get(candidatesRow.indexOf(l))){
-                                                temp.add(t.getX());
-                                            }
-                                            System.out.println("Found subset at row " + cPuzzle[i][j].getY() + " "+ l + " with tiles on x-coordinates: " + temp);
-                                       */ }
+                                        }
                                     }
                                 }
                             }
 
-                            /*
-                            Last case is that the candidates of tile (x,j) was not found in any of the candidates lists.
-                            In this case we will create a new list for this possible subset. We will do this by adding
-                            the tile (i,j) and the tile (x,j) to the new list, as well as both of their candidates to
-                            the matching list.
-                             */
+                            // could not find any candidates. Make new lists with candidates and tiles.
                             if(newCand){
                                 List<Integer> newCandList = new ArrayList<>();
                                 newCandList.addAll(cPuzzle[x][j].getCandidates());
@@ -266,67 +221,35 @@ public class NakedSubsets {
 
                             // runs through all of the candidate lists, and checks for two different cases:
                             for(List l : candidatesColumn){
-                                /*
-                                 First case is that every candidate of the tile (x,j) is already in a candidate list,
-                                 if this is the case it means that the tile (x,j) can be added the tile list,
-                                 since it is a possible candidate for the subset.
-                                  */
+                                // Every candidate is in subset. Add tile to subset.
                                 if(l.containsAll(cPuzzle[i][y].getCandidates())){
                                     newCand = false;
                                     tilesColumn.get(candidatesColumn.indexOf(l)).add(cPuzzle[i][y]);
 
-                                    /*
-                                    Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to *size*, if they are it means that we have found a correct subset,
-                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
-                                     */
+                                    // check size for full subset.
                                     if(listSizeCheck(l,tilesColumn.get(candidatesColumn.indexOf(l)),size)){
                                         if(removeNakedSubset(cPuzzle,tilesColumn.get(candidatesColumn.indexOf(l)),l, House.COLUMN)){
 
                                             result = true;
-                                        /*    List<Integer> temp = new ArrayList<>();
-                                            for(Tile t: tilesColumn.get(candidatesColumn.indexOf(l))){
-                                                temp.add(t.getY());
-                                            }
-                                            System.out.println("Found subset at column " + cPuzzle[i][j].getX() + " "+ l + " with tiles on y-coordinates: " + temp );
-                                       */ }
+                                        }
                                     }
-                                /*
-                                Second case is that some of the candidates of the tile (x,j) is already in a candidate list,
-                                if this is the case we'll add all the new candidates to the list. This includes duplicates
-                                but these will be removed when we check for the correctness of subsets. We will also add the tile (x,j)
-                                to the tiles list.
-                                 */
+                                    // some of candidates is in list. Add both candidates and tile to lists.
                                 }else if(containsSome(l,cPuzzle[i][y].getCandidates())){
                                     newCand = false;
                                     tilesColumn.get(candidatesColumn.indexOf(l)).add(cPuzzle[i][y]);
                                     l.addAll(cPuzzle[i][y].getCandidates());
 
-                                    /*
-                                    Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to *size*, if they are it means that we have found a correct subset,
-                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
-                                     */
+                                    // check size for full subset.
                                     if(listSizeCheck(l,tilesColumn.get(candidatesColumn.indexOf(l)), size)){
                                         if(removeNakedSubset(cPuzzle,tilesColumn.get(candidatesColumn.indexOf(l)),l, House.COLUMN)){
 
                                             result = true;
-                                         /*   List<Integer> temp = new ArrayList<>();
-                                            for(Tile t: tilesColumn.get(candidatesColumn.indexOf(l))){
-                                                temp.add(t.getY());
-                                            }
-                                            System.out.println("Found subset at column " + cPuzzle[i][j].getX() + " "+ l + " with tiles on y-coordinates: " + temp );
-                                          */   }
+                                        }
                                     }
                                 }
                             }
 
-                            /*
-                            Last case is that the candidates of tile (x,j) was not found in any of the candidates lists.
-                            In this case we will create a new list for this possible subset. We will do this by adding
-                            the tile (i,j) and the tile (x,j) to the new list, as well as both of their candidates to
-                            the matching list.
-                             */
+                            // could not find any candidates. Make new lists with candidates and tiles.
                             if(newCand){
                                 List<Integer> newCandList = new ArrayList<>();
                                 newCandList.addAll(cPuzzle[i][y].getCandidates());
@@ -365,75 +288,35 @@ public class NakedSubsets {
 
                             // runs through all of the candidate lists, and checks for two different cases:
                             for(List l : candidatesField){
-                                /*
-                                 First case is that every candidate of the tile (x,j) is already in a candidate list,
-                                 if this is the case it means that the tile (x,j) can be added the tile list,
-                                 since it is a possible candidate for the subset.
-                                  */
+                                // Every candidate is in subset. Add tile to subset.
                                 if(l.containsAll(t.getCandidates())){
                                     newCand = false;
                                     tilesField.get(candidatesField.indexOf(l)).add(t);
 
-                                    /*
-                                    Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to *size*, if they are it means that we have found a correct subset,
-                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
-                                     */
+                                    // check size for full subset.
                                     if(listSizeCheck(l,tilesField.get(candidatesField.indexOf(l)), size)){
                                         if(removeNakedSubset(cPuzzle,tilesField.get(candidatesField.indexOf(l)),l, House.FIELD)){
 
                                             result = true;
-/*
-                                            List<Integer> tempX = new ArrayList<>();
-                                            List<Integer> tempY = new ArrayList<>();
-                                            for(Tile s:tilesField.get(candidatesField.indexOf(l)) ){
-                                                tempX.add(s.getX());
-                                                tempY.add(s.getY());
-                                            }
-                                            System.out.println("Found subset at Field " + cPuzzle[i][j].getX()/3 + "," + cPuzzle[i][j].getY()/3 + " "
-                                                    + l + " with tiles on x-coordinates: " + tempX + " and Y: "+ tempY);*/
                                         }
                                     }
-                                /*
-                                Second case is that some of the candidates of the tile (x,j) is already in a candidate list,
-                                if this is the case we'll add all the new candidates to the list. This includes duplicates
-                                but these will be removed when we check for the correctness of subsets. We will also add the tile (x,j)
-                                to the tiles list.
-                                 */
+                                    // some of candidates is in list. Add both candidates and tile to lists.
                                 }else if(containsSome(l,t.getCandidates())){
                                     newCand = false;
                                     tilesField.get(candidatesField.indexOf(l)).add(t);
                                     l.addAll(t.getCandidates());
 
-                                    /*
-                                    Every time any of the lists are updated, we check to see if both lists lengths are equal
-                                    to *size*, if they are it means that we have found a correct subset,
-                                     we then try to update the row, by removing the candidates of the subset from the rest of the row.
-                                     */
+                                    // check size for full subset.
                                     if(listSizeCheck(l,tilesField.get(candidatesField.indexOf(l)), size)){
                                         if(removeNakedSubset(cPuzzle,tilesField.get(candidatesField.indexOf(l)),l, House.FIELD)){
 
                                             result = true;
-/*
-                                            List<Integer> tempX = new ArrayList<>();
-                                            List<Integer> tempY = new ArrayList<>();
-                                            for(Tile s:tilesField.get(candidatesField.indexOf(l)) ){
-                                                tempX.add(s.getX());
-                                                tempY.add(s.getY());
-                                            }
-                                            System.out.println("Found subset at Field " + cPuzzle[i][j].getX()/3 + "," + cPuzzle[i][j].getY()/3 + " "
-                                                    + l + " with tiles on x-coordinates: " + tempX +" and Y: "+ tempY);*/
-                                            }
+                                        }
                                     }
                                 }
                             }
 
-                            /*
-                            Last case is that the candidates of tile (x,j) was not found in any of the candidates lists.
-                            In this case we will create a new list for this possible subset. We will do this by adding
-                            the tile (i,j) and the tile (x,j) to the new list, as well as both of their candidates to
-                            the matching list.
-                             */
+                            // could not find any candidates. Make new lists with candidates and tiles.
                             if(newCand){
                                 List<Integer> newCandList = new ArrayList<>();
                                 newCandList.addAll(t.getCandidates());

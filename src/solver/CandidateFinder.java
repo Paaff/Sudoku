@@ -15,11 +15,6 @@ public class CandidateFinder {
         for(int i = 0; i <cPuzzle.length ;i++){
             for(int j = 0 ; j < cPuzzle.length ; j++){
                 eliminateCandidates(cPuzzle,i,j);
-
-                // If you want to see the initial candidates, use this print operation.
-                //System.out.println(i+ " "+ j + " " + cPuzzle[i][j].getCandidates());
-
-
             }
         }
     }

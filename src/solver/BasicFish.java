@@ -13,20 +13,13 @@ public class BasicFish {
     public static boolean xWing(Tile[][] cPuzzle){
         boolean result = false;
 
-        /*
-        The technique runs through all the possible digits. (candidates)
-         */
+        // running through all digits
         for (int digit = 1 ; digit <= cPuzzle.length ; digit++){
-            /*
-            Two boolean arrays, that quickly tells for the specific digit, if the different rows or columns has locked pairs.
-             */
+            // does the row/column have locked pair for specific digit.
             boolean[] lockedPairRows = new boolean[cPuzzle.length];
             boolean[] lockedPairColumn = new boolean[cPuzzle.length];
 
-            /*
-            This for loop runs through each row and column and checks if the specific digit exists only 2 times, if
-            they do the row/column's boolean is set true.
-             */
+            // finds locked pair
             for(int i = 0 ; i <cPuzzle.length ; i++){
                 int rows = 0;
                 int columns = 0;
@@ -51,11 +44,7 @@ public class BasicFish {
                 }
             }
 
-            /*
-            Now that we know which columns/rows has locked pairs, we'll run through these again to add the tiles that
-            are a part of the pair to a list.
-             */
-
+            // Takes locked pair and see if it is a part of x-wing
             for(int i = 0 ; i < cPuzzle.length ; i++){
                 // The lists
                 List<Tile> ColumnTiles = new ArrayList<>();
@@ -69,25 +58,16 @@ public class BasicFish {
                     }
                 }
 
-                /*
-                If the current column has a locked pair we'll get the y-coordinate (row) of the first tile.
-                From this row we'll check to see if there are other tiles with the same digit as candidate.
-                If there are, we'll first check if the new tile's column also has a locked pair, in this case
-                the new tile must be a part of it.
-                 */
+                // Find another locked pair and compare their perpendicular cordinates to determine x-wing
                 if(lockedPairColumn[i]){
                     int y1 = ColumnTiles.get(0).getY();
 
                     for(int x = 0 ; x < cPuzzle.length ; x++){
-
+                        // Does the first 2 tiles of the two locked pairs have same y-cordinate?
                         if(cPuzzle[x][y1] != cPuzzle[i][y1] && cPuzzle[x][y1].getCandidates().contains(digit) && lockedPairColumn[x]){
 
                             for(int y2 = 0; y2 < cPuzzle.length ;y2++){
-                                /*
-                                This if-statement checks to see if the new locked pair is fully aligned with the original one.
-                                Meaning that the two second tiles has the same y-coordinate (row).
-                                If they do, we have found an X-wing!
-                                 */
+                                // Does the two other tiles of the two locked pairs have same y-cordinates?
                                 if(cPuzzle[x][y2] != cPuzzle[x][y1] && cPuzzle[x][y2].getCandidates().contains(digit)
                                         && ColumnTiles.get(1).getY() == y2){
                                     // X - wing found!
@@ -97,8 +77,6 @@ public class BasicFish {
                                     if(removeXWing(cPuzzle, ColumnTiles, digit, House.COLUMN )){
                                         result = true;
 
-                                      /*  System.out.println("Found x-wing! (column) From (" + ColumnTiles.get(0).getX() +  "," + ColumnTiles.get(0).getY()
-                                                + ") and (" + ColumnTiles.get(3).getX() + "," + ColumnTiles.get(3).getY() + ")");*/
                                     }
 
 
@@ -119,26 +97,18 @@ public class BasicFish {
                     }
                 }
 
-                /*
-                If the current row has a locked pair we'll get the x-coordinate (column) of the first tile.
-                From this column we'll check to see if there are other tiles with the same digit as candidate.
-                If there are, we'll first check if the new tile's row also has a locked pair, in this case
-                the new tile must be a part of it.
-                 */
+                // Find another locked pair and compare their perpendicular cordinates to determine x-wing
                 if(lockedPairRows[i]){
                     int x1 = RowTiles.get(0).getX();
 
                     for(int y = 0 ; y < cPuzzle.length ; y++){
 
+                        // Does the first two tiles of locked pairs have same x-cordinate?
                         if(cPuzzle[x1][y] != cPuzzle[x1][i] && cPuzzle[x1][y].getCandidates().contains(digit) && lockedPairRows[y]){
 
                             for(int x2 = 0; x2 < cPuzzle.length ;x2++){
 
-                                /*
-                                This if-statement checks to see if the new locked pair is fully aligned with the original one.
-                                Meaning that the two second tiles has the same x-coordinate (column).
-                                If they do, we have found an X-wing!
-                                 */
+                                // Does the two second tiles of locked pair have same x-cordinate?
                                 if(cPuzzle[x2][y] != cPuzzle[x1][y] && cPuzzle[x2][y].getCandidates().contains(digit)
                                         && RowTiles.get(1).getX() == x2){
                                     // X - wing found!
@@ -147,9 +117,6 @@ public class BasicFish {
 
                                     if(removeXWing(cPuzzle, RowTiles, digit, House.ROW )) {
                                         result = true;
-
-                                     /*   System.out.println("Found x-wing! (row) From (" + RowTiles.get(0).getX() + "," + RowTiles.get(0).getY()
-                                                + ") and (" + RowTiles.get(3).getX() + "," + RowTiles.get(3).getY() + ")");*/
                                     }
 
                                 }
@@ -171,7 +138,7 @@ public class BasicFish {
 
         return result;
     }
-
+    // Removes digit from candidate lists through the x-wing's cover set.
     private static boolean removeXWing(Tile[][] cPuzzle, List<Tile> tiles, int digit, House h){
         boolean result = false;
 
@@ -283,7 +250,6 @@ public class BasicFish {
             if(baseRow.size() == size && coverSetRows.size() == size){ // found swordfish
                 if(removeSwordfish(cPuzzle, baseRow, coverSetRows, digit, House.ROW)){ // try to update the puzzle using the found swordfish.
                     result = true;
-                   // System.out.println("Found Sword (with locked rows) fish with digit " + digit + " With baseSet: " + baseRow + " and coverSet: " +coverRow );
                 }
 
             }
@@ -309,7 +275,6 @@ public class BasicFish {
             if(baseColumn.size() == size && coverSetColumn.size() == size){ // found swordfish
                 if(removeSwordfish(cPuzzle, baseColumn, coverSetColumn, digit, House.COLUMN)){
                     result = true;
-                  //  System.out.println("Found Sword (with locked column) fish with digit " + digit + " With baseSet: " + baseColumn + " and coverSet: " +coverColumn );
                 }
 
             }
@@ -354,11 +319,7 @@ public class BasicFish {
         base.removeAll( removeBase );
         cover.removeAll( removeCover );
 
-        /*
-        To ensure that the sets has been completly cleaned up, we check to see if anything has changed at all.
-        If it hasnt it means that it didnt find any singled digit in the cover set and we'll return the final list.
-        Otherwise we'll call the method recursively again to make sure that we get everything.
-         */
+        // Has the set been updates? If so try to see if there is more to be changed, if not return the result.
         if(coverCopy.equals(cover)){
             return base;
         }else{

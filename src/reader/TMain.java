@@ -1,11 +1,13 @@
 package reader;
 
-//import solver.BruteForce;
 import solver.*;
 
 
 /**
  * Created by minit on 25-02-2016.
+ *
+ * This class was made for testing the solvers. It called this class' main method will calculate
+ * the run time for running the logical solver on 11 puzzle that was given by the instructor.
  */
 public class TMain {
 
@@ -14,48 +16,36 @@ public class TMain {
 
     static long starttime;
     public static void main(String[] args){
-
-
-        // Run the file reader
-        PuzzleReader reader = new PuzzleReader();
-
         int i = 1;
-      while(i <= 40) {
-            starttime = System.currentTimeMillis();
+            // Run the file reader
+            PuzzleReader reader = new PuzzleReader();
+            cPuzzle = reader.runReader("puzzle3_clean.txt");
+            reader.setUpFields();
 
-            cPuzzle = reader.runReader("puzzle3_" + i + ".txt");
-            cFields = reader.setUpFields();
+            while (i <= 40) {
+                starttime = System.currentTimeMillis();
 
-            // Run the puzzle checker
-            PuzzleChecker checker = new PuzzleChecker();
-            //System.out.println("The puzzle is legit: " + checker.runChecker(cPuzzle));
+                cPuzzle = reader.runReader("Puzzle3_" + i + ".txt");
+                cFields = reader.setUpFields();
 
-
-
-            // LogicalSolver
-            //new BruteForce().solver(cPuzzle);
-            LogicalSolver.run(cPuzzle, cFields);
-
-            //remove backslash for end result.
-            //reader.pPuzzle(cPuzzle);
-
-            final long endTime = System.currentTimeMillis();
-
-            //System.out.println(/*"\nTotal Execution time: " +*/ (endTime - starttime));
-           i++;
-
-       }
+                // Run the puzzle checker
+                PuzzleChecker checker = new PuzzleChecker();
 
 
+                // LogicalSolver
+                if (checker.runChecker(cPuzzle)) {
+                    LogicalSolver.run(cPuzzle, cFields);
+                } else {
+                   System.out.print("Wont solve. "); // if the puzzle does not follow sudoku rules from the start.
+                }
 
-       /*
-        BruteForce bForce = new BruteForce();
-        sPuzzle = bForce.solver(cPuzzle);
+                final long endTime = System.currentTimeMillis();
 
-        Algorithm1.runAlgorihm(cPuzzle);
-        reader.pPuzzle(cPuzzle);
-        CandidateFinder.runFinder(cPuzzle);
-        */
+                // displaying run time result.
+                System.out.println( (endTime - starttime));
+                i++;
+
+            }
     }
 
 

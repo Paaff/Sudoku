@@ -146,7 +146,6 @@ public class HiddenSubsets {
         if(indexList.size() == size && tiles.size() == size)
             if (updateHS(tiles, indexList)) {
                 result = true;
-               //  System.out.println("Found hidden subset (field), digits= " + indexList + "(+1) At column: ");
             }
 
         return result;
@@ -167,19 +166,19 @@ public class HiddenSubsets {
         indexCopy.addAll(indexList);
         List<Integer> removeList = new ArrayList<>();
         // see the explanation for fields.
-        for(int i = 0 ; i < indexList.size(); i++){
+        for(int i = 0 ; i < indexList.size(); i++){//running through index list.
             int count = 0;
-            List<Tile> l1 = digitTiles.get( indexList.get(i) );
+            List<Tile> l1 = digitTiles.get( indexList.get(i) ); //saves the 'current' list (list that is indexed)
 
-            for(int j = 0 ; j < indexList.size(); j++){
-                List<Tile> l2 = digitTiles.get( indexList.get(j) );
+            for(int j = 0 ; j < indexList.size(); j++){ // runs through the indexed lists again.
+                List<Tile> l2 = digitTiles.get( indexList.get(j) ); //saves the 'other' list (other list that is indexed)
 
-                if(unionSize(l1,l2) <= size){
+                if(unionSize(l1,l2) <= size){ //If the union of the two lists is less equal to the SIZE ; increment.
                     count++;
                 }
             }
 
-            if(count < size){
+            if(count < size){ //If the count is less than SIZE, remove the 'current' list.
                 removeList.add( indexList.get(i) );
             }
         }

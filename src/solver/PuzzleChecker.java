@@ -13,7 +13,6 @@ public class PuzzleChecker {
         for(int i = 0; i < cPuzzle.length ; i++ ){
             for(int j = 0; j < cPuzzle[i].length ; j++){
                 if (!checkCord(cPuzzle, i, j )){
-                 //   System.out.println(cPuzzle[i][j]);
                     return false;
                 }
             }
